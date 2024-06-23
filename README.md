@@ -92,6 +92,10 @@ There are 2 main services and a helper service included in the [compose.yaml](./
 - This service uses the image described in the Docker file and starts the dev server using the `python manage.py runserver 0.0.0.0:8000` command to run the web server in the container. It exposes port 8080 to the host system to provide access and uses the `depends_on` to wait until the DB server is running to connect to the database.
 - Docker volume system allows to mount the [/autohaven/](/autohaven/) folder to `/code` inside the container so it has access to the project Python code and also supports hot-reload as expected.
 
+### Resources
+
+This docker set up is based on the one available at https://github.com/docker/awesome-compose/tree/master/official-documentation-samples/django/
+
 # Design
 
 ## Database Models
