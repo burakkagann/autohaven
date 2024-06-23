@@ -17,25 +17,36 @@ A Django project for the AutoHaven website, a sample project for the Software De
 
 ### Credentials
 
-Before setting up your local environment, you should set the desired DB name, user and password. This can be done by editing the [./autohaven/.env](./autohaven/.env) file. It's not compulsory to do so for setting up a dev environment.
+Before setting up your local environment, you should set the desired DB name, user and password. This can be done by creating/editing the [./autohaven/.env](./autohaven/.env) file. It's not compulsory to do so for setting up a dev environment.
+
+Create a file [./autohaven/.env](./autohaven/.env) with the following contents:
+
+```bash
+# Change if desired
+POSTGRES_NAME=autohaven
+POSTGRES_USER=autohaven
+POSTGRES_PASSWORD=changeme
+```
 
 ### Mac OS
 
-1. Open a terminal and navigate to the `./autohaven` directory.
+1. Create/edit a .env file as described in [Credentials](#credentials).
+2. Open a terminal and navigate to the `./autohaven` directory.
    - You can use `cd autohaven` from a VS code terminal to do this.
-2. Run `docker compose up` to start the DB server and Web server.
-3. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
-4. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
-5. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
+3. Run `docker compose up` to start the DB server and Web server.
+4. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
+5. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
+6. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
 
 ### Windows
 
+1. Create/edit a .env file as described in [Credentials](#credentials).
 1. Open a terminal and navigate to the `./autohaven` directory.
    - You can use `cd autohaven` from a VS code terminal to do this if using powers.
-2. Run `docker compose up` to start the DB server and Web server.
-3. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
-4. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
-5. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
+1. Run `docker compose up` to start the DB server and Web server.
+1. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
+1. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
+1. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
 
 To obtain a more in-depth explanation of the docker set up, see [Docker Setup](#docker-setup)
 
