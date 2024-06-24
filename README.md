@@ -41,14 +41,25 @@ POSTGRES_PASSWORD=changeme
 ### Windows
 
 1. Create/edit a .env file as described in [Credentials](#credentials).
-1. Open a terminal and navigate to the `./autohaven` directory.
+2. Open a terminal and navigate to the `./autohaven` directory.
    - You can use `cd autohaven` from a VS code terminal to do this if using powers.
-1. Run `docker compose up` to start the DB server and Web server.
-1. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
-1. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
-1. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
+3. Run `docker compose up` to start the DB server and Web server.
+4. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
+5. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
+6. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
 
 To obtain a more in-depth explanation of the docker set up, see [Docker Setup](#docker-setup)
+
+### Troubleshooting
+
+- Make sure to read the logs from the service containers to look for possible errors or problems during the set up process.
+- In case the DB is not property iniatialized, it is possible to reset it to start from scratch. See [Resetting the DB](#resetting-the-db)
+- Check there are no other applications using the ports 8000 (Web), 8080 (Adminer) or 5432 (DB)
+
+#### Resetting the DB
+
+**Note: This action is not reversible!**
+If required, the DB can be reset by deleting the [/autohaven/data/db](/autohaven/data/db) directory. After doing this, next time the DB container starts it will init the db again recreating the files.
 
 # Project Structure Overview
 
@@ -74,7 +85,7 @@ There are 2 main services and a helper service included in the [compose.yaml](./
 
 - This service uses a [PostgreSQL](https://www.postgresql.org/) [docker image](https://hub.docker.com/_/postgres) that runs a database server locally on port 5432. On first run, it creates a default database and database user using environment variables (POSTGRES_USER, POSTGRES_PASSWORD).
 
-- Data from the database is stored in the [/autohaven/data/db](/autohaven/data/db) folder. This folder is excluded from the repository as it's created everytime a new dev environment is set up.
+- Data from the database is stored in the [/autohaven/data/db](/autohaven/data/db) folder. This folder is excluded from the repository as it's created everytime a new dev environment is set up. The DB can be forced to reset by deleting the contents of this folder.
 
 - A healthcheck for this service is established to determine when the server is ready to accept connections from the web server.
 
