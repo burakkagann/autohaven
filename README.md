@@ -33,20 +33,22 @@ POSTGRES_PASSWORD=changeme
 1. Create/edit a .env file as described in [Credentials](#credentials).
 2. Open a terminal and navigate to the `./autohaven` directory.
    - You can use `cd autohaven` from a VS code terminal to do this.
-3. Run `docker compose up` to start the DB server and Web server.
-4. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
-5. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
-6. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
+3. Run `docker compose up db` to start the DB server. Wait until the message "database is ready to accept connections". Then, press CTRL-C to stop the container
+4. Run `docker compose up` to start all the containers (DB, Web and Adminer)
+5. You should see the logs from all servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
+6. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
+7. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
 
 ### Windows
 
 1. Create/edit a .env file as described in [Credentials](#credentials).
 2. Open a terminal and navigate to the `./autohaven` directory.
-   - You can use `cd autohaven` from a VS code terminal to do this if using powers.
-3. Run `docker compose up` to start the DB server and Web server.
-4. You should see the logs from both servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
-5. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
-6. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
+   - You can use `cd autohaven` from a VS code terminal to do this if using powershell.
+3. Run `docker compose up db` to start the DB server. Wait until the message "database is ready to accept connections". Then, press CTRL-C to stop the container
+4. Run `docker compose up` to start all the containers (DB, Web and Adminer)
+5. You should see the logs from all servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
+6. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
+7. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
 
 To obtain a more in-depth explanation of the docker set up, see [Docker Setup](#docker-setup)
 
