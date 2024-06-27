@@ -1,0 +1,45 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center ;
+    padding: px 20px;
+    background-color: white;
+}
+
+.logo img {
+    height: 150px;
+}
+
+nav ul {
+    list-style:none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bolder;
+    font-size: 15px ;
+}
+
+.auth-buttons a {
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.register-btn {
+    background-color: black;
+    color: white;
+}
+
+.login-btn {
+    background-color: grey;
+    color: white;
+}
