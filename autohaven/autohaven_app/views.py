@@ -1,7 +1,17 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
 
-# Create your views here.
+def root(requst):
+    return redirect('home/')
+
+def about(request):
+    return render(request, 'navbar/header.html')
+
+def register(request):
+    return render(request, 'navbar/header.html')
+
+def login(request):
+    return render(request, 'navbar/header.html')
+
 def landing_page(request):
     return render(request, 'landing_page.html')
 
