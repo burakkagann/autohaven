@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}  
+    <link rel="stylesheet" href="{% static 'navbar/styles.css' %}">
+    <title>Auto Haven</title>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'navbar/logo.png' %}" alt="Auto Haven Logo">
+        </div>
+        <nav>
+            <ul class="auth-buttons">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'catalog' %}">Catalog</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
+                <li><a href="{% url 'login' %}" class="login-btn">Log In</a></li>
+            </ul>
+        </nav>
+    </header>
+</body>
+</html>
