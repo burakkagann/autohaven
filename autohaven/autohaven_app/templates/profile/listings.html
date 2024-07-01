@@ -1,0 +1,37 @@
+<div class="listings">
+    <h2>My Listings</h2>
+    
+    {% if user.group == 'seller' %}
+        <button type="button" class="button button-black button-smaller">Update Listing</button>
+    {% endif %}
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Django Template Loop for Listings -->
+            {% for listing in listings %}
+            <tr>
+                <td class="task">{{ listing.task }}</td>
+                <td class="title">{{ listing.title }}</td>
+                <td class="price"><span class="button-style">${{ listing.price }}</span></td>
+                <td class="date">{{ listing.date }}</td>
+                <td class="status"><span class="button-style">{{ listing.status }}</span></td>
+                <td class="action-cell"><button class="update-button">Update</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if user.group == 'regular' %}
+        <button type="button" class="button button-black button-smaller">Update Listing</button>
+    {% endif %}
+</div>

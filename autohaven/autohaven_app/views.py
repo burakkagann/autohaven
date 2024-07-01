@@ -40,4 +40,4 @@ def profile(request):
         'offers': dummy_offers,
     }
 
-    return render(request, 'profile.html', context)
+    return render(request, 'profile/index.html', context)

@@ -1,0 +1,23 @@
+<h1>My Profile</h1>
+    <form>
+        {% if user.group == 'seller' %}
+            <label for="company_name">Company Name</label>
+            <input type="text" id="company_name" name="company_name" maxlength="50" value="{{ user.company_name }}">
+        {% endif %}
+        
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" maxlength="100" value="{{ user.name }} {{ user.surname }}">
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" maxlength="50" value="{{ user.username }}">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" maxlength="50" value="{{ user.email }}">
+
+        {% if user.group == 'regular' %}
+        <button type="button" class="button button-black">Update My Profile</button>
+        <button type="button" class="button button-blue">Change Password</button>       
+        {% else %}
+        <button type="button" class="button button-black button-smaller">Update</button>
+        {% endif %}
+    </form>
