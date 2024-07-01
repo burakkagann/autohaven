@@ -12,7 +12,7 @@ def register(request):
     return render(request, 'navbar/header.html')
 
 def login(request):
-    return render(request, 'navbar/header.html')
+    return render(request, 'login.html')
 
 def landing_page(request):
     return render(request, 'landing_page.html')
