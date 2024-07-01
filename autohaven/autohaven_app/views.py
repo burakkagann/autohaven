@@ -29,7 +29,7 @@ def signup(request):
             return redirect('home')
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form })from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
+    return render(request, 'signup.html', {'form': form })
 
 def profile(request):
     # Pass the dummy user to the template for testing
