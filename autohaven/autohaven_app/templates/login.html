@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: white;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            max-height: 50px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 4px;
+        }
+        .nav-links .register {
+            background-color: black;
+            color: white;
+        }
+        .nav-links .login {
+            background-color: #888;
+            color: white;
+        }
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: 100px auto;
+        }
+        .login-container h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            color: #000;
+        }
+        .login-container p {
+            margin-bottom: 20px;
+            color: #666;
+        }
+        .login-container input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .login-container .login-button {
+            background-color: #888;
+        }
+        .login-container .login-button:hover {
+            background-color: #777;
+        }
+        .footer {
+            background-color: #fff;
+            padding: 20px 40px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: auto;
+        }
+        .footer div {
+            margin-right: 40px;
+        }
+        .footer p {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .footer a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .footer .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="logo.png" alt="Logo" class="logo">
+        <nav class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Catalog</a>
+            <a href="#">About</a>
+            <a href="#" class="register">Register</a>
+            <a href="#" class="login">Log In</a>
+        </nav>
+    </header>
+    <div class="login-container">
+        <h1>Log In</h1>
+        <p>Enter your details to log into your account</p>
+        <form action="/login" method="post">
+            <input type="email" id="email" name="email" placeholder="email" required>
+            <input type="password" id="password" name="password" placeholder="password" required>
+            <button type="submit" class="login-button">Log In</button>
+        </form>
+    </div>
+    <footer class="footer">
+        <div>
+            <p>AutoHaven</p>
+            <p>Ernst-Reuter-Platz 10</p>
+            <p>Berlin - 10587</p>
+        </div>
+        <div>
+            <a href="#" class="bold">About us</a>
+            <a href="#">Careers</a>
+            <a href="#">Compliance</a>
+            <a href="#">Page</a>
+        </div>
+        <div>
+            <a href="#" class="bold">All Cars</a>
+            <a href="#">New Cars</a>
+            <a href="#">Used Cars</a>
+        </div>
+    </footer>
+</body>
+</html>
