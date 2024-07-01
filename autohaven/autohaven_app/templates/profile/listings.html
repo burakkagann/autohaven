@@ -1,37 +1,43 @@
 <div class="listings">
     <h2>My Listings</h2>
-    
-    {% if user.group == 'seller' %}
-        <button type="button" class="button button-black button-smaller">Update Listing</button>
-    {% endif %}
-    
     <table>
         <thead>
             <tr>
-                <th>Task</th>
-                <th>Title</th>
+                <th>Listing ID</th>
+                <th>Model</th>
                 <th>Price</th>
                 <th>Date</th>
                 <th>Status</th>
-                <th></th>
             </tr>
         </thead>
         <tbody>
             <!-- Django Template Loop for Listings -->
-            {% for listing in listings %}
+            {% for listing in listings_page_obj %}
             <tr>
-                <td class="task">{{ listing.task }}</td>
-                <td class="title">{{ listing.title }}</td>
+                <td class="id"><span class="button-style">{{ listing.id }}</span></td>
+                <td class="model">{{ listing.model }}</td>
                 <td class="price"><span class="button-style">${{ listing.price }}</span></td>
-                <td class="date">{{ listing.date }}</td>
-                <td class="status"><span class="button-style">{{ listing.status }}</span></td>
+                <td class="date"><span class="button-style">{{ listing.created_at }}</span></td>
+                <td class="status"><span class="button-style">{{ listing.sold|yesno:"Sold,Available,Missing Information" }}</span></td>
                 <td class="action-cell"><button class="update-button">Update</button></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    
-    {% if user.group == 'regular' %}
-        <button type="button" class="button button-black button-smaller">Update Listing</button>
-    {% endif %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if listings_page_obj.has_previous %}
+                <a href="?listings_page=1">&laquo; first</a>
+                <a href="?listings_page={{ listings_page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+            <span class="current">
+                Page {{ listings_page_obj.number }} of {{ listings_page_obj.paginator.num_pages }}.
+            </span>
+            {% if listings_page_obj.has_next %}
+                <a href="?listings_page={{ listings_page_obj.next_page_number }}">next</a>
+                <a href="?listings_page={{ listings_page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>    
+     <a type="button" class="button button-black button-smaller" href="{% url 'new-listing' %}">Upload Listing</a>
 </div>
