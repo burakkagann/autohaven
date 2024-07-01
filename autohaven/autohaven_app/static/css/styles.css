@@ -1,0 +1,173 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 50px;
+    background-color: #fff;
+    color: #333;
+}
+
+h1, h2 {
+    font-size: 2em;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+form {
+    text-align: left;
+    margin-bottom: 40px;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+    font-size: 0.8em;
+}
+
+input {
+    width: 100%;
+    max-width: 300px;
+    padding: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.8em;
+}
+
+.button {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.8em;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button-black {
+    background-color: #000;
+    color: #fff;
+}
+
+.button-blue {
+    background-color: #34ADF1;
+    color: #fff;
+}
+
+.button-smaller {
+    width: auto;
+    padding: 8px 16px;
+}
+
+.listings, .order-history, .offers-received {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.listings h2, .order-history h2, .offers-received h2 {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border-bottom: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    font-size: 0.8em;
+    white-space: nowrap;
+}
+
+th {
+    background-color: #f4f4f9;
+    font-weight: bold;
+}
+
+td.task, td.date {
+    color: gray;
+}
+
+td.price, td.status {
+    text-align: center;
+}
+
+.button-style {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0;
+    border: 1px solid #000;
+    border-radius: 4px;
+    background-color: #fff;
+    font-size: 0.8em;
+}
+
+.status-button {
+    display: inline-block;
+    padding: 2px 8px;
+    margin: 0;
+    border-radius: 4px;
+    font-size: 0.8em;
+    color: #fff;
+}
+
+.status-accepted {
+    background-color: green;
+}
+
+.status-declined {
+    background-color: red;
+}
+
+td.title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.update-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #808080;
+    color: #fff;
+    font-size: 0.8em;
+    cursor: pointer;
+    text-align: center;
+    margin: 0;
+}
+
+.action-cell {
+    width: 200px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.action-buttons .button {
+    width: auto;
+    padding: 5px 10px;
+    font-size: 0.8em;
+}
+
+.button-accept {
+    background-color: green;
+    color: white;
+}
+
+.button-decline {
+    background-color: red;
+    color: white;
+}
