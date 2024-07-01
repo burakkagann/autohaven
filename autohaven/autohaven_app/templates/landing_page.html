@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+<link rel = "stylesheet" href="{% static '/landing_page.css' %}">
+
+<div class="landing_page_navbar">
+    <l>Navbar here</l>
+</div>
+
+<div classname="landing_page_body">
+
+    <div class="landing_page_grid_item landing_page_title">
+        <l class="landing_page_title_text">AutoHaven</l>
+        <l class="landing_page_subtitle_text">Cars that will take you to heaven!</l>
+    </div>
+
+    <div class="landing_page_grid_item image_text_div">
+
+        <div class="landing_page_grid_div">
+            <l class="landing_page_h2">New Cars</l>
+            <l class="landing_page_subtitle_text">View the selection of brand new cars,</l>
+            <l class="landing_page_subtitle_text">available only on Autohaven!</l></l> 
+            <button class="landing_page_button">Go to New Cars</button>
+        </div>
+
+        <div class="landing_page_image_div">
+            <img src="{% static 'images/Landing_Page_1.png'%}" class="landing_page_image">
+        </div>
+    </div>
+
+    <div class="landing_page_grid_item image_text_div">
+
+        <div class="landing_page_image_div">
+            <img src="{% static 'images/Landing_Page_2.png'%}" class="landing_page_image">
+        </div>
+
+        <div class="landing_page_grid_div">
+            <l class="landing_page_h2">Second Hand Cars</l>
+            <l class="landing_page_subtitle_text">View the best deals on second hand cars,</l>
+            <l class="landing_page_subtitle_text">and give them a new spark, only on AutoHaven!</l></l> 
+            <button class="landing_page_button">Go to Second Hand Cars</button>
+        </div>
+
+    </div>
+    <div class="landing_page_grid_item landing_page_seller_info">
+        <l class="landing_page_h2">Become a Seller</l>
+
+        <div class="landing_page_text_box">
+            <img src="{% static 'images/globe_image.png'%}" class="landing_page_icon">
+            <l class="landing_page_h3"> Increased Visibility</l>
+            <l class="landing_page_subtitle_text multi_line">As a seller on our platform, your inventory of cars will be showcased to a wide audience of potential buyers. Auto Haven Berlin attracts car enthusiasts, first-time buyers, and collectors alike.</l>
+        </div>
+
+        <div class="landing_page_text_box">
+            <img src="{% static 'images/lock_image.png'%}" class="landing_page_icon">
+            <l class="landing_page_h3"> Verified Sellers</l>
+            <l class="landing_page_subtitle_text multi_line">Buyers trust Auto Haven Berlin because we verify the identity of our sellers. Being part of our network adds credibility to your dealership.</l>
+        </div>
+        
+    </div>
+
+    <div class="landing_page_grid_item spacing"></div>
+</div>
+
+<div class="landing_page_footer">
+
+    <div class="footer_left">
+
+        <l class="landing_page_h3">AutoHaven</l>
+        <l class="landing_page_h3">Ernst-Reuter Platz 10</l>
+        <l class="landing_page_h3">Berlin - 10587</l>
+
+        <img src="{% static 'images/link_image.png'%}" class="footer_link_image">
+    
+
+    </div>
+
+    <div class="footer_right">
+
+        <div class="footer_links_left">
+            <l class="bolder_text">About Us</l>
+            <l class="light_text">Careers</l>
+            <l class="light_text">Compliance</l>
+            <l class="light_text">Page</l>
+        </div>
+
+
+        <div class="footer_links_right">
+            <l class="bolder_text">All Cars</l>
+            <l class="light_text">New Cars</l>
+            <l class="light_text">Second Hand Cars</l>
+        </div>
+
+    </div>
+
+</div>
+
+
+</html>
