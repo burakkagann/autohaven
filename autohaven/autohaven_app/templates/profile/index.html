@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/css/styles.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="content">
+    {% include 'profile/profile.html'%}
+
+    {% include 'profile/listings.html'%}
+    
+    {% include 'profile/orders.html'%}
+    </section>
+</body>
+</html>
