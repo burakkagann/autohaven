@@ -1,6 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Auto Haven{% endblock %}
+
+{% block content %}
     <title>My Profile</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
@@ -134,3 +136,4 @@
     {% endif %}
 </body>
 </html>
+{% endblock %}
