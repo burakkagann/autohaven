@@ -17,7 +17,7 @@
                 <td class="id"><span class="button-style">{{ listing.id }}</span></td>
                 <td class="model">{{ listing.model }}</td>
                 <td class="price"><span class="button-style">${{ listing.price }}</span></td>
-                <td class="date"><span class="button-style">{{ listing.created_at }}</span></td>
+                <td class="date"><span class="button-style">{{ listing.created_at|date:"M d Y" }}</span></td>
                 <td class="status"><span class="button-style">{{ listing.sold|yesno:"Sold,Available,Missing Information" }}</span></td>
                 <td class="action-cell"><button class="update-button">Update</button></td>
             </tr>
