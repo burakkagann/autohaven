@@ -6,10 +6,10 @@ def root(requst):
     return redirect('home/')
 
 def about(request):
-    return render(request, 'navbar/header.html')
+    return render(request, 'base.html')
 
 def register(request):
-    return render(request, 'navbar/header.html')
+    return render(request, 'base.html')
 
 def login(request):
     return render(request, 'login.html')
