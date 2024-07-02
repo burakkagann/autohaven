@@ -6,10 +6,10 @@ def root(requst):
     return redirect('home/')
 
 def about(request):
-    return render(request, 'navbar/header.html')
+    return render(request, 'base.html')
 
 def register(request):
-    return render(request, 'navbar/header.html')
+    return render(request, 'base.html')
 
 def login(request):
     return render(request, 'login.html')
@@ -19,6 +19,9 @@ def landing_page(request):
 
 def catalog_page(request):
     return render(request, 'catalog.html')
+
+def logout(request):
+    return render(request, 'landing_page.html')
 
 
 def signup(request):
