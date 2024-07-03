@@ -1,23 +1,28 @@
 <h1>My Profile</h1>
-    <form>
-        {% if user.group == 'seller' %}
-            <label for="company_name">Company Name</label>
-            <input type="text" id="company_name" name="company_name" maxlength="50" value="{{ user.company_name }}">
-        {% endif %}
-        
-        <label for="name">Name</label>
-        <input type="text" id="name" name="name" maxlength="100" value="{{ user.name }} {{ user.surname }}">
+<form method="post">
+    {% csrf_token %}
+    
+    {% if is_seller %}
+        <label for="id_company_name">Company Name</label>
+        <input type="text" id="id_company_name" name="company_name" value="">
+    {% endif %}
 
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" maxlength="50" value="{{ user.username }}">
+    <label for="id_first_name">Name</label>
+    <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }} {{ user.last_name }}">
 
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" maxlength="50" value="{{ user.email }}">
+    <label for="id_last_name" style="display: none;">Surname</label>
+    <input type="hidden" id="id_last_name" name="last_name" value="{{ user.last_name }}">
 
-        {% if user.group == 'regular' %}
+    <label for="id_username">Username</label>
+    <input type="text" id="id_username" name="username" value="{{ user.username }}">
+    
+    <label for="id_email">Email</label>
+    <input type="email" id="id_email" name="email" value="{{ user.email }}" readonly style="color: gray;">
+    
+    {% if is_regular_user %}
         <button type="button" class="button button-black">Update My Profile</button>
-        <button type="button" class="button button-blue">Change Password</button>       
-        {% else %}
+        <button type="button" class="button button-blue">Change Password</button>
+    {% elif is_seller or is_super_user %}
         <button type="button" class="button button-black button-smaller">Update</button>
-        {% endif %}
-    </form>
+    {% endif %}
+</form>

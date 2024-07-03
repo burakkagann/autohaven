@@ -7,7 +7,8 @@ from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer
-
+from .forms import UserUpdateForm 
+from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
 
@@ -53,8 +54,25 @@ def register(request):
 
     return render(request, 'signup.html', {'form': form, 'error_messages': error_messages})
 
+
 @login_required()
 def profile(request):
+    #User
+    user = request.user    #This will be changed with the code below when login system is activated. For now it gives AnonymousUser. 
+    #user = User.objects.get(username='regularuser') # Change username for testing other users type like : regularuser, seller, superuser!!
+
+    is_regular_user = user.groups.filter(name='RegularUsers').exists()
+    is_seller = user.groups.filter(name='Sellers').exists()
+    is_super_user = user.groups.filter(name='SuperUsers').exists()
+
+    if request.method == 'POST':
+        form = UserUpdateForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')  # Redirect to the same page after saving. Change for other redirects
+    else:
+        form = UserUpdateForm(instance=user)
+
     # Listings
     listings = Listing.objects.all()
     listingsPaginator = Paginator(listings, 5)  # Show 10 listings per page.
@@ -69,13 +87,14 @@ def profile(request):
     offers_page_number = request.GET.get("orders_page")
     offers_page_obj = offersPaginator.get_page(offers_page_number)
 
-
-    # Pass the dummy user to the template for testing
     context = {
+        'form': form,
+        'user': user,
+        'is_regular_user': is_regular_user,
+        'is_seller': is_seller,
+        'is_super_user': is_super_user,
         'listings_page_obj': listings_page_obj,
         'offers_page_obj': offers_page_obj,
-        'listings': dummy_listings,
-        'orders': dummy_orders,
         'offers': dummy_offers,
     }
 
