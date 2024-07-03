@@ -36,10 +36,22 @@ def register(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('home')  # Replace 'home' with your actual redirect URL
+        # TODO uncomment when the modal popup is ready
+            # return render(request, 'signup.html', { 'modal_open': true}) 
+            
+        else:
+            print(form.errors)
     else:
         form = SignUpForm()
-    return render(request, 'signup.html', {'form': form })
+        
+    # If the form is invalid, render the form with errors
+    error_messages = []
+    for field, errors in form.errors.items():
+        for error in errors:
+            error_messages.append(f"{error}")
+
+    return render(request, 'signup.html', {'form': form, 'error_messages': error_messages})
 
 @login_required()
 def profile(request):
