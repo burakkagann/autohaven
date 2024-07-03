@@ -23,7 +23,11 @@
                 <li><a href="{% url 'about' %}">About</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'profile' %}" class="profile-btn">Profile</a></li>
-                    <li><a href="{% url 'logout' %}" class="logout-btn">Log Out</a></li>
+                    <li>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="logout-btn">Log Out</a>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                            {% csrf_token %}
+                        </form>
                 {% else %}
                     <li><a href="{% url 'register' %}" class="register-btn">Register</a></li>
                     <li><a href="{% url 'login' %}" class="login-btn">Log In</a></li>
