@@ -17,7 +17,6 @@ def root(requst):
 def about(request):
     return render(request, 'base.html')
 
-
 def login(request):
     return render(request, 'login.html')
 
@@ -26,9 +25,6 @@ def landing_page(request):
 
 def catalog_page(request):
     return render(request, 'catalog.html')
-
-def logout(request):
-    return render(request, 'landing_page.html')
 
 
 def register(request):
