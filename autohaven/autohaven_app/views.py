@@ -11,8 +11,6 @@ def root(requst):
 def about(request):
     return render(request, 'base.html')
 
-def register(request):
-    return render(request, 'base.html')
 
 def login(request):
     return render(request, 'login.html')
@@ -27,7 +25,7 @@ def logout(request):
     return render(request, 'landing_page.html')
 
 
-def signup(request):
+def register(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():

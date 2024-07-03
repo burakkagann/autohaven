@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Auto Haven{% endblock %}
+
+{% block content %}
+    <title>My Profile</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+
+<body>
+    <h1>My Profile</h1>
+    <form>
+        {% if user.group == 'seller' %}
+            <label for="company_name">Company Name</label>
+            <input type="text" id="company_name" name="company_name" maxlength="50" value="{{ user.company_name }}">
+        {% endif %}
+        
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" maxlength="100" value="{{ user.name }} {{ user.surname }}">
+
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" maxlength="50" value="{{ user.username }}">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" maxlength="50" value="{{ user.email }}">
+
+        {% if user.group == 'regular' %}
+        <button type="button" class="button button-black">Update My Profile</button>
+        <button type="button" class="button button-blue">Change Password</button>       
+        {% else %}
+        <button type="button" class="button button-black button-smaller">Update</button>
+        {% endif %}
+    
+    </form>
+
+    <div class="listings">
+        <h2>My Listings</h2>
+        
+        {% if user.group == 'seller' %}
+            <button type="button" class="button button-black button-smaller">Update Listing</button>
+        {% endif %}
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Django Template Loop for Listings -->
+                {% for listing in listings %}
+                <tr>
+                    <td class="task">{{ listing.task }}</td>
+                    <td class="title">{{ listing.title }}</td>
+                    <td class="price"><span class="button-style">${{ listing.price }}</span></td>
+                    <td class="date">{{ listing.date }}</td>
+                    <td class="status"><span class="button-style">{{ listing.status }}</span></td>
+                    <td class="action-cell"><button class="update-button">Update</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        {% if user.group == 'regular' %}
+            <button type="button" class="button button-black button-smaller">Update Listing</button>
+        {% endif %}
+    </div>
+
+    <!-- Only show to regular users -->
+    {% if user.group == 'regular' %}
+    <div class="order-history">
+        <h2>Order History</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Title</th>
+                    <th>Listing</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Django Template Loop for Orders -->
+                {% for order in orders %}
+                <tr>
+                    <td class="task">{{ order.task }}</td>
+                    <td class="title">{{ order.title }}</td>
+                    <td class="listing">{{ order.listing }}</td>
+                    <td class="price"><span class="button-style">${{ order.price }}</span></td>
+                    <td class="date">{{ order.date }}</td>
+                    <td class="status"><span class="status-button status-{{ order.status|lower }}">{{ order.status }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="offers-received">
+        <h2>Offers Received on Listings</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Title</th>
+                    <th>Listing</th>
+                    <th>Price</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Django Template Loop for Offers -->
+                {% for offer in offers %}
+                <tr>
+                    <td class="task">{{ offer.task }}</td>
+                    <td class="title">{{ offer.title }}</td>
+                    <td class="listing">{{ offer.listing }}</td>
+                    <td class="price"><span class="button-style">${{ offer.price }}</span></td>
+                    <td class="date">{{ offer.date }}</td>
+                    <td class="action-buttons">
+                        <button class="button button-accept">Accept</button>
+                        <button class="button button-decline">Decline</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

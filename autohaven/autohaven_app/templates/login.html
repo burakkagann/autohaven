@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Page - Auto Haven{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,35 +17,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .logo {
-            max-height: 50px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 4px;
-        }
-        .nav-links .register {
-            background-color: black;
-            color: white;
-        }
-        .nav-links .login {
-            background-color: #888;
-            color: white;
         }
         .login-container {
             background-color: white;
@@ -112,16 +88,7 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <img src="logo.png" alt="Logo" class="logo">
-        <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Catalog</a>
-            <a href="#">About</a>
-            <a href="#" class="register">Register</a>
-            <a href="#" class="login">Log In</a>
-        </nav>
-    </header>
+
     <div class="login-container">
         <h1>Log In</h1>
         <p>Enter your details to log into your account</p>
@@ -151,3 +118,4 @@
     </footer>
 </body>
 </html>
+{% endblock %}
