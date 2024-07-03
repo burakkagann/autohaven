@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import SignUpForm
+from .forms import SignUpForm, NewListingForm
 from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer
@@ -67,4 +67,15 @@ def profile(request):
 
 
 def new_listing(request):
-    return render(request, 'profile/create_edit_listing.html')
+    if request.method == 'POST':
+        form = NewListingForm(request.POST)
+        form.user = request.user
+        if(form.is_valid()):
+            newListing = form.save()
+            print("newListing", newListing)
+            return redirect('profile')
+        else:
+            print(form.errors)
+    else:
+        form = NewListingForm()
+    return render(request, 'profile/create_edit_listing.html', { 'form': form })

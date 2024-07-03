@@ -1,0 +1,41 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2em;
+    width: 100%;
+    button {
+      margin-top: 1em;
+      margin-bottom: 0;
+      padding: 1em;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+  }
+
+  #images-container {
+    justify-content: center;
+    flex-grow: 2;
+  }
+
+  .content {
+    flex-basis: 90%;
+    > * {
+        width: 100%;
+    }
+}
+
+textarea {
+  resize: none;
+}
+
+form input,textarea {
+  max-width: initial;
+}
