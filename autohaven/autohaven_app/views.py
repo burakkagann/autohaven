@@ -1,13 +1,12 @@
 import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .forms import SignUpForm, NewListingForm
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer
-from .forms import UserUpdateForm 
+from .forms import SignUpForm, NewListingForm, UserUpdateForm, ListingImagesFormSet
 from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -104,9 +103,6 @@ def login_view(request):
     if request.method== 'POST':
         username = request.POST['username']
         password = request.POST['password']
-
-
-
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request)
@@ -138,13 +134,20 @@ def logout_view(request):
 def new_listing(request):
     if request.method == 'POST':
         form = NewListingForm(request.POST)
-        form.user = request.user
         if(form.is_valid()):
-            newListing = form.save()
-            print("newListing", newListing)
-            return redirect('profile')
+            newListing = form.save(commit=False)
+            newListing.user = request.user
+            newListing.save()
+            imagesFormSet = ListingImagesFormSet(request.POST, request.FILES, instance=newListing)
+            if(imagesFormSet.is_valid()):
+                result = imagesFormSet.save()
+                return redirect('profile')
+            else:
+                print('image form errors', form.errors)    
         else:
-            print(form.errors)
+            imagesFormSet = ListingImagesFormSet()
+            print('form errors', form.errors)
     else:
         form = NewListingForm()
-    return render(request, 'profile/create_edit_listing.html', { 'form': form })
+        imagesFormSet = ListingImagesFormSet()
+    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'imagesFormSet': imagesFormSet })

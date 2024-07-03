@@ -18,11 +18,37 @@
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
+    img {
+      max-width: 6.66vw;
+    }
   }
+
+  #images-container .row:first-of-type {
+    justify-content: center;
+
+    .column:first-of-type {
+      img {
+        max-width: 20vw;
+      }
+    }
+  }
+
+  #images-container .row {
+    justify-content: center;
+  }
+
 
   #images-container {
     justify-content: center;
     flex-grow: 2;
+    span {
+      text-align: end;
+    }
+
+    .column {
+      flex-basis: auto;
+      flex: 0;
+    }
   }
 
   .content {

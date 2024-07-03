@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from datetime import datetime
-from .models import Listing
+from django.forms import inlineformset_factory
+from .models import Listing, ListingImage
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -12,10 +13,17 @@ class SignUpForm(UserCreationForm):
         fields = ('first_name','last_name','username', 'email')
 
 
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
 class NewListingForm(forms.ModelForm):
     class Meta:
         model = Listing
-        fields = ["brand", "model", "year", "body_type", "engine_type", "mileage", "price", "user"]
+        fields = ["brand", "model", "year", "body_type", "engine_type", "mileage", "price"]
+
+ListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:

@@ -10,7 +10,7 @@
 {% block content %}
     <section class="content">
     {% if listing is None%}
-    <form action="{% url 'new-listing' %}" method="post">
+    <form action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="column">
@@ -85,45 +85,24 @@
                 </div>
             </div>
             <div class="column" id="images-container">
+                {{ imagesFormSet.management_form }}
+                {% with firstImageForm=imagesFormSet.forms.0 %}
                 <div class="row">
                     <div class="column">
-                        <img>
-                    </div>
-                    <div class="column">
-                        X
+                        <span>X</span>
+                        <img src="https://placehold.co/1920x1080">
+                        {{ firstImageForm.imagepath  }}
                     </div>
                 </div>
+                {% endwith %}
                 <div class="row">
+                    {% for imageForm in imagesFormSet|slice:"1:" %}
                     <div class="column">
-                        <div class="row">
-                            <div class="column">
-                                <img>
-                            </div>
-                            <div class="column">
-                                X
-                            </div>
-                        </div>
+                        <span>X</span>
+                        <img src="https://placehold.co/1920x1080">
+                        {{ imageForm.imagepath }}
                     </div>
-                    <div class="column">
-                        <div class="row">
-                            <div class="column">
-                                <img>
-                            </div>
-                            <div class="column">
-                                X
-                            </div>
-                        </div>
-                    </div>
-                    <div class="column">
-                        <div class="row">
-                            <div class="column">
-                                <img>
-                            </div>
-                            <div class="column">
-                                X
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
