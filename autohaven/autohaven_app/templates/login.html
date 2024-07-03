@@ -60,6 +60,10 @@
         .login-container .login-button:hover {
             background-color: #777;
         }
+        .error-message {
+        color: red;
+        margin-bottom: 15px;
+    }
         .footer {
             background-color: #fff;
             padding: 20px 40px;
@@ -92,8 +96,12 @@
     <div class="login-container">
         <h1>Log In</h1>
         <p>Enter your details to log into your account</p>
-        <form action="/login" method="post">
-            <input type="email" id="email" name="email" placeholder="email" required>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" id="username" name="username" placeholder="username" required>
             <input type="password" id="password" name="password" placeholder="password" required>
             <button type="submit" class="login-button">Log In</button>
         </form>
