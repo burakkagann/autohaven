@@ -1,32 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
+{% block title %}Catalog - Auto Haven{% endblock %}
+
+{% block content %}
 {% load static %}
-<link rel = "stylesheet" href="{% static '/catalog.css' %}">
-
-<div class="catalog_navbar">
-    <l>Navbar here</l>
-</div>
+<link rel="stylesheet" href="{% static 'catalog.css' %}">
 
 <div class="page_body">
     <div class="catalog_body">
 
         <input type="text" class="catalog_search_input" placeholder="Search for cars..">
-    
-        <l class="catalog_title_text">New and used vehicles for sale</l>
-    
+
+        <div class="catalog_title_text">New and used vehicles for sale</div>
+
         <div class="catalog_main">
-    
+
             <div class="left_column">
                 <div class="catalog_filter">
-                
+
                     <div class="catalog_filter_header">
-                        <l class="catalog_h3">Search</l>
+                        <div class="catalog_h3">Search</div>
                         <button class="filter_button">Filter</button>
                     </div>
-        
+
                     <div class="catalog_filter_controls">
-             
+
                         <select class="catalog_filter_select">
                             <option value="brand">Brand</option>
                             <option value="volvo">Volvo</option>
@@ -34,21 +32,21 @@
                             <option value="mercedes">Mercedes</option>
                             <option value="audi">Audi</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="price_range">Price Range</option>
                             <option value="5000b">5000$ and below</option>
-                            <option value="5000-10000">5000$ - 10000$ </option>
+                            <option value="5000-10000">5000$ - 10000$</option>
                             <option value="10000-20000">10000$ - 20000$</option>
                             <option value="20000-50000">20000$ - 50000$</option>
                             <option value="50000a">50000$ and above</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="new">New</option>
                             <option value="used">Second Hand</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="year">Year</option>
                             <option value="2021">2021</option>
@@ -95,13 +93,13 @@
                             <option value="1980">1980</option>
                             <option value="1979">1979</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="transmission">Transmission</option>
                             <option value="automatic">Automatic</option>
                             <option value="manual">Manual</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="fuel_type">Fuel Type</option>
                             <option value="petrol">Petrol</option>
@@ -109,7 +107,7 @@
                             <option value="electric">Electric</option>
                             <option value="hybrid">Hybrid</option>
                         </select>
-        
+
                         <select class="catalog_filter_select">
                             <option value="body_type">Body Type</option>
                             <option value="sedan">Sedan</option>
@@ -122,112 +120,108 @@
                             <option value="truck">Truck</option>
                         </select>
                     </div>
-        
-        
+
                 </div>
             </div>
-    
+
             <div class="right_column">
                 <div class="catalog_results">
-                    
+
                     <ul class="catalog_list">
-    
+
                         <li class="catalog_list_item list_item_new">
-    
-                            <img src="{% static 'images/list_item_1.png'%}" class="catalog_image">
+
+                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
                             <div class="list_item_description">
-                                <l class="list_item_description_text">BMW M5</l>
-                                <l class="list_item_description_text">2020</l>
-                                <l class="list_item_description_text">New</l>
-                                <l class="list_item_description_text">20,000$</l>
-                                <button class="list_item_button">View Offer</button>                            
+                                <div class="list_item_description_text">BMW M5</div>
+                                <div class="list_item_description_text">2020</div>
+                                <div class="list_item_description_text">New</div>
+                                <div class="list_item_description_text">20,000$</div>
+                                <button class="list_item_button">View Offer</button>
                             </div>
-    
+
                         </li>
-    
+
                         <li class="catalog_list_item list_item_used">
-    
-                            <img src="{% static 'images/list_item_1.png'%}" class="catalog_image">
+
+                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
                             <div class="list_item_description">
-                                <l class="list_item_description_text">BMW M5</l>
-                                <l class="list_item_description_text">2020</l>
-                                <l class="list_item_description_text">New</l>
-                                <l class="list_item_description_text">20,000$</l>
-                                <button class="list_item_button">View Offer</button>                            
+                                <div class="list_item_description_text">BMW M5</div>
+                                <div class="list_item_description_text">2020</div>
+                                <div class="list_item_description_text">New</div>
+                                <div class="list_item_description_text">20,000$</div>
+                                <button class="list_item_button">View Offer</button>
                             </div>
-    
+
                         </li>
-    
+
                         <li class="catalog_list_item list_item_used">
-    
-                            <img src="{% static 'images/list_item_1.png'%}" class="catalog_image">
+
+                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
                             <div class="list_item_description">
-                                <l class="list_item_description_text">BMW M5</l>
-                                <l class="list_item_description_text">2020</l>
-                                <l class="list_item_description_text">New</l>
-                                <l class="list_item_description_text">20,000$</l>
-                                <button class="list_item_button">View Offer</button>                            
+                                <div class="list_item_description_text">BMW M5</div>
+                                <div class="list_item_description_text">2020</div>
+                                <div class="list_item_description_text">New</div>
+                                <div class="list_item_description_text">20,000$</div>
+                                <button class="list_item_button">View Offer</button>
                             </div>
-    
+
                         </li>
-    
+
                         <li class="catalog_list_item list_item_new">
-    
-                            <img src="{% static 'images/list_item_1.png'%}" class="catalog_image">
+
+                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
                             <div class="list_item_description">
-                                <l class="list_item_description_text">BMW M5</l>
-                                <l class="list_item_description_text">2020</l>
-                                <l class="list_item_description_text">New</l>
-                                <l class="list_item_description_text">20,000$</l>
-                                <button class="list_item_button">View Offer</button>                            
+                                <div class="list_item_description_text">BMW M5</div>
+                                <div class="list_item_description_text">2020</div>
+                                <div class="list_item_description_text">New</div>
+                                <div class="list_item_description_text">20,000$</div>
+                                <button class="list_item_button">View Offer</button>
                             </div>
-    
+
                         </li>
-    
-                        
+
                     </ul>
-    
+
                 </div>
-    
+
             </div>
-    
+
         </div>
-    
+
         <div class="catalog_footer">
-    
+
             <div class="footer_left">
-        
-                <l class="catalog_h3">AutoHaven</l>
-                <l class="catalog_h3">Ernst-Reuter Platz 10</l>
-                <l class="catalog_h3">Berlin - 10587</l>
-        
-                <img src="{% static 'images/link_image.png'%}" class="footer_link_image">
-            
-        
+
+                <div class="catalog_h3">AutoHaven</div>
+                <div class="catalog_h3">Ernst-Reuter Platz 10</div>
+                <div class="catalog_h3">Berlin - 10587</div>
+
+                <img src="{% static 'images/link_image.png' %}" class="footer_link_image">
+
+
             </div>
-        
+
             <div class="footer_right">
-        
+
                 <div class="footer_links_left">
-                    <l class="bolder_text">About Us</l>
-                    <l class="light_text">Careers</l>
-                    <l class="light_text">Compliance</l>
-                    <l class="light_text">Page</l>
+                    <div class="bolder_text">About Us</div>
+                    <div class="light_text">Careers</div>
+                    <div class="light_text">Compliance</div>
+                    <div class="light_text">Page</div>
                 </div>
-        
-        
+
                 <div class="footer_links_right">
-                    <l class="bolder_text">All Cars</l>
-                    <l class="light_text">New Cars</l>
-                    <l class="light_text">Second Hand Cars</l>
+                    <div class="bolder_text">All Cars</div>
+                    <div class="light_text">New Cars</div>
+                    <div class="light_text">Second Hand Cars</div>
                 </div>
-        
+
             </div>
-        
+
         </div>
-    
-</div>
+
+    </div>
 
 </div>
-
-</html>
+{% endblock %}
