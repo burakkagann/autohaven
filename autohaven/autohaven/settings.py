@@ -136,24 +136,25 @@ MEDIA_ROOT = Path(__file__).resolve().parent.parent / 'data' / 'uploaded_images'
 
 APPEND_SLASH = True
 
+# Uncomment to enable extensive debug logging
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
-            'propagate': True,
-        },
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
+#             'propagate': True,
+#         },
+#     },
+# }
 
 # Authentication backends (default is fine)
 AUTHENTICATION_BACKENDS = [

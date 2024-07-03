@@ -1,108 +1,106 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends 'base.html' %}
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #fff;
-        }
+{% block title %}Sign Up - Auto Haven{% endblock %}
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
+{% block content %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        .container h2 {
-            margin-bottom: 20px;
-            font-size: 42px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+    }
 
-        .container p {
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #666;
-        }
+    .container {
+        width: 100%;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        margin: 80px auto; /* Add margin to prevent overlap with navbar */
+    }
 
-        /* Form styling */
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
+    .container h2 {
+        margin-bottom: 20px;
+        font-size: 32px;
+        color: #333;
+    }
 
-        form label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            text-align: left;
-        }
+    .container p {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #666;
+    }
 
-        form input[type="text"],
-        form input[type="email"],
-        form input[type="password"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 100%;
-        }
+    /* Form styling */
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-        form button {
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
+    form label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+        color: #333;
+    }
 
-        form button:hover {
-            background-color: #333;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Your details</h2>
-        <p>Fill in your information to create an account</p>
-        <form method="post">
-            {% csrf_token %}
-            <label for="id_first_name">First name</label>
-            <input type="text" name="first_name" id="id_first_name" required>
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 16px;
+        width: 100%;
+    }
 
-            <label for="id_last_name">Last name</label>
-            <input type="text" name="last_name" id="id_last_name" required>
+    form button {
+        padding: 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
 
-            <label for="id_username">Username</label>
-            <input type="text" name="username" id="id_username" required>
+    form button:hover {
+        background-color: #333;
+    }
+</style>
 
-            <label for="id_email">Email address</label>
-            <input type="email" name="email" id="id_email" required>
+<div class="container">
+    <h2>Your details</h2>
+    <p>Fill in your information to create an account</p>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_first_name">First name</label>
+        <input type="text" name="first_name" id="id_first_name" required>
 
-            <label for="id_password1">Password</label>
-            <input type="password" name="password1" id="id_password1" required>
+        <label for="id_last_name">Last name</label>
+        <input type="text" name="last_name" id="id_last_name" required>
 
-            <label for="id_password2">Confirm Password</label>
-            <input type="password" name="password2" id="id_password2" required>
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required>
 
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</body>
-</html>
+        <label for="id_email">Email address</label>
+        <input type="email" name="email" id="id_email" required>
+
+        <label for="id_password1">Password</label>
+        <input type="password" name="password1" id="id_password1" required>
+
+        <label for="id_password2">Confirm Password</label>
+        <input type="password" name="password2" id="id_password2" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

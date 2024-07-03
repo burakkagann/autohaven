@@ -1,15 +1,22 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 50px;
-    background-color: #fff;
-    color: #333;
+main {
+    font-family: "Inter", sans-serif;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    font-size: larger;
+}
+
+.content {
+    flex-basis: 50%;
+    > * {
+        width: 100%;
+    }
 }
 
 h1, h2 {
-    font-size: 2em;
+    font-size: 3em;
     font-weight: bold;
     text-align: left;
-    margin-bottom: 20px;
 }
 
 form {
@@ -40,7 +47,7 @@ input {
     padding: 10px 20px;
     margin: 10px 0;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.8em;
     font-size: 0.8em;
     cursor: pointer;
     text-align: center;
@@ -58,8 +65,8 @@ input {
 }
 
 .button-smaller {
-    width: auto;
-    padding: 8px 16px;
+    width: max-content;
+    padding: 1em 1.2em;
 }
 
 .listings, .order-history, .offers-received {
@@ -76,6 +83,14 @@ table {
     border-collapse: collapse;
 }
 
+.pagination {
+    text-align: end;
+    padding-top: 0.5em;
+    .step-links {
+        margin-right: 2.8em;
+    }
+} 
+
 th, td {
     border-bottom: 1px solid #ccc;
     padding: 8px;
@@ -85,19 +100,18 @@ th, td {
 }
 
 th {
-    background-color: #f4f4f9;
+    /* background-color: #f4f4f9; */
+    font-size: 1em;
     font-weight: bold;
 }
 
-td.task, td.date {
+td.id, td.date {
     color: gray;
 }
 
-td.price, td.status {
-    text-align: center;
-}
+td.
 
-.button-style {
+/* .button-style {
     display: inline-block;
     padding: 2px 8px;
     margin: 0;
@@ -105,7 +119,7 @@ td.price, td.status {
     border-radius: 4px;
     background-color: #fff;
     font-size: 0.8em;
-}
+} */
 
 .status-button {
     display: inline-block;
@@ -124,21 +138,22 @@ td.price, td.status {
     background-color: red;
 }
 
-td.title {
+td.model {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%;
+    width: 40%;
+    font-size: 1em;
 }
 
 .update-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 0.3em 1.5em;
     border: none;
-    border-radius: 4px;
+    border-radius: 0.5em;
     background-color: #808080;
     color: #fff;
-    font-size: 0.8em;
+    font-size: 1em;
     cursor: pointer;
     text-align: center;
     margin: 0;

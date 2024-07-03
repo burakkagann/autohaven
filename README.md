@@ -93,15 +93,6 @@ There are 2 main services and a helper service included in the [compose.yaml](./
 
 - A healthcheck for this service is established to determine when the server is ready to accept connections from the web server.
 
-##### Migrations
-
-_Note:_ Before running any of the following commands, make sure the web container is running. You can start it using `docker compose up`
-
-- To check the current pending migrations, run `docker exec -it autohaven-web-1 "python manage.py showmigrations"`
-- To apply the pending migrations, run `docker exec -it autohaven-web-1 "python manage.py migrate"`
-
-For more information on migrations, check https://docs.djangoproject.com/en/5.0/topics/migrations/
-
 #### Adminer
 
 - Adminer is a Web DB management tool that can be used to easily inspect the contents of the database if required. It runs on port 8080 so it's available to use on http://localhost:8080/. To log in into the DB using adminer use the following input in the web form:
@@ -121,6 +112,25 @@ For more information on migrations, check https://docs.djangoproject.com/en/5.0/
 This docker set up is based on the one available at https://github.com/docker/awesome-compose/tree/master/official-documentation-samples/django/
 
 # Design
+
+# Development
+
+This section contains information about relevant topics regarding development practices and guidelines
+
+## Migrations
+
+Migrations provide way of tracking changes to data models during the project lifetime. This means it's possible to automate tables creation, data loading and database modifications. This is achieved via migration scripts present in the `./autohaven/autohaven_app/migrations/` folder. For instance, initial scripts handle tables creation and relationships across model [0001_initial.py](/autohaven/autohaven_app/migrations/0001_initial.py) creates the Listing, ListingImage and Offer models tables and [0001_listing_body_type.py](/autohaven/autohaven_app/migrations/0001_listing_body_type.py) adds the field `body_type` to the Listings table.
+
+To learn more about the migrations workflow, go to https://docs.djangoproject.com/en/5.0/topics/migrations/#workflow.
+
+### Commands
+
+_Note:_ Before running any of the following commands, make sure the web container is running. You can start it using `docker compose up`
+
+- To check the current pending migrations, run `docker exec -it autohaven-web-1 "python manage.py showmigrations"`
+- To apply the pending migrations, run `docker exec -it autohaven-web-1 "python manage.py migrate"`
+- To automatically create new migrations to sync the current database tables with the model specification, run `docker exec -it autohaven-web-1 "python manage.py makemigrations`
+- To display the SQL statements that would run as a result of applying the migrations, use `docker exec -it autohaven-web-1 "python manage.py slqmigrate`
 
 ## Database Models
 

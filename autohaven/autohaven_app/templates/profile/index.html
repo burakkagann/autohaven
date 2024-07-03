@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - Auto Haven{% endblock %}
+{% block pageStyles%}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/css/styles.css' %}"></link>
+{% endblock %}
+{% block content %}
+    <section class="content">
+    {% include 'profile/profile.html'%}
+
+    {% include 'profile/listings.html'%}
+    
+    {% include 'profile/orders.html'%}
+    </section>
+{% endblock %}
