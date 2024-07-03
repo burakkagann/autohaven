@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}Landing Page - Auto Haven{% endblock %}
-
+{% block pageStyles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'landing_page.css' %}">
+{% endblock %}
 {% block content %}
-{% load static %}
-<link rel="stylesheet" href="{% static 'landing_page.css' %}">
-
 <div class="landing_page_body">
 
     <div class="landing_page_grid_item landing_page_title">
