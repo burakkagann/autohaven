@@ -1,3 +1,8 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Page - Auto Haven{% endblock %}
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,35 +17,6 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: white;
-            padding: 10px 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .logo {
-            max-height: 50px;
-        }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: black;
-            padding: 10px 20px;
-            border-radius: 4px;
-        }
-        .nav-links .register {
-            background-color: black;
-            color: white;
-        }
-        .nav-links .login {
-            background-color: #888;
-            color: white;
         }
         .login-container {
             background-color: white;
@@ -57,8 +33,9 @@
             color: #000;
         }
         .login-container p {
-            margin-bottom: 20px;
-            color: #666;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #000;
         }
         .login-container input {
             width: calc(100% - 20px);
@@ -84,6 +61,10 @@
         .login-container .login-button:hover {
             background-color: #777;
         }
+        .error-message {
+        color: red;
+        margin-bottom: 15px;
+    }
         .footer {
             background-color: #fff;
             padding: 20px 40px;
@@ -112,21 +93,16 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <img src="logo.png" alt="Logo" class="logo">
-        <nav class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Catalog</a>
-            <a href="#">About</a>
-            <a href="#" class="register">Register</a>
-            <a href="#" class="login">Log In</a>
-        </nav>
-    </header>
+
     <div class="login-container">
         <h1>Log In</h1>
         <p>Enter your details to log into your account</p>
-        <form action="/login" method="post">
-            <input type="email" id="email" name="email" placeholder="email" required>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" id="username" name="username" placeholder="username" required>
             <input type="password" id="password" name="password" placeholder="password" required>
             <button type="submit" class="login-button">Log In</button>
         </form>
@@ -151,3 +127,4 @@
     </footer>
 </body>
 </html>
+{% endblock %}

@@ -1,13 +1,22 @@
+body {
+    font-family: "Inter", sans-serif;
+}
+main {
+    background-color: #fff;
+    color: #333;
+
+}
 header {
     display: flex;
     justify-content: space-between;
     align-items: center ;
-    padding: px 20px;
+    padding-left : 10px;
+    padding-right : 60px ;
     background-color: white;
 }
 
 .logo img {
-    height: 150px;
+    height: 100px;
 }
 
 nav ul {
@@ -40,6 +49,16 @@ nav ul li a {
 }
 
 .login-btn {
+    background-color: grey;
+    color: white;
+}
+
+.profile-btn {
+    background-color: black;
+    color: white;
+}
+
+.logout-btn {
     background-color: grey;
     color: white;
 }
