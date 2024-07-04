@@ -20,70 +20,84 @@
             <div class="left_column">
                 <div class="catalog_filter">
 
-                    <script>
-                        // Function to ensure on numeric input in input field
-                        function validateNumericInput(event) {
-                            const input = event.target;
-                            input.value = input.value.replace(/[^0-9]/g, '');
-                        }
-                    </script>
-                
-                    <div class="catalog_filter_header">
-                        <l class="catalog_h3">Search</l>
-                        <button class="filter_button">Filter</button>
-                    </div>
-        
-                    <div class="catalog_filter_controls">
+                    <form method="get" action="{% url 'catalog' %}">
 
-                        <l class="catalog_h4">Offering Type</l>
-                        <select class="catalog_filter_select">
-                            <option value="new">New</option>
-                            <option value="used">Second Hand</option>
-                        </select>
-             
-                        <l class="catalog_h4">Brand</l>
-                        <select class="catalog_filter_select">
-                            <option value="">All brands</option>
-                            {% for brands in brand %}
-                            <option value="{{brands.brand}}">{{brands.brand}}</option>
-                            {% endfor %}
-                        </select>
+                        <script>
+                            // Function to ensure on numeric input in input field
+                            function validateNumericInput(event) {
+                                const input = event.target;
+                                input.value = input.value.replace(/[^0-9]/g, '');
 
-                        <l class="catalog_h4">Model</l>
-                        <select class="catalog_filter_select">
-                            <option value="">All models</option>
-                            {% for models in model %}
-                            <option value="{{brands.brand}}">{{models.model}}</option>
-                            {% endfor %}
-                        </select>
+                            }
 
-                        <l class="catalog_h4">Body Type</l>
-                        <select class="catalog_filter_select">
-                            <option value="">All body types</option>
-                            {% for types in body_type %}
-                            <option value="{{brands.brand}}">{{types.body_type}}</option>
-                            {% endfor %}
-                        </select>
+                            function reset_form() {
+                                window.location.href = "{% url 'catalog' %}";
+                            }
+                        </script>
+                    
+                        <div class="catalog_filter_header">
+                            <l class="catalog_h3">Search</l>
+                            
+                            <div>
+                                <button type="reset" class="filter_button" onclick="reset_form()">Reset</button>
+                                <button type="submit" class="filter_button">Filter</button>
+                            </div>
 
-                        <l class="catalog_h4">Engine Type</l>
-                        <select class="catalog_filter_select">
-                            <option value="">All engine types</option>
-                            {% for types in engine_type %}
-                            <option value="{{brands.brand}}">{{types.engine_type}}</option>
-                            {% endfor %}
-                        </select>
-
-                        <l class="catalog_h4">Price maximum</l>
-                        <input type="number" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum price..">
-
-                        <l class="catalog_h4">Year maximum</l>
-                        <input type="number" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum year..">
-
-                        <l class="catalog_h4">Mileage maximum</l>
-                        <input type="number" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum mileage..">
-                        
-                    </div>
-        
+                        </div>
+            
+                        <div class="catalog_filter_controls">
+    
+                            <l class="catalog_h4">Offering Type</l>
+                            <select name="offering_type" class="catalog_filter_select">
+                                <option value="">All</option>
+                                <option value="new" {% if request.GET.offering_type == "new" %}selected{% endif %}>New</option>
+                                <option value="used" {% if request.GET.offering_type == "used" %}selected{% endif %}>Second Hand</option>
+                            </select>
+                 
+                            <l class="catalog_h4">Brand</l>
+                            <select name="brand" class="catalog_filter_select">
+                                <option value="">All brands</option>
+                                {% for brands in brand %}
+                                <option value="{{brands.brand}}" {% if request.GET.brand == brands.brand %}selected{% endif %}>{{brands.brand}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Model</l>
+                            <select name="model" class="catalog_filter_select">
+                                <option value="">All models</option>
+                                {% for models in model %}
+                                <option value="{{models.model}}" {% if request.GET.model == models.model %}selected{% endif %}>{{models.model}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Body Type</l>
+                            <select name="body_type" class="catalog_filter_select">
+                                <option value="">All body types</option>
+                                {% for types in body_type %}
+                                <option value="{{types.body_type}}" {% if request.GET.body_type == types.body_type %}selected{% endif %}>{{types.body_type}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Engine Type</l>
+                            <select name="engine_type" class="catalog_filter_select">
+                                <option value="">All engine types</option>
+                                {% for types in engine_type %}
+                                <option value="{{types.engine_type}}" {% if request.GET.engine_type == types.engine_type %}selected{% endif %}>{{types.engine_type}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Price maximum</l>
+                            <input name="price" type="number" value="{{request.GET.price}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum price..">
+    
+                            <l class="catalog_h4">Year maximum</l>
+                            <input name="year" type="number" value="{{request.GET.year}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum year..">
+    
+                            <l class="catalog_h4">Mileage maximum</l>
+                            <input name="mileage" type="number" value="{{request.GET.mileage}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum mileage..">
+                            
+                        </div>
+          
+                    </form>  
         
                 </div>
             </div>
