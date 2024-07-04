@@ -175,8 +175,9 @@ body {
 }
 
 .catalog_image {
-    width: 500px;
-    object-fit:scale-down;
+    width: 525px;
+    height: 325px;
+    object-fit:fill;
     margin-left: 20px;
     border-radius: 5px;
 }

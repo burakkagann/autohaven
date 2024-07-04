@@ -133,6 +133,8 @@
                     <ul class="catalog_list">
                         {% for item in listing %}
 
+                        {% if item.listing.type == "new" %}
+
                         <li class="catalog_list_item list_item_new">
 
                             {%if item.image %}
@@ -145,12 +147,39 @@
                                 <l class="list_item_description_text">{{item.listing.brand}}</l>
                                 <l class="list_item_description_text">{{item.listing.model}}</l>
                                 <l class="list_item_description_text">{{item.listing.year}}</l>
-                                <l class="list_item_description_text">{{item.listing.LISTING_TYPE}}</l>
                                 <l class="list_item_description_text">{{item.listing.price}} $</l>
                                 <button class="list_item_button">View Offer</button>  
                             </div>
 
+                            
+                        </li>
+
+
+                        {% else %}
+
+                        <li class="catalog_list_item list_item_used">
+
+                            {%if item.image %}
+                            <img class="catalog_image" src="{{item.image.imagepath.url}}" class="catalog_image">
+                            {% else %}
+                            <p class="catalog_image">No image available</p>
+                            {% endif %}
+
+                            <div class="list_item_description">
+                                <l class="list_item_description_text">{{item.listing.brand}}</l>
+                                <l class="list_item_description_text">{{item.listing.model}}</l>
+                                <l class="list_item_description_text">{{item.listing.year}}</l>
+                                <l class="list_item_description_text">{{item.listing.price}} $</l>
+                                <button class="list_item_button">View Offer</button>  
+                            </div>
+
+                            
+                        </li>
+
+                        {% endif %}
+
                         {% endfor %}
+                        
                     </ul>
     
                 </div>
