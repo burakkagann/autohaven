@@ -4,7 +4,7 @@
     
     {% if is_seller %}
         <label for="id_company_name">Company Name</label>
-        <input type="text" id="id_company_name" name="company_name" value="">
+        <input type="text" id="id_company_name" name="company_name" value="{{ seller_user.company_name }}">
     {% endif %}
 
     <label for="id_first_name">Name</label>
