@@ -106,6 +106,13 @@ body {
     font-weight:lighter;
 }
 
+.catalog_h4 {
+    font-size: 15px;
+    font-weight:lighter;
+    color: gray;
+    margin-bottom: -15px;
+}
+
 .filter_button {
     width: 100px;
     height: 30px;
@@ -131,6 +138,7 @@ body {
     border-radius: 5px;
     color: gray;
     background-color: white;
+    margin-bottom: 5px;
 }
 
 .catalog_filter_select:hover {
@@ -146,7 +154,7 @@ body {
     flex-direction: column;
     gap: 10px;
 
-    height: 700px;
+    height: 800px;
 }
 
 .catalog_list {
