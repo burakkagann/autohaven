@@ -5,7 +5,8 @@
 {% block pageStyles %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/css/styles.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'new_listing.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'listings/css/new_listing.css' %}">
+    <script src="{% static 'listings/js/create_update_listing.js' %}"></script>
 {% endblock %}
 {% block content %}
     <section class="content">
@@ -75,12 +76,12 @@
                 </div>
                 <div class="row">
                     <div class="column">
-                        <button type="submit" class="button button-blue">Add images to listing</button>
+                        <button id="add-images-btn" type="submit" class="button button-blue">Add images to listing</button>
                     </div>
                 </div>
                 <div class="row">
                     <div class="column">
-                        <button type="submit" class="button button-black">Save listing</button>
+                        <button id="submit-form-btn" type="submit" class="button button-black">Save listing</button>
                     </div>
                 </div>
             </div>

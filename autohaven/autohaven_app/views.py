@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer
-from .forms import SignUpForm, NewListingForm, UserUpdateForm, ListingImagesFormSet
+from .forms import SignUpForm, NewListingForm, UserUpdateForm, NewListingImagesFormSet
 from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -100,10 +100,12 @@ def profile(request):
 #User Authentication Views 
 
 def login_view(request):
-    if request.method== 'POST':
+    if request.method == 'POST':
+        print('LOGIN VIEW POST')
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
+        print('user', user)
         if user is not None:
             login(request)
             #superuser
@@ -119,6 +121,7 @@ def login_view(request):
                 
                 return redirect('/')
         else:
+            print('Error login')
             error_message = 'Invalid credentials. Please try again.'
             return render(request, 'login.html', {'error': error_message})
             
@@ -135,19 +138,18 @@ def new_listing(request):
     if request.method == 'POST':
         form = NewListingForm(request.POST)
         if(form.is_valid()):
-            newListing = form.save(commit=False)
-            newListing.user = request.user
-            newListing.save()
-            imagesFormSet = ListingImagesFormSet(request.POST, request.FILES, instance=newListing)
+            form.instance.user = request.user
+            form.save()
+            imagesFormSet = NewListingImagesFormSet(request.POST, request.FILES, instance=form.instance)
             if(imagesFormSet.is_valid()):
-                result = imagesFormSet.save()
+                imagesFormSet.save()
                 return redirect('profile')
             else:
                 print('image form errors', form.errors)    
         else:
-            imagesFormSet = ListingImagesFormSet()
+            imagesFormSet = NewListingImagesFormSet()
             print('form errors', form.errors)
     else:
         form = NewListingForm()
-        imagesFormSet = ListingImagesFormSet()
+        imagesFormSet = NewListingImagesFormSet()
     return render(request, 'profile/create_edit_listing.html', { 'form': form, 'imagesFormSet': imagesFormSet })

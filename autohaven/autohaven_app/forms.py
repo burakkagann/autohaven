@@ -23,7 +23,7 @@ class NewListingForm(forms.ModelForm):
         model = Listing
         fields = ["brand", "model", "year", "body_type", "engine_type", "mileage", "price"]
 
-ListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
+NewListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
