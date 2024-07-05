@@ -4,14 +4,14 @@
     
     {% if is_seller %}
         <label for="id_company_name">Company Name</label>
-        <input type="text" id="id_company_name" name="company_name" value="">
+        <input type="text" id="id_company_name" name="company_name" value="{{ seller_user.company_name }}">
     {% endif %}
 
     <label for="id_first_name">Name</label>
-    <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }} {{ user.last_name }}">
+    <input type="text" id="id_first_name" name="first_name" value="{{ user.first_name }}">
 
-    <label for="id_last_name" style="display: none;">Surname</label>
-    <input type="hidden" id="id_last_name" name="last_name" value="{{ user.last_name }}">
+    <label for="id_last_name">Surname</label>
+    <input type="text" id="id_last_name" name="last_name" value="{{ user.last_name }}">
 
     <label for="id_username">Username</label>
     <input type="text" id="id_username" name="username" value="{{ user.username }}">
@@ -20,9 +20,10 @@
     <input type="email" id="id_email" name="email" value="{{ user.email }}" readonly style="color: gray;">
     
     {% if is_regular_user %}
-        <button type="button" class="button button-black">Update My Profile</button>
+        <button type="submit" class="button button-black">Update My Profile</button>
         <button type="button" class="button button-blue">Change Password</button>
-    {% elif is_seller or is_super_user %}
-        <button type="button" class="button button-black button-smaller">Update</button>
+    {% else %}
+        <button type="submit" class="button button-black button-smaller">Update</button>
     {% endif %}
 </form>
+

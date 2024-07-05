@@ -131,7 +131,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = Path(__file__).resolve().parent.parent / 'data' / 'uploaded_images'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = Path(__file__).resolve().parent.parent / 'data' / 'uploaded_images' 
 
 APPEND_SLASH = True
 
@@ -161,3 +162,4 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = '/profile/'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

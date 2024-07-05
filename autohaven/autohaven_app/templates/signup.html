@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f0f0f0;
+            background-color: #fff;
         }
 
         .container {
@@ -24,18 +24,17 @@
             background-color: #fff;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
         .container h2 {
             margin-bottom: 20px;
-            font-size: 36px;
-            color: #333;
+            font-size: 42px;
         }
 
         .container p {
             margin-bottom: 20px;
+            font-size: 16px;
             color: #666;
         }
 
@@ -50,7 +49,6 @@
             margin-bottom: 5px;
             font-weight: bold;
             text-align: left;
-            color: #333;
         }
 
         form input[type="text"],
@@ -59,9 +57,12 @@
             padding: 10px;
             margin-bottom: 20px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
             width: 100%;
+            font-weight: normal; 
+            font-stretch: condensed; /* Condensed font stretch */
+            transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
         }
 
         form button {
@@ -72,6 +73,8 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold; /* Bold font weight */
+            font-stretch: condensed; /* Condensed font stretch */
         }
 
         form button:hover {
@@ -107,8 +110,8 @@
 </head>
 <body>
     <div class="container">
-        <h2>Create an Account</h2>
-
+        <h2>Your details</h2>
+        <p>Fill in your information to create an account</p>
         {% if error_messages %}
             {% for error in error_messages %}
                 <div class="error-message">

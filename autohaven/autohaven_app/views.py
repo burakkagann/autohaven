@@ -1,17 +1,18 @@
 import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from . import models
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate,login,logout
-from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
+from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
-from .models import Listing, Offer
+from .models import Listing, Offer, SellerUser
 from .forms import SignUpForm, NewListingForm, UserUpdateForm, NewListingImagesFormSet
 from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
 
-def root(requst):
+def root(request):
     return redirect('home/')
 
 def about(request):
@@ -52,24 +53,35 @@ def register(request):
 
 @login_required()
 def profile(request):
-    #User
-    user = request.user    #This will be changed with the code below when login system is activated. For now it gives AnonymousUser. 
-    #user = User.objects.get(username='regularuser') # Change username for testing other users type like : regularuser, seller, superuser!!
+    user = request.user
 
     is_regular_user = user.groups.filter(name='RegularUsers').exists()
     is_seller = user.groups.filter(name='Sellers').exists()
     is_super_user = user.groups.filter(name='SuperUsers').exists()
 
+  
+    seller_user = SellerUser.objects.get_or_create(user=user)[0] if is_seller else None
+
     if request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
+            if is_seller and seller_user:
+                 seller_user.company_name = request.POST.get('company_name', '')
+                 seller_user.save()
             return redirect('profile')  # Redirect to the same page after saving. Change for other redirects
     else:
         form = UserUpdateForm(instance=user)
 
     # Listings
-    listings = Listing.objects.all()
+       
+    if is_super_user:
+        listings = Listing.objects.all()
+    else:
+        listings = Listing.objects.filter(user=user) 
+    
+    #listings = Listing.objects.all() #this can be used to test listing table instead of above if statement
+
     listingsPaginator = Paginator(listings, 5)  # Show 10 listings per page.
 
     listings_page_number = request.GET.get("listings_page")
@@ -85,6 +97,7 @@ def profile(request):
     context = {
         'form': form,
         'user': user,
+        'seller_user': seller_user,
         'is_regular_user': is_regular_user,
         'is_seller': is_seller,
         'is_super_user': is_super_user,
@@ -131,7 +144,7 @@ def login_view(request):
 
 def logout_view(request):
         logout(request)
-        return redirect('login')
+        return redirect('home')
 
 
 def new_listing(request):
