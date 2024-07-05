@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path("autohaven_app/", include("autohaven_app.urls")),
     path('admin/', admin.site.urls),
     path('autohaven/', include('autohaven_app.urls')),
 ]

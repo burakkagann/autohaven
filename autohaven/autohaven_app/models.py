@@ -1,6 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from django.conf import settings
 # Create your models here.
+
+class SellerUser(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE)
+    company_name=models.CharField(max_length=255,blank=True,null=True)
+
   
 class Listing(models.Model):
     NEW = 'new'
@@ -12,6 +19,7 @@ class Listing(models.Model):
     ]
 
     user= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='listings')
+    title = models.CharField(max_length=255,default='')
     type=models.CharField(max_length=4, choices= LISTING_TYPES)
     model = models.CharField(max_length=100)
     year = models.IntegerField()
@@ -23,6 +31,8 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sold = models.BooleanField(default=False)
+    description=models.TextField(blank=True,help_text="Enter a detailed description of your listing")
+    
 
 class ListingImage(models.Model):
     listing= models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='images')
