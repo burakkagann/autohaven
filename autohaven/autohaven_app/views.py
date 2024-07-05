@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
 
-def root(requst):
+def root(request):
     return redirect('home/')
 
 def about(request):
@@ -136,7 +136,7 @@ def login_view(request):
 
 def logout_view(request):
         logout(request)
-        return redirect('login')
+        return redirect('home')
 
 
 def new_listing(request):
