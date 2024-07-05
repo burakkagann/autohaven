@@ -18,109 +18,85 @@
             <div class="left_column">
                 <div class="catalog_filter">
 
-                    <div class="catalog_filter_header">
-                        <div class="catalog_h3">Search</div>
-                        <button class="filter_button">Filter</button>
-                    </div>
+                    <form method="get" action="{% url 'catalog' %}">
 
-                    <div class="catalog_filter_controls">
+                        <script>
+                            // Function to ensure on numeric input in input field
+                            function validateNumericInput(event) {
+                                const input = event.target;
+                                input.value = input.value.replace(/[^0-9]/g, '');
 
-                        <select class="catalog_filter_select">
-                            <option value="brand">Brand</option>
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
-                        </select>
+                            }
 
-                        <select class="catalog_filter_select">
-                            <option value="price_range">Price Range</option>
-                            <option value="5000b">5000$ and below</option>
-                            <option value="5000-10000">5000$ - 10000$</option>
-                            <option value="10000-20000">10000$ - 20000$</option>
-                            <option value="20000-50000">20000$ - 50000$</option>
-                            <option value="50000a">50000$ and above</option>
-                        </select>
+                            function reset_form() {
+                                window.location.href = "{% url 'catalog' %}";
+                            }
+                        </script>
+                    
+                        <div class="catalog_filter_header">
+                            <l class="catalog_h3">Search</l>
+                            
+                            <div>
+                                <button type="reset" class="filter_button" onclick="reset_form()">Reset</button>
+                                <button type="submit" class="filter_button">Filter</button>
+                            </div>
 
-                        <select class="catalog_filter_select">
-                            <option value="new">New</option>
-                            <option value="used">Second Hand</option>
-                        </select>
-
-                        <select class="catalog_filter_select">
-                            <option value="year">Year</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
-                            <option value="2019">2019</option>
-                            <option value="2018">2018</option>
-                            <option value="2017">2017</option>
-                            <option value="2016">2016</option>
-                            <option value="2015">2015</option>
-                            <option value="2014">2014</option>
-                            <option value="2013">2013</option>
-                            <option value="2012">2012</option>
-                            <option value="2011">2011</option>
-                            <option value="2010">2010</option>
-                            <option value="2009">2009</option>
-                            <option value="2008">2008</option>
-                            <option value="2007">2007</option>
-                            <option value="2006">2006</option>
-                            <option value="2005">2005</option>
-                            <option value="2004">2004</option>
-                            <option value="2003">2003</option>
-                            <option value="2002">2002</option>
-                            <option value="2001">2001</option>
-                            <option value="2000">2000</option>
-                            <option value="1999">1999</option>
-                            <option value="1998">1998</option>
-                            <option value="1997">1997</option>
-                            <option value="1996">1996</option>
-                            <option value="1995">1995</option>
-                            <option value="1994">1994</option>
-                            <option value="1993">1993</option>
-                            <option value="1992">1992</option>
-                            <option value="1991">1991</option>
-                            <option value="1990">1990</option>
-                            <option value="1989">1989</option>
-                            <option value="1988">1988</option>
-                            <option value="1987">1987</option>
-                            <option value="1986">1986</option>
-                            <option value="1985">1985</option>
-                            <option value="1984">1984</option>
-                            <option value="1983">1983</option>
-                            <option value="1982">1982</option>
-                            <option value="1981">1981</option>
-                            <option value="1980">1980</option>
-                            <option value="1979">1979</option>
-                        </select>
-
-                        <select class="catalog_filter_select">
-                            <option value="transmission">Transmission</option>
-                            <option value="automatic">Automatic</option>
-                            <option value="manual">Manual</option>
-                        </select>
-
-                        <select class="catalog_filter_select">
-                            <option value="fuel_type">Fuel Type</option>
-                            <option value="petrol">Petrol</option>
-                            <option value="diesel">Diesel</option>
-                            <option value="electric">Electric</option>
-                            <option value="hybrid">Hybrid</option>
-                        </select>
-
-                        <select class="catalog_filter_select">
-                            <option value="body_type">Body Type</option>
-                            <option value="sedan">Sedan</option>
-                            <option value="hatchback">Hatchback</option>
-                            <option value="suv">SUV</option>
-                            <option value="coupe">Coupe</option>
-                            <option value="convertible">Convertible</option>
-                            <option value="wagon">Wagon</option>
-                            <option value="van">Van</option>
-                            <option value="truck">Truck</option>
-                        </select>
-                    </div>
-
+                        </div>
+            
+                        <div class="catalog_filter_controls">
+    
+                            <l class="catalog_h4">Offering Type</l>
+                            <select name="offering_type" class="catalog_filter_select">
+                                <option value="">All</option>
+                                <option value="new" {% if request.GET.offering_type == "new" %}selected{% endif %}>New</option>
+                                <option value="used" {% if request.GET.offering_type == "used" %}selected{% endif %}>Second Hand</option>
+                            </select>
+                 
+                            <l class="catalog_h4">Brand</l>
+                            <select name="brand" class="catalog_filter_select">
+                                <option value="">All brands</option>
+                                {% for brands in brand %}
+                                <option value="{{brands.brand}}" {% if request.GET.brand == brands.brand %}selected{% endif %}>{{brands.brand}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Model</l>
+                            <select name="model" class="catalog_filter_select">
+                                <option value="">All models</option>
+                                {% for models in model %}
+                                <option value="{{models.model}}" {% if request.GET.model == models.model %}selected{% endif %}>{{models.model}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Body Type</l>
+                            <select name="body_type" class="catalog_filter_select">
+                                <option value="">All body types</option>
+                                {% for types in body_type %}
+                                <option value="{{types.body_type}}" {% if request.GET.body_type == types.body_type %}selected{% endif %}>{{types.body_type}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Engine Type</l>
+                            <select name="engine_type" class="catalog_filter_select">
+                                <option value="">All engine types</option>
+                                {% for types in engine_type %}
+                                <option value="{{types.engine_type}}" {% if request.GET.engine_type == types.engine_type %}selected{% endif %}>{{types.engine_type}}</option>
+                                {% endfor %}
+                            </select>
+    
+                            <l class="catalog_h4">Price maximum</l>
+                            <input name="price" type="number" value="{{request.GET.price}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum price..">
+    
+                            <l class="catalog_h4">Year maximum</l>
+                            <input name="year" type="number" value="{{request.GET.year}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum year..">
+    
+                            <l class="catalog_h4">Mileage maximum</l>
+                            <input name="mileage" type="number" value="{{request.GET.mileage}}" class="catalog_filter_select" oninput="validateNumericInput(event)" placeholder="Enter maximum mileage..">
+                            
+                        </div>
+          
+                    </form>  
+        
                 </div>
             </div>
 
@@ -129,6 +105,8 @@
 
                     <ul class="catalog_list">
                         {% for item in listing %}
+
+                        {% if item.listing.type == "new" %}
 
                         <li class="catalog_list_item list_item_new">
 
@@ -142,12 +120,39 @@
                                 <l class="list_item_description_text">{{item.listing.brand}}</l>
                                 <l class="list_item_description_text">{{item.listing.model}}</l>
                                 <l class="list_item_description_text">{{item.listing.year}}</l>
-                                <l class="list_item_description_text">{{item.listing.LISTING_TYPE}}</l>
                                 <l class="list_item_description_text">{{item.listing.price}} $</l>
                                 <button class="list_item_button">View Offer</button>  
                             </div>
 
+                            
+                        </li>
+
+
+                        {% else %}
+
+                        <li class="catalog_list_item list_item_used">
+
+                            {%if item.image %}
+                            <img class="catalog_image" src="{{item.image.imagepath.url}}" class="catalog_image">
+                            {% else %}
+                            <p class="catalog_image">No image available</p>
+                            {% endif %}
+
+                            <div class="list_item_description">
+                                <l class="list_item_description_text">{{item.listing.brand}}</l>
+                                <l class="list_item_description_text">{{item.listing.model}}</l>
+                                <l class="list_item_description_text">{{item.listing.year}}</l>
+                                <l class="list_item_description_text">{{item.listing.price}} $</l>
+                                <button class="list_item_button">View Offer</button>  
+                            </div>
+
+                            
+                        </li>
+
+                        {% endif %}
+
                         {% endfor %}
+                        
                     </ul>
 
                 </div>
