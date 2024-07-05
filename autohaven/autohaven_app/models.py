@@ -31,6 +31,8 @@ class Listing(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sold = models.BooleanField(default=False)
+    description=models.TextField(blank=True,help_text="Enter a detailed description of your listing")
+    
 
 class ListingImage(models.Model):
     listing= models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='images')
