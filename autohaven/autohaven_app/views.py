@@ -2,6 +2,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm
+from . import models
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_user_regular, dummy_user_seller, dummy_listings, dummy_orders, dummy_offers
@@ -26,7 +27,19 @@ def landing_page(request):
     return render(request, 'landing_page.html')
 
 def catalog_page(request):
-    return render(request, 'catalog.html')
+    # Pull Listing from models (databse)
+    listing = models.Listing.objects.all()
+    listing_with_images = []
+
+    # Match Listing to according images
+    for item in listing:
+        images = models.ListingImage.objects.filter(listing=item)
+        first_image = images.first()
+        listing_with_images.append({
+            'listing': item,
+            'image': first_image
+        })
+    return render(request, 'catalog.html', {'listing': listing_with_images})
 
 def logout(request):
     return render(request, 'landing_page.html')

@@ -128,59 +128,26 @@
                 <div class="catalog_results">
 
                     <ul class="catalog_list">
+                        {% for item in listing %}
 
                         <li class="catalog_list_item list_item_new">
 
-                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
+                            {%if item.image %}
+                            <img class="catalog_image" src="{{item.image.imagepath.url}}" class="catalog_image">
+                            {% else %}
+                            <p class="catalog_image">No image available</p>
+                            {% endif %}
+
                             <div class="list_item_description">
-                                <div class="list_item_description_text">BMW M5</div>
-                                <div class="list_item_description_text">2020</div>
-                                <div class="list_item_description_text">New</div>
-                                <div class="list_item_description_text">20,000$</div>
-                                <button class="list_item_button">View Offer</button>
+                                <l class="list_item_description_text">{{item.listing.brand}}</l>
+                                <l class="list_item_description_text">{{item.listing.model}}</l>
+                                <l class="list_item_description_text">{{item.listing.year}}</l>
+                                <l class="list_item_description_text">{{item.listing.LISTING_TYPE}}</l>
+                                <l class="list_item_description_text">{{item.listing.price}} $</l>
+                                <button class="list_item_button">View Offer</button>  
                             </div>
 
-                        </li>
-
-                        <li class="catalog_list_item list_item_used">
-
-                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
-                            <div class="list_item_description">
-                                <div class="list_item_description_text">BMW M5</div>
-                                <div class="list_item_description_text">2020</div>
-                                <div class="list_item_description_text">New</div>
-                                <div class="list_item_description_text">20,000$</div>
-                                <button class="list_item_button">View Offer</button>
-                            </div>
-
-                        </li>
-
-                        <li class="catalog_list_item list_item_used">
-
-                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
-                            <div class="list_item_description">
-                                <div class="list_item_description_text">BMW M5</div>
-                                <div class="list_item_description_text">2020</div>
-                                <div class="list_item_description_text">New</div>
-                                <div class="list_item_description_text">20,000$</div>
-                                <button class="list_item_button">View Offer</button>
-                            </div>
-
-                        </li>
-
-                        <li class="catalog_list_item list_item_new">
-
-                            <img src="{% static 'images/list_item_1.png' %}" class="catalog_image">
-                            <div class="list_item_description">
-                                <div class="list_item_description_text">BMW M5</div>
-                                <div class="list_item_description_text">2020</div>
-                                <div class="list_item_description_text">New</div>
-                                <div class="list_item_description_text">20,000$</div>
-                                <button class="list_item_button">View Offer</button>
-                            </div>
-
-                        </li>
-
+                        {% endfor %}
                     </ul>
 
                 </div>
