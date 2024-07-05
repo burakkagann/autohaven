@@ -11,7 +11,7 @@
 {% block content %}
     <section class="content">
     {% if listing is None%}
-    <form action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
+    <form id="new-listing-form" action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="column">
@@ -76,7 +76,10 @@
                 </div>
                 <div class="row">
                     <div class="column">
-                        <button id="add-images-btn" type="submit" class="button button-blue">Add images to listing</button>
+                        {{ form.newImages.errors }}
+                        {{ form.newImages.label_tag }}
+                        {{ form.newImages }}
+                        <button id="add-images-btn" class="button button-blue">Add images to listing</button>
                     </div>
                 </div>
                 <div class="row">
@@ -86,24 +89,11 @@
                 </div>
             </div>
             <div class="column" id="images-container">
-                {{ imagesFormSet.management_form }}
-                {% with firstImageForm=imagesFormSet.forms.0 %}
                 <div class="row">
-                    <div class="column">
-                        <span>X</span>
-                        <img src="https://placehold.co/1920x1080">
-                        {{ firstImageForm.imagepath  }}
+                    <div class="column" id="main-image-container">
                     </div>
                 </div>
-                {% endwith %}
-                <div class="row">
-                    {% for imageForm in imagesFormSet|slice:"1:" %}
-                    <div class="column">
-                        <span>X</span>
-                        <img src="https://placehold.co/1920x1080">
-                        {{ imageForm.imagepath }}
-                    </div>
-                    {% endfor %}
+                <div class="row" id="other-images-container">    
                 </div>
             </div>
         </div>

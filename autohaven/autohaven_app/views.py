@@ -7,7 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser
-from .forms import SignUpForm, NewListingForm, UserUpdateForm, NewListingImagesFormSet
+from .forms import SignUpForm, NewListingForm, UserUpdateForm
 from django.contrib.auth.models import User
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -149,20 +149,12 @@ def logout_view(request):
 
 def new_listing(request):
     if request.method == 'POST':
-        form = NewListingForm(request.POST)
+        form = NewListingForm(request.POST, request.FILES)
         if(form.is_valid()):
             form.instance.user = request.user
             form.save()
-            imagesFormSet = NewListingImagesFormSet(request.POST, request.FILES, instance=form.instance)
-            if(imagesFormSet.is_valid()):
-                imagesFormSet.save()
-                return redirect('profile')
-            else:
-                print('image form errors', form.errors)    
         else:
-            imagesFormSet = NewListingImagesFormSet()
             print('form errors', form.errors)
     else:
         form = NewListingForm()
-        imagesFormSet = NewListingImagesFormSet()
-    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'imagesFormSet': imagesFormSet })
+    return render(request, 'profile/create_edit_listing.html', { 'form': form })

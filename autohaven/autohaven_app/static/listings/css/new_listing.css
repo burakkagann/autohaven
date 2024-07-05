@@ -23,6 +23,12 @@
     }
   }
 
+  #other-images-container {
+    max-width: 20vw;
+    align-self: center;
+    flex-wrap: nowrap;
+  }
+
   #images-container .row:first-of-type {
     justify-content: center;
 
@@ -35,6 +41,7 @@
 
   #images-container .row {
     justify-content: center;
+    min-width: 50%;
   }
 
 
@@ -64,4 +71,8 @@ textarea {
 
 form input,textarea {
   max-width: initial;
+}
+
+input[type="file"] {
+  display: none;
 }

@@ -17,13 +17,39 @@ class SignUpForm(UserCreationForm):
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
 
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+
 
 class NewListingForm(forms.ModelForm):
+    newImages = MultipleFileField()
     class Meta:
         model = Listing
         fields = ["brand", "model", "year", "body_type", "engine_type", "mileage", "price"]
+    
+    def save(self):
+        newListing = super(NewListingForm, self).save()
+        print('newListing', newListing)
+        files = self.cleaned_data['newImages']
+        print('files', files)
+        for f in files:
+            print('file', f)
+            newListingImage = ListingImage(listing=newListing, imagepath=f)
+            newListingImage.save()
+            
+    
 
-NewListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
+ListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
