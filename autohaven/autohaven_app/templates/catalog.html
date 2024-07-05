@@ -1,22 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
 
+{% block title %}Catalog - Auto Haven{% endblock %}
+
+{% block content %}
 {% load static %}
-<link rel = "stylesheet" href="{% static '/catalog.css' %}">
-
-<div class="catalog_navbar">
-    <l>Navbar here</l>
-</div>
+<link rel="stylesheet" href="{% static 'catalog.css' %}">
 
 <div class="page_body">
     <div class="catalog_body">
 
         <input type="text" class="catalog_search_input" placeholder="Search for cars..">
-    
-        <l class="catalog_title_text">New and used vehicles for sale</l>
-    
+
+        <div class="catalog_title_text">New and used vehicles for sale</div>
+
         <div class="catalog_main">
-    
+
             <div class="left_column">
                 <div class="catalog_filter">
 
@@ -101,10 +99,10 @@
         
                 </div>
             </div>
-    
+
             <div class="right_column">
                 <div class="catalog_results">
-                    
+
                     <ul class="catalog_list">
                         {% for item in listing %}
 
@@ -156,48 +154,46 @@
                         {% endfor %}
                         
                     </ul>
-    
+
                 </div>
-    
+
             </div>
-    
+
         </div>
-    
+
         <div class="catalog_footer">
-    
+
             <div class="footer_left">
-        
-                <l class="catalog_h3">AutoHaven</l>
-                <l class="catalog_h3">Ernst-Reuter Platz 10</l>
-                <l class="catalog_h3">Berlin - 10587</l>
-        
-                <img src="{% static 'images/link_image.png'%}" class="footer_link_image">
-            
-        
+
+                <div class="catalog_h3">AutoHaven</div>
+                <div class="catalog_h3">Ernst-Reuter Platz 10</div>
+                <div class="catalog_h3">Berlin - 10587</div>
+
+                <img src="{% static 'images/link_image.png' %}" class="footer_link_image">
+
+
             </div>
-        
+
             <div class="footer_right">
-        
+
                 <div class="footer_links_left">
-                    <l class="bolder_text">About Us</l>
-                    <l class="light_text">Careers</l>
-                    <l class="light_text">Compliance</l>
-                    <l class="light_text">Page</l>
+                    <div class="bolder_text">About Us</div>
+                    <div class="light_text">Careers</div>
+                    <div class="light_text">Compliance</div>
+                    <div class="light_text">Page</div>
                 </div>
-        
-        
+
                 <div class="footer_links_right">
-                    <l class="bolder_text">All Cars</l>
-                    <l class="light_text">New Cars</l>
-                    <l class="light_text">Second Hand Cars</l>
+                    <div class="bolder_text">All Cars</div>
+                    <div class="light_text">New Cars</div>
+                    <div class="light_text">Second Hand Cars</div>
                 </div>
-        
+
             </div>
-        
+
         </div>
-    
-</div>
+
+    </div>
 
 </div>
-
-</html>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Login Page - Auto Haven{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+            margin: 100px auto;
+        }
+        .login-container h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            color: #000;
+        }
+        .login-container p {
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: #000;
+        }
+        .login-container input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .login-container button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .login-container .login-button {
+            background-color: #888;
+        }
+        .login-container .login-button:hover {
+            background-color: #777;
+        }
+        .error-message {
+        color: red;
+        margin-bottom: 15px;
+    }
+        .footer {
+            background-color: #fff;
+            padding: 20px 40px;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-top: auto;
+        }
+        .footer div {
+            margin-right: 40px;
+        }
+        .footer p {
+            margin: 0 0 10px;
+            color: #333;
+        }
+        .footer a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .footer .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>Log In</h1>
+        <p>Enter your details to log into your account</p>
+        {% if error %}
+            <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" id="username" name="username" placeholder="username" required>
+            <input type="password" id="password" name="password" placeholder="password" required>
+            <button type="submit" class="login-button">Log In</button>
+        </form>
+    </div>
+    <footer class="footer">
+        <div>
+            <p>AutoHaven</p>
+            <p>Ernst-Reuter-Platz 10</p>
+            <p>Berlin - 10587</p>
+        </div>
+        <div>
+            <a href="#" class="bold">About us</a>
+            <a href="#">Careers</a>
+            <a href="#">Compliance</a>
+            <a href="#">Page</a>
+        </div>
+        <div>
+            <a href="#" class="bold">All Cars</a>
+            <a href="#">New Cars</a>
+            <a href="#">Used Cars</a>
+        </div>
+    </footer>
+</body>
+</html>
+{% endblock %}

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'autohaven',
 ]
 
 MIDDLEWARE = [
@@ -126,9 +125,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -137,3 +133,33 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = Path(__file__).resolve().parent.parent / 'data' / 'uploaded_images' 
+
+APPEND_SLASH = True
+
+# Uncomment to enable extensive debug logging
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',  # Adjust as needed: DEBUG, INFO, WARNING, ERROR, CRITICAL
+#             'propagate': True,
+#         },
+#     },
+# }
+
+# Authentication backends (default is fine)
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+LOGIN_REDIRECT_URL = '/profile/'
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
