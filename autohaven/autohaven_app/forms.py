@@ -32,10 +32,10 @@ class MultipleFileField(forms.FileField):
 
 
 class NewListingForm(forms.ModelForm):
-    newImages = MultipleFileField()
+    newImages = MultipleFileField(required=False)
     class Meta:
         model = Listing
-        fields = ["brand", "model", "year", "body_type", "engine_type", "mileage", "price"]
+        fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
     
     def save(self):
         newListing = super(NewListingForm, self).save()

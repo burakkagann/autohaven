@@ -3,7 +3,18 @@ function selectImages(event, fileInput) {
   fileInput.click();
 }
 
-const imageElementsList = [];
+function onDelete(event) {
+  const imgToDelete = event.target.nextSibling;
+  if (imgToDelete instanceof HTMLImageElement) {
+    imageElementsList = imageElementsList.filter(
+      (imgElement) => imgElement !== imgToDelete
+    );
+    imgToDelete.remove();
+    drawImages(imageElementsList);
+  }
+}
+
+let imageElementsList = [];
 
 function drawImages(imagesToDraw) {
   imagesToDraw.forEach((newImageElement, index) => {
@@ -21,6 +32,7 @@ function drawImages(imagesToDraw) {
     }
     const closeSpan = document.createElement("span");
     closeSpan.innerHTML = "X";
+    closeSpan.addEventListener("click", onDelete);
     imgContainer.innerHTML = "";
     imgContainer.append(closeSpan);
     imgContainer.append(newImageElement);
@@ -29,7 +41,6 @@ function drawImages(imagesToDraw) {
 
 function onImagesChange(filesInput) {
   const newImages = Array.from(filesInput.files);
-  console.log({ newImages });
   const newImageElements = newImages.map((newImage) => {
     const imgElement = document.createElement("img");
     imgElement.file = newImage;
@@ -42,7 +53,6 @@ function onImagesChange(filesInput) {
   });
 
   imageElementsList.push(...newImageElements);
-  console.log({ newImageElements, imageElementsList });
   drawImages(imageElementsList);
 }
 
@@ -50,7 +60,6 @@ function onSubmit(event, filesInput) {
   event.preventDefault();
   dtObject = new DataTransfer();
   imageElementsList.forEach((imgElement) => {
-    console.log({ imgElement });
     dtObject.items.add(imgElement.file);
   });
   filesInput.files = dtObject.files;

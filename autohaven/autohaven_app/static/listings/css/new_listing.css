@@ -18,15 +18,16 @@
     flex-direction: column;
     flex-basis: 100%;
     flex: 1;
-    img {
-      max-width: 6.66vw;
-    }
   }
 
   #other-images-container {
-    max-width: 20vw;
+    max-width: 40vw;
+    overflow-x: auto;
     align-self: center;
     flex-wrap: nowrap;
+    img {
+      max-width: 13.3vw;
+    }
   }
 
   #images-container .row:first-of-type {
@@ -34,14 +35,10 @@
 
     .column:first-of-type {
       img {
-        max-width: 20vw;
+        max-width: 40vw;
+        max-height: 20vw;
       }
     }
-  }
-
-  #images-container .row {
-    justify-content: center;
-    min-width: 50%;
   }
 
 
