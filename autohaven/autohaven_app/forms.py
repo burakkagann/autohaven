@@ -1,6 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from datetime import datetime
+from django.forms import inlineformset_factory
+from .models import Listing, ListingImage
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -8,6 +11,45 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name','last_name','username', 'email')
+
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = [single_file_clean(data, initial)]
+        return result
+
+
+class NewListingForm(forms.ModelForm):
+    newImages = MultipleFileField(required=False)
+    class Meta:
+        model = Listing
+        fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
+    
+    def save(self):
+        newListing = super(NewListingForm, self).save()
+        print('newListing', newListing)
+        files = self.cleaned_data['newImages']
+        print('files', files)
+        for f in files:
+            print('file', f)
+            newListingImage = ListingImage(listing=newListing, imagepath=f)
+            newListingImage.save()
+            
+    
+
+ListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:

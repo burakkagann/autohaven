@@ -1,0 +1,75 @@
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2em;
+    width: 100%;
+    button {
+      margin-top: 1em;
+      margin-bottom: 0;
+      padding: 1em;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+  
+  .column {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 100%;
+    flex: 1;
+  }
+
+  #other-images-container {
+    max-width: 40vw;
+    overflow-x: auto;
+    align-self: center;
+    flex-wrap: nowrap;
+    img {
+      max-width: 13.3vw;
+    }
+  }
+
+  #images-container .row:first-of-type {
+    justify-content: center;
+
+    .column:first-of-type {
+      img {
+        max-width: 40vw;
+        max-height: 20vw;
+      }
+    }
+  }
+
+
+  #images-container {
+    justify-content: center;
+    flex-grow: 2;
+    span {
+      text-align: end;
+    }
+
+    .column {
+      flex-basis: auto;
+      flex: 0;
+    }
+  }
+
+  .content {
+    flex-basis: 90%;
+    > * {
+        width: 100%;
+    }
+}
+
+textarea {
+  resize: none;
+}
+
+form input,textarea {
+  max-width: initial;
+}
+
+input[type="file"] {
+  display: none;
+}

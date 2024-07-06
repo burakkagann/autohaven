@@ -1,30 +1,102 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>
-        {% if listing is None%}New Listing{% else %}Listing ID: {% endif %}
-    </title>
+{% extends 'base.html' %}
+{% block title %}
+    {% if listing is None %}New Listing{% else %}Listing ID: {% endif %}
+{% endblock %}
+{% block pageStyles %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/css/styles.css' %}">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" type="text/css" href="{% static 'listings/css/new_listing.css' %}">
+    <script src="{% static 'listings/js/create_update_listing.js' %}"></script>
+{% endblock %}
+{% block content %}
     <section class="content">
-        {% if listing is None%}
-        <form action="{% url 'new-listing' %}" method="post">
-            {% csrf_token %}
-            <h1>New Listing</h1>
-            <fieldset>
-                <legend><h1>Test</h1></legend>
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                <input type="radio" name="choice" id="testInput" value="value">
-                <label for="testInput">Test</label><br>
-            </fieldset>
-            <input type="submit" value="Vote">
-            </form>
-        {% endif %}
+    {% if listing is None%}
+    <form id="new-listing-form" action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="column">
+                <h1>New Listing</h1>
+                <span>Fill in your listing information to create a new listing</span>
+                <div class="row">
+                    <div class="column">
+                        {{ form.title.errors }}
+                        {{ form.tile.label_tag }}
+                        {{ form.title }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.brand.errors }}
+                        {{ form.brand.label_tag }}
+                        {{ form.brand }}
+                    </div>
+                    <div class="column">
+                        {{ form.model.errors }}
+                        {{ form.model.label_tag }}
+                        {{ form.model }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.year.errors }}
+                        {{ form.year.label_tag }}
+                        {{ form.year }}
+                    </div>
+                    <div class="column">
+                        {{ form.body_type.errors }}
+                        {{ form.body_type.label_tag }}
+                        {{ form.body_type }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.engine_type.errors }}
+                        {{ form.engine_type.label_tag }}
+                        {{ form.engine_type }}
+                    </div>
+                    <div class="column">
+                        {{ form.mileage.errors }}
+                        {{ form.mileage.label_tag }}
+                        {{ form.mileage }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.price.errors }}
+                        {{ form.price.label_tag }}
+                        {{ form.price }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.description.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        {{ form.newImages.errors }}
+                        {{ form.newImages }}
+                        <button id="add-images-btn" class="button button-blue">Add images to listing</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <button id="submit-form-btn" type="submit" class="button button-black">Save listing</button>
+                    </div>
+                </div>
+            </div>
+            <div class="column" id="images-container">
+                <div class="row">
+                    <div class="column" id="main-image-container">
+                    </div>
+                </div>
+                <div class="row" id="other-images-container">    
+                </div>
+            </div>
+        </div>
+    </form>
     </section>
-</body>
-</html>
+    {% endif %}
+{% endblock %}
