@@ -46,7 +46,6 @@ function drawImages(imagesToDraw) {
     closeSpan.innerHTML = "X";
     closeSpan.addEventListener("click", onDelete);
     imgContainer.innerHTML = "";
-    console.log({ closeSpan, newImageElement });
     imgContainer.append(closeSpan);
     imgContainer.append(newImageElement);
   });
@@ -105,7 +104,6 @@ function formSetup() {
   const mediaPrefix = JSON.parse(
     document.getElementById("media-prefix").textContent
   );
-  console.log({ previousImages });
   loadListingImages(previousImages, mediaPrefix);
 
   addImagesBtn.addEventListener("click", (event) =>
