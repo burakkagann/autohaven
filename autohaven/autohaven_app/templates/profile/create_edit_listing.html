@@ -10,8 +10,7 @@
 {% endblock %}
 {% block content %}
     <section class="content">
-    {% if listing is None%}
-    <form id="new-listing-form" action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
+    <form id="new-listing-form" action="{% url 'manage-listing' listing.id %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="column">
@@ -76,8 +75,13 @@
                 </div>
                 <div class="row">
                     <div class="column">
-                        {{ form.newImages.errors }}
-                        {{ form.newImages }}
+                        {{ form.listingImages.errors }}
+                        {{ form.listingImages }}
+                        {{ form.imagesToDelete }}
+                        {{ form.listingImages.value | json_script:"listing-images" }}
+                        {% load static %}
+                        {% get_media_prefix as media_prefix %}
+                        {{ media_prefix |json_script:"media-prefix" }}
                         <button id="add-images-btn" class="button button-blue">Add images to listing</button>
                     </div>
                 </div>
@@ -98,5 +102,4 @@
         </div>
     </form>
     </section>
-    {% endif %}
 {% endblock %}

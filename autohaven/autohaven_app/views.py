@@ -7,8 +7,7 @@ from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser
-from .forms import SignUpForm, NewListingForm, UserUpdateForm
-from django.contrib.auth.models import User
+from .forms import SignUpForm, NewListingForm, UserUpdateForm, ListingForm
 
 # logger = logging.getLogger(__name__)  # Create a logger instance
 
@@ -158,3 +157,22 @@ def new_listing(request):
     else:
         form = NewListingForm()
     return render(request, 'profile/create_edit_listing.html', { 'form': form })
+
+def manage_listing(request, listingId):
+    if request.method == 'POST':
+        listing = Listing.objects.get(id=listingId)
+        if(listing):
+            listingImages = listing.images.all()
+            form = ListingForm(request.POST, request.FILES, instance=listing)
+            if(form.is_valid()):
+                form.instance.user = request.user
+                form.save()
+                # print('listingImages', listingImages)
+                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)        
+            else:
+                print('form errors', form.errors)
+    else:
+        listing = Listing.objects.get(id=listingId)
+        listingImages = listing.images.all()
+        form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'listing': listing })
