@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.forms import inlineformset_factory
-from .models import Listing, ListingImage
+from .models import Listing, ListingImage ,Seller
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -62,3 +62,19 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = None  # Remove the default help text for username
+
+
+class SellerForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        fields = ['company_name', 'email_address', 'username']
+        labels = {
+            'company_name': 'Company name',
+            'email_address': 'Email address',
+            'username': 'Username',
+        }
+        widgets = {
+            'company_name': forms.TextInput(attrs={'placeholder': 'Company name'}),
+            'email_address': forms.EmailInput(attrs={'placeholder': 'Email address'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+        }        

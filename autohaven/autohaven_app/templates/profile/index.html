@@ -7,9 +7,15 @@
 {% block content %}
     <section class="content">
     {% include 'profile/profile.html'%}
+    
+    {% if is_super_user %}
+        {% include 'profile/sellers.html'%}
+    {% endif %}
 
     {% include 'profile/listings.html'%}
     
     {% include 'profile/orders.html'%}
+   
+  
     </section>
 {% endblock %}

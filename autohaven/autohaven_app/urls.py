@@ -12,4 +12,6 @@ urlpatterns = [
     path('new-listing/', views.new_listing, name='new-listing'),
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='landing_page.html'), name='logout'),
+    path('sellers/upload/', views.upload_new_seller, name='upload_new_seller'),
+    path('sellers/manage/<int:id>/', views.manage_seller, name='manage_seller'),
 ]
