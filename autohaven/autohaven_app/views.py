@@ -59,19 +59,24 @@ def profile(request):
     is_seller = user.groups.filter(name='Sellers').exists()
     is_super_user = user.groups.filter(name='SuperUsers').exists()
 
-  
+    # Fetch or create the SellerUser instance if the user is a seller
     seller_user = SellerUser.objects.get_or_create(user=user)[0] if is_seller else None
 
-    if request.method == 'POST':
+    # Determine if form should be editable
+    form_editable = request.POST.get('form_editable', 'false') == 'true'
+
+    form = UserUpdateForm(instance=user)
+
+    if request.method == 'POST' and 'edit' in request.POST:
+        form_editable = True
+    elif request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
             if is_seller and seller_user:
-                 seller_user.company_name = request.POST.get('company_name', '')
-                 seller_user.save()
-            return redirect('profile')  # Redirect to the same page after saving. Change for other redirects
-    else:
-        form = UserUpdateForm(instance=user)
+                seller_user.company_name = request.POST.get('company_name', '')
+                seller_user.save()
+            return redirect('profile')  # Redirect to the same page after saving
 
     # Listings
        
@@ -103,10 +108,11 @@ def profile(request):
         'is_super_user': is_super_user,
         'listings_page_obj': listings_page_obj,
         'offers_page_obj': offers_page_obj,
-        'offers': dummy_offers,
+        'form_editable': form_editable,
     }
 
     return render(request, 'profile/index.html', context)
+
 
         
 
