@@ -184,7 +184,11 @@ td.model {
 
 .listings-table th, .listings-table td {
     padding: 10px;
-    border: 1px solid #ddd;
+    border: 1px solid white;
+}
+.listings-table th {
+
+    background-color: white;
 }
 
 .new-listing {
@@ -201,7 +205,7 @@ td.model {
     padding: 5px 10px;
     cursor: pointer;
     text-decoration: none;
-    color: black;
+    color: white;
     display: inline-block;
 }
 
@@ -212,4 +216,10 @@ td.model {
 .step-links {
     display: flex;
     justify-content: space-between;
+}
+.cell-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: inline-block; 
 }
