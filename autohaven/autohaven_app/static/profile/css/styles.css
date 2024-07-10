@@ -8,9 +8,10 @@ main {
 
 .content {
     flex-basis: 50%;
-    > * {
-        width: 100%;
-    }
+}
+
+.content > * {
+    width: 100%;
 }
 
 h1, h2 {
@@ -86,9 +87,10 @@ table {
 .pagination {
     text-align: end;
     padding-top: 0.5em;
-    .step-links {
-        margin-right: 2.8em;
-    }
+}
+
+.step-links {
+    margin-right: 2.8em;
 } 
 
 th, td {
@@ -100,7 +102,6 @@ th, td {
 }
 
 th {
-    /* background-color: #f4f4f9; */
     font-size: 1em;
     font-weight: bold;
 }
@@ -108,18 +109,6 @@ th {
 td.id, td.date {
     color: gray;
 }
-
-td.
-
-/* .button-style {
-    display: inline-block;
-    padding: 2px 8px;
-    margin: 0;
-    border: 1px solid #000;
-    border-radius: 4px;
-    background-color: #fff;
-    font-size: 0.8em;
-} */
 
 .status-button {
     display: inline-block;
@@ -187,6 +176,7 @@ td.model {
     background-color: red;
     color: white;
 }
+
 .listings-table {
     width: 100%;
     border-collapse: collapse;
