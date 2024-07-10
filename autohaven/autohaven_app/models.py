@@ -44,3 +44,12 @@ class Offer(models.Model):
     offeredPrice= models.DecimalField(max_digits=10, decimal_places=2)
     offeredDate= models.DateTimeField(auto_now=True)
     status=models.CharField(max_length=100)
+
+class Seller(models.Model):
+    date_added = models.DateTimeField(auto_now_add=True)
+    company_name = models.CharField(max_length=100)
+    email_address = models.EmailField()
+    username = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.company_name

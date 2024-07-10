@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Catalog - Auto Haven{% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Seller</title>
+    
+    <style>
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="text"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            font-size: 1rem;
+            color: #fff;
+            background-color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>New Seller</h1>
+        <p>Fill in the seller's information to create their account</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            <div>
+                {{ form.company_name.label_tag }}
+                {{ form.company_name }}
+            </div>
+            <div>
+                {{ form.email_address.label_tag }}
+                {{ form.email_address }}
+            </div>
+            <div>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+            </div>
+            <button type="submit">Upload seller</button>
+        </form>
+    </div>
+</body>
+</html>
+{% endblock %}

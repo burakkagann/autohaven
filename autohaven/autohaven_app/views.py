@@ -1,11 +1,12 @@
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required ,user_passes_test
+from django.shortcuts import render, redirect , get_object_or_404
 from . import models
 from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
-from .models import Listing, Offer, SellerUser
-from .forms import SignUpForm, NewListingForm, UserUpdateForm, ListingForm
+from .models import Listing, Offer, SellerUser , Seller
+from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
+from django.urls import reverse
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -139,8 +140,10 @@ def profile(request):
        
     if is_super_user:
         listings = Listing.objects.all()
+        sellers = Seller.objects.all()
     else:
         listings = Listing.objects.filter(user=user) 
+        sellers = None
     
     #listings = Listing.objects.all() #this can be used to test listing table instead of above if statement
 
@@ -166,6 +169,7 @@ def profile(request):
         'listings_page_obj': listings_page_obj,
         'offers_page_obj': offers_page_obj,
         'offers': dummy_offers,
+        'sellers': sellers,
     }
 
     return render(request, 'profile/index.html', context)
@@ -239,3 +243,29 @@ def manage_listing(request, listingId):
         listingImages = listing.images.all()
         form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
     return render(request, 'profile/create_edit_listing.html', { 'form': form, 'listing': listing })
+
+
+def seller_list(request):
+    sellers = Seller.objects.all()
+    return render(request, 'profile/sellers.html', {'sellers': sellers})
+
+def manage_seller(request, id):
+    seller = get_object_or_404(Seller, id=id)
+    if request.method == 'POST':
+        form = SellerForm(request.POST, instance=seller)
+        if form.is_valid():
+            form.save()
+            return redirect('/profile/')
+    else:
+        form = SellerForm(instance=seller)
+    return render(request, 'manage_seller.html', {'form': form, 'seller': seller})
+
+def upload_new_seller(request):
+    if request.method == 'POST':
+        form = SellerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/profile/')
+    else:
+        form = SellerForm()
+    return render(request, 'profile/upload_new_seller.html', {'form': form})
