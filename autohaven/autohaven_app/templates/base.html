@@ -40,5 +40,27 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    <div id="popup" class="popup-template">
+        <div class="popup-content">
+            <span class="close-button" onClick="popupClose()">&times;</span>
+            <div id="popup-body">
+                <!-- Content here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function popupOpen(content) {
+            document.getElementById('popup-body').innerHTML = content;
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function popupClose() {
+            document.getElementById('popup').style.display = 'none';
+        }
+
+    </script>
+
 </body>
 </html>
