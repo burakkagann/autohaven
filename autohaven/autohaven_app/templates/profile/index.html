@@ -12,7 +12,12 @@
         {% include 'profile/sellers.html'%}
     {% endif %}
 
-    {% include 'profile/listings.html'%}
+    {% if is_super_user %}
+        {% include 'superuser_listings.html' %}
+    {% else %}
+        {% include 'profile/listings.html' %}
+    {% endif %}
+
     
     {% include 'profile/orders.html'%}
    

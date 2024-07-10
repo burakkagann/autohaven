@@ -1,26 +1,25 @@
 <div class="listings">
-    <h2>My Listings</h2>
-    <table>
+    <h2>Listings</h2>
+    <table class="listings-table">
         <thead>
             <tr>
-                <th>Listing ID</th>
-                <th>Model</th>
+                <th>Task</th>
+                <th>Title</th>
+                <th>Listing</th>
                 <th>Price</th>
                 <th>Date</th>
-                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Django Template Loop for Listings -->
             {% for listing in listings_page_obj %}
-            <tr>
-                <td class="id"><span class="button-style">{{ listing.id }}</span></td>
-                <td class="model">{{ listing.model }}</td>
-                <td class="price"><span class="button-style">${{ listing.price }}</span></td>
-                <td class="date"><span class="button-style">{{ listing.created_at|date:"M d Y" }}</span></td>
-                <td class="status"><span class="button-style">{{ listing.sold|yesno:"Sold,Available,Missing Information" }}</span></td>
-                <td class="action-cell"><a href="{% url 'manage-listing' listing.id %}" class="update-button">Update</a></td>
+            <tr class="{% if listing.type == 'new' %}new-listing{% else %}used-listing{% endif %}">
+                <td>FIG-123</td>
+                <td>{{ listing.title }}</td>
+                <td>Listing {{ forloop.counter }}</td>
+                <td>${{ listing.price }}</td>
+                <td>{{ listing.created_at|date:"M d" }}</td>
+                <td><a href="{% url 'manage-listing' listing.id %}" class="manage-button">Manage</a></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -39,6 +38,6 @@
                 <a href="?listings_page={{ listings_page_obj.paginator.num_pages }}">last &raquo;</a>
             {% endif %}
         </span>
-    </div>    
+    </div>
     <a type="button" class="button button-black button-smaller" href="{% url 'new-listing' %}">Upload Listing</a>
 </div>
