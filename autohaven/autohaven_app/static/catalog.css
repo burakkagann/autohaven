@@ -183,8 +183,8 @@ body {
 }
 
 .catalog_image {
-    width: 525px;
-    height: 325px;
+    width: 230%;
+    height: 90%;
     object-fit:fill;
     margin-left: 20px;
     border-radius: 5px;
@@ -208,7 +208,7 @@ body {
 .list_item_button {
     color: white;
     height: 35px;
-    width: 150px;
+    width: 40%;
     background-color: black;
     border: none;
     border-radius: 5px;
