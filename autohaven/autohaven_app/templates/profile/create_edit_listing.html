@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    {% if listing is None %}New Listing{% else %}Listing ID: {% endif %}
+    {% if listing is None %}New Listing{% else %}Listing ID: {{ listing.id }}{% endif %}
 {% endblock %}
 {% block pageStyles %}
     {% load static %}
@@ -10,13 +10,12 @@
 {% endblock %}
 {% block content %}
     <section class="content">
-    {% if listing is None%}
-    <form id="new-listing-form" action="{% url 'new-listing' %}" method="post" enctype="multipart/form-data">
+    <form id="new-listing-form" action="{% if listing %}{% url 'manage-listing' listing.id %}{% url 'new-listing' %}{% endif %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="column">
-                <h1>New Listing</h1>
-                <span>Fill in your listing information to create a new listing</span>
+                <h1>{% if listing %}Listing ID: {{ listing.id }}{% else %}New Listing{% endif %}</h1>
+                <span>Fill in your listing information to {% if listing is None %}create a new listing{% else %}edit the current listing{% endif %}</span>
                 <div class="row">
                     <div class="column">
                         {{ form.title.errors }}
@@ -76,8 +75,13 @@
                 </div>
                 <div class="row">
                     <div class="column">
-                        {{ form.newImages.errors }}
-                        {{ form.newImages }}
+                        {{ form.listingImages.errors }}
+                        {{ form.listingImages }}
+                        {{ form.imagesToDelete }}
+                        {{ form.listingImages.value | json_script:"listing-images" }}
+                        {% load static %}
+                        {% get_media_prefix as media_prefix %}
+                        {{ media_prefix |json_script:"media-prefix" }}
                         <button id="add-images-btn" class="button button-blue">Add images to listing</button>
                     </div>
                 </div>
@@ -98,5 +102,4 @@
         </div>
     </form>
     </section>
-    {% endif %}
 {% endblock %}

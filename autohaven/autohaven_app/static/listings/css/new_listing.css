@@ -73,3 +73,7 @@ form input,textarea {
 input[type="file"] {
   display: none;
 }
+
+select {
+  display: none;
+}
