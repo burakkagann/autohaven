@@ -116,6 +116,12 @@ def register(request):
 def profile(request):
     user = request.user
 
+    # Popup Params
+    showConf = False
+    confirmationTitle = ""
+    confirmationMessage = ""
+    confirmationButton = ""
+    
     is_regular_user = user.groups.filter(name='RegularUsers').exists()
     is_seller = user.groups.filter(name='Sellers').exists()
     is_super_user = user.groups.filter(name='SuperUsers').exists()
@@ -130,7 +136,13 @@ def profile(request):
             if is_seller and seller_user:
                  seller_user.company_name = request.POST.get('company_name', '')
                  seller_user.save()
-            return redirect('profile')  # Redirect to the same page after saving. Change for other redirects
+
+            # Set Popup Params     
+            showConf = True
+            confirmationTitle = "Success"
+            confirmationMessage = "settings updated successfully"
+            confirmationButton = "Ok"
+            
     else:
         form = UserUpdateForm(instance=user)
 
@@ -168,6 +180,10 @@ def profile(request):
         'offers_page_obj': offers_page_obj,
         'offers': dummy_offers,
         'sellers': sellers,
+        "showConf": showConf,
+        "confirmationMessage": confirmationMessage,
+        "confirmationTitle": confirmationTitle,
+        "confirmationButton": confirmationButton
     }
 
     return render(request, 'profile/index.html', context)
