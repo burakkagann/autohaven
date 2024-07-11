@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+{% block title %}Listing Information Page - Auto Haven{% endblock %}
+
+{% block pageStyles %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'listing_detail.css' %}">
+{% endblock %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ listing.title }}</title>
+</head>
+<body>
+    <div class="container">
+        <div class="image-section">
+            {% if listing.images.exists %}
+                <div id="main-image-container">
+                    <img src="{{ listing.images.first.imagepath.url }}" alt="{{ listing.title }}" class="main-image" id="main-image">
+                </div>
+                <div id="thumbnail-images-container" class="thumbnail-container">
+                    {% for image in listing.images.all|slice:":4" %}
+                        <img src="{{ image.imagepath.url }}" alt="{{ listing.title }}" class="thumbnail" onclick="changeImage('{{ image.imagepath.url }}')">
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>No images available</p>
+            {% endif %}
+        </div>
+        <div class="details-section">
+            <h1>{{ listing.title }}</h1>
+            <div class="status {% if listing.type == 'new' %}status-new{% else %}status-second-hand{% endif %}">
+                {% if listing.type == 'new' %}
+                    New
+                {% else %}
+                    Second-hand
+                {% endif %}
+            </div>
+            <div class="listing-details">
+                <p><span class="label">Brand:</span> <span class="value">{{ listing.brand }}</span></p>
+                <p><span class="label">Model:</span> <span class="value">{{ listing.model }}</span></p>
+                <p><span class="label">Year:</span> <span class="value">{{ listing.year }}</span></p>
+                <p><span class="label">Body Type:</span> <span class="value">{{ listing.body_type }}</span></p>
+                <p><span class="label">Engine Type:</span> <span class="value">{{ listing.engine_type }}</span></p>
+                {% if listing.type != 'new' %}
+                    <p><span class="label">Mileage:</span> <span class="value">{{ listing.mileage }}</span></p>
+                    <div class="offer-price"><span class="label">Offer Price:</span> <span class="value">{{ listing.price }}</span></div>
+                {% else %}
+                    <div class="price"><span class="label">Price:</span> <span class="value">{{ listing.price }}</span></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="details-container">
+        <div class="description">
+            <p>{{ listing.description }}</p>
+        </div>
+        {% if request.user|is_in_group:"RegularUsers" %}
+            {% if listing.type == 'new' %}
+                <div class="payment-section">
+                    <h2>Payment</h2>
+                    <p>Enter your account balance below to purchase the vehicle:</p>
+                    <label for="account-balance">Account Balance:</label>
+                    <input type="number" id="account-balance" name="account_balance" required>
+                    <button type="submit">Pay Now</button>
+                </div>
+            {% else%} 
+                <div class="offer-section">
+                    <h2>Submit Your Offer</h2>
+                    <p>Make an offer for the listing and stand a chance to purchase the car:</p>
+                    <label for="offer-amount">Offer Amount:</label>
+                    <input type="number" id="offer-amount" name="offer_amount" required>
+                    <button type="submit">Submit Offer</button>
+                </div>
+        {% endif %}
+    {% endif %}
+    </div>
+    <script>
+        function changeImage(url) {
+            document.getElementById('main-image').src = url;
+        }
+    </script>
+
+        <!-- Payment Section for New Listings -->
+
+
+<div class="catalog_footer">
+
+    <div class="footer_left">
+
+        <div class="catalog_h3">AutoHaven</div>
+        <div class="catalog_h3">Ernst-Reuter Platz 10</div>
+        <div class="catalog_h3">Berlin - 10587</div>
+
+        <img src="{% static 'images/link_image.png' %}" class="footer_link_image">
+
+
+    </div>
+
+    <div class="footer_right">
+
+        <div class="footer_links_left">
+            <div class="bolder_text">About Us</div>
+            <div class="light_text">Careers</div>
+            <div class="light_text">Compliance</div>
+            <div class="light_text">Page</div>
+        </div>
+
+        <div class="footer_links_right">
+            <div class="bolder_text">All Cars</div>
+            <div class="light_text">New Cars</div>
+            <div class="light_text">Second Hand Cars</div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+{% endblock %}

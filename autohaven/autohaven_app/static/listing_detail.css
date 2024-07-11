@@ -1,0 +1,226 @@
+.container {
+    display: flex;
+    margin: 20px;
+}
+
+.image-section {
+    flex: 1;
+    max-width: 50%;
+    margin: 10px 20px;
+    padding-left: 40px;
+    padding-right: 60px;
+}
+
+.main-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.thumbnail-container {
+    display: flex;
+    margin-top: 10px;
+    overflow-x: auto;
+    gap: 5px;
+}
+
+.thumbnail {
+    width: 30%;
+    cursor: pointer;
+    border-radius: 10px;
+}
+.details-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 10px 20px; 
+
+}
+.description, .payment-section, .offer-section {
+    width: 50%;
+    background-color: white; 
+    color: gray;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column; /* Adjusted to column to align internal content */
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    box-sizing: border-box; /* Ensure padding is included in the width */
+}
+.description {
+    height: 270px;
+    line-height: 2.5;
+    padding-left: 60px;
+}
+.listing-details {
+        margin-top: 20px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400; 
+        font-size: 24px;
+        
+}
+
+.label {
+    color: gray;
+    font-weight: 300;
+}
+
+.value {
+    font-weight: 500;
+    color: black;
+}
+.status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 162px;
+    height: 50px;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    color: white;
+    font-weight: medium;
+    margin-top: 10px;
+}
+.status-new {
+    background-color: rgb(108, 205, 108);
+}
+.status-second-hand {
+    background-color: rgb(52, 173, 241);
+    
+}
+.price, .offer-price {
+    font-size: 24px;
+    font-weight: medium;
+    margin-top: 10px;
+}
+
+.payment-section, .offer-section {
+    gap: 5px;
+    font-family: 'Inter', sans-serif;
+    padding-left: 140px;
+}
+
+
+.payment-section h2, .offer-section h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: black;
+
+}
+
+.payment-section p, .offer-section p {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 2.0;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.payment-section form, .offer-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    
+}
+
+.payment-section label, .offer-section label {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.payment-section input, .offer-section input {
+    font-family: 'Inter', sans-serif;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.payment-section button, .offer-section button {
+    width: 230px;
+    font-family: 'Inter', sans-serif;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 300;
+    background-color: black; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 50px;
+}
+
+.payment-section button:hover, .offer-section button:hover {
+    background-color: black; 
+}
+.catalog_footer {
+
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    padding: 20px;
+    height: 200px; 
+    margin-top: 10px;
+    border-top: 1px solid gray;
+}
+
+.footer_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.footer_right {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: 1;
+    margin-top: 10px;
+
+}
+
+.footer_links_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer_links_right {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer_link_image {
+    width: 150px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.address_div {
+    gap: 15px;
+}
+
+.bolder_text {
+    font-weight: 500;
+}
+
+.light_text {
+    font-weight: lighter;
+}
