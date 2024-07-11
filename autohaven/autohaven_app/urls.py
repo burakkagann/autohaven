@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.root),
@@ -15,4 +17,9 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='landing_page.html'), name='logout'),
     path('sellers/upload/', views.upload_new_seller, name='upload_new_seller'),
     path('sellers/manage/<int:id>/', views.manage_seller, name='manage_seller'),
+    path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail')
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

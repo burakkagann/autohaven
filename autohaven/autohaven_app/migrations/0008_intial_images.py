@@ -10,8 +10,8 @@ def assign_initial_images(apps, schema_editor):
 
     # Define paths to the folders containing initial images
     initial_images_paths = {
-        1: os.path.join(settings.BASE_DIR, 'initial_images_tesla'),
-        2: os.path.join(settings.BASE_DIR, 'initial_images_jeep'),
+        1: os.path.join(settings.BASE_DIR, 'data/uploaded_images/initial_images_tesla'),
+        2: os.path.join(settings.BASE_DIR, 'data/uploaded_images/initial_images_jeep'),
     }
 
     # Iterate through each listing ID and corresponding folder
@@ -25,7 +25,7 @@ def assign_initial_images(apps, schema_editor):
         # Iterate through the files in the directory
         for filename in os.listdir(images_path):
             if filename.endswith('.jpg') or filename.endswith('.png'):
-                image_path = os.path.join(images_path, filename)
+                image_path = os.path.join(os.path.basename(images_path), filename)
                 ListingImage.objects.create(
                     listing=listing,
                     imagepath=image_path,
