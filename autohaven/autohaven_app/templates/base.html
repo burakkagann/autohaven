@@ -40,5 +40,93 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    <style>
+        .popup-background {
+            display: {% if showConf %}block{% else %}none{% endif %};
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(2px);
+        }
+
+        .popup-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .popup-body {
+            display: flex;
+            flex-direction: column;
+            background-color: #fefefe;
+            margin: 15px;
+            padding: 30px;
+            width: 80%;
+            height: 30%;
+            max-width: 600px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px;
+            box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.5);
+
+        }
+
+        .popup-title {
+            font-size: 3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: black;
+        }
+
+        .popup-message {
+            font-size: 1rem;
+            margin-bottom: 20px;
+            color: gray;
+        }
+
+        .popup-button {
+            padding: 10px 20px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 90%;
+        }
+
+        .popup-button:hover {
+            background-color: rgb(70, 70, 70);
+        }
+
+        .popup-button:hover {
+            background-color: #000000;
+        }
+
+    </style>
+
+    <div id="popup" class="popup-background">
+        <div class="popup-wrapper">
+            <div class="popup-body">
+                    <l class="popup-title">{{confirmationTitle}}</l>
+                    <l class="popup-message">{{confirmationMessage}}</l>
+                <button class="popup-button" onClick="popupClose()">{{ confirmationButton }}</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function popupClose() {
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>

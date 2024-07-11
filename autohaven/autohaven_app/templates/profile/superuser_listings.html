@@ -1,0 +1,25 @@
+<table class="listings-table">
+    <h2>Listings</h2>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Listing</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for listing in listings_page_obj %}
+        <tr class="{% if listing.type == 'new' %}new-listing{% else %}used-listing{% endif %}">
+            <td>{{listing.id}}</td>
+            <td>{{ listing.title }}</td>
+            <td class="Listing"><span class="cell-content">Listing{{ forloop.counter }}</span></td>
+            <td class="price"><span class="cell-content">${{ listing.price }}</span></td>
+            <td>{{ listing.created_at|date:"M d" }}</td>
+            <td><button class="manage-button">Manage</button></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
