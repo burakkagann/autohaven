@@ -24,7 +24,7 @@ class Listing(models.Model):
     model = models.CharField(max_length=100)
     year = models.IntegerField()
     brand= models.CharField(max_length=100)
-    mileage = models.FloatField()
+    mileage = models.FloatField(blank=True, null=True)
     engine_type = models.CharField(max_length=100)
     body_type = models.CharField(max_length=100,default='')
     price = models.DecimalField(max_digits=10, decimal_places=2)
