@@ -8,9 +8,10 @@ main {
 
 .content {
     flex-basis: 50%;
-    > * {
-        width: 100%;
-    }
+}
+
+.content > * {
+    width: 100%;
 }
 
 h1, h2 {
@@ -86,9 +87,10 @@ table {
 .pagination {
     text-align: end;
     padding-top: 0.5em;
-    .step-links {
-        margin-right: 2.8em;
-    }
+}
+
+.step-links {
+    margin-right: 2.8em;
 } 
 
 th, td {
@@ -100,7 +102,6 @@ th, td {
 }
 
 th {
-    /* background-color: #f4f4f9; */
     font-size: 1em;
     font-weight: bold;
 }
@@ -108,18 +109,6 @@ th {
 td.id, td.date {
     color: gray;
 }
-
-td.
-
-/* .button-style {
-    display: inline-block;
-    padding: 2px 8px;
-    margin: 0;
-    border: 1px solid #000;
-    border-radius: 4px;
-    background-color: #fff;
-    font-size: 0.8em;
-} */
 
 .status-button {
     display: inline-block;
@@ -186,4 +175,51 @@ td.model {
 .button-decline {
     background-color: red;
     color: white;
+}
+
+.listings-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.listings-table th, .listings-table td {
+    padding: 10px;
+    border: 1px solid white;
+}
+.listings-table th {
+
+    background-color: white;
+}
+
+.new-listing {
+    background-color: #87D986; /* Green background for new listings */
+}
+
+.used-listing {
+    background-color: #87D4FF; /* Blue background for used listings */
+}
+
+.manage-button {
+    background-color: #828282;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+    display: inline-block;
+}
+
+.pagination {
+    margin: 10px 0;
+}
+
+.step-links {
+    display: flex;
+    justify-content: space-between;
+}
+.cell-content {
+    background-color: white;
+    border-radius: 8px;
+    padding: 2px 8px;
+    display: inline-block; 
 }
