@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.forms import inlineformset_factory
-from .models import Listing, ListingImage
+from .models import Listing, ListingImage, Seller
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -37,6 +37,10 @@ class NewListingForm(forms.ModelForm):
         model = Listing
         fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
     
+    def __init__(self, *args, **kwargs):
+
+        super().__init__(*args, **kwargs)
+
     def save(self):
         newListing = super(NewListingForm, self).save()
         print('newListing', newListing)
@@ -46,10 +50,30 @@ class NewListingForm(forms.ModelForm):
             print('file', f)
             newListingImage = ListingImage(listing=newListing, imagepath=f)
             newListingImage.save()
-            
-    
 
-ListingImagesFormSet = inlineformset_factory(Listing, ListingImage, fields=['imagepath'], extra=4)
+class ListingForm(forms.ModelForm):
+    listingImages = MultipleFileField(required=False)
+    imagesToDelete = forms.ModelMultipleChoiceField(ListingImage.objects.all(), required=False)
+    class Meta:
+        model = Listing
+        fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if kwargs['instance'] is not None:
+            querySetImagesToDelete = ListingImage.objects.filter(listing=kwargs['instance'])
+            self.fields['imagesToDelete'].queryset = querySetImagesToDelete
+        
+
+    def save(self):
+        listing = super(ListingForm, self).save()
+        files = self.cleaned_data['listingImages']
+        for f in files:
+            listingImage = ListingImage(listing=listing, imagepath=f)
+            listingImage.save()
+        
+        imagesToDelete = self.cleaned_data['imagesToDelete']
+        ListingImage.objects.filter(id__in=imagesToDelete).delete()
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -62,3 +86,19 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
         self.fields['username'].help_text = None  # Remove the default help text for username
+
+
+class SellerForm(forms.ModelForm):
+    class Meta:
+        model = Seller
+        fields = ['company_name', 'email_address', 'username']
+        labels = {
+            'company_name': 'Company name',
+            'email_address': 'Email address',
+            'username': 'Username',
+        }
+        widgets = {
+            'company_name': forms.TextInput(attrs={'placeholder': 'Company name'}),
+            'email_address': forms.EmailInput(attrs={'placeholder': 'Email address'}),
+            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
+        }        
