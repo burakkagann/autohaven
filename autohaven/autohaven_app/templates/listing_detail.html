@@ -58,25 +58,27 @@
         <div class="description">
             <p>{{ listing.description }}</p>
         </div>
-        {% if request.user|is_in_group:"RegularUsers" %}
-            {% if listing.type == 'new' %}
-                <div class="payment-section">
-                    <h2>Payment</h2>
-                    <p>Enter your account balance below to purchase the vehicle:</p>
-                    <label for="account-balance">Account Balance:</label>
-                    <input type="number" id="account-balance" name="account_balance" required>
-                    <button type="submit">Pay Now</button>
-                </div>
-            {% else%} 
-                <div class="offer-section">
-                    <h2>Submit Your Offer</h2>
-                    <p>Make an offer for the listing and stand a chance to purchase the car:</p>
-                    <label for="offer-amount">Offer Amount:</label>
-                    <input type="number" id="offer-amount" name="offer_amount" required>
-                    <button type="submit">Submit Offer</button>
-                </div>
+        {% if request.user.is_authenticated %}
+            {% if request.user|is_in_group:"RegularUsers" %}
+                {% if listing.type == 'new' %}
+                    <div class="payment-section">
+                        <h2>Payment</h2>
+                        <p>Enter your account balance below to purchase the vehicle:</p>
+                        <label for="account-balance">Account Balance:</label>
+                        <input type="number" id="account-balance" name="account_balance" required>
+                        <button type="submit">Pay Now</button>
+                    </div>
+                {% else%} 
+                    <div class="offer-section">
+                        <h2>Submit Your Offer</h2>
+                        <p>Make an offer for the listing and stand a chance to purchase the car:</p>
+                        <label for="offer-amount">Offer Amount:</label>
+                        <input type="number" id="offer-amount" name="offer_amount" required>
+                        <button type="submit">Submit Offer</button>
+                    </div>
+                {% endif %}
+            {% endif %}
         {% endif %}
-    {% endif %}
     </div>
     <script>
         function changeImage(url) {
