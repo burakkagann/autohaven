@@ -46,7 +46,7 @@ def create_more_users(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("autohaven_app", "0005_seller_date_added"),
+        ("autohaven_app", "0007_create_init_users"),
     ]
 
     operations = [migrations.RunPython(create_more_users),

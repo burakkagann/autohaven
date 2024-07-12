@@ -40,7 +40,7 @@ def create_init_offers(apps,schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("autohaven_app", "0006_more_users"),
+        ("autohaven_app", "0010_create_intial_images"),
     ]
 
     operations = [migrations.RunPython(create_init_offers),]
