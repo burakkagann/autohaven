@@ -4,8 +4,8 @@ from . import models
 from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
-from .models import Listing, Offer, SellerUser , Seller
-from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
+from .models import Listing, Offer, SellerUser , Seller, User
+from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
 from django.urls import reverse
 
 # import logging
@@ -22,6 +22,35 @@ def login(request):
 
 def landing_page(request):
     return render(request, 'landing_page.html')
+
+
+def password_reset_confirm(request,username):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(username=username)
+            user.set_password(form.cleaned_data['new_password'])
+            showConf = True
+            confirmationMessage = 'You successfully reset your password! You can now use this to log into your account.'
+            confirmationButton = 'Back to log in page'
+            confirmationTitle = 'Password changed.'
+            return render(request, 'password_reset_confirm.html', {'form':form, 'confirmationMessage':confirmationMessage,'confirmationButton':confirmationButton,'confirmationTitle':confirmationTitle,'showConf':showConf,'username':username})
+        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+    else:
+        form = ResetPasswordForm()
+        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            return redirect(reverse('password-reset-confirm', args=[username]))
+    else:
+        form = ForgotPasswordForm()
+    
+    return render(request, 'password_reset.html', {'form': form})
 
 def catalog_page(request):
     # Pull Listing from models (databse)
