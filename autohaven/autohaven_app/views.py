@@ -112,6 +112,8 @@ def register(request):
 
     return render(request, 'signup.html', {'form': form, 'error_messages': error_messages})
 
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
 
 @login_required()
 def profile(request):
