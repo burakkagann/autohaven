@@ -1,6 +1,6 @@
-function selectImages(event, fileInput) {
+function selectImages(event, filesInput) {
   event.preventDefault();
-  fileInput.click();
+  filesInput.click();
 }
 
 function onDelete(event) {

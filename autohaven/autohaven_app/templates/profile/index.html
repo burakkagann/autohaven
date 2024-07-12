@@ -12,10 +12,14 @@
         {% include 'profile/sellers.html'%}
     {% endif %}
 
-    {% include 'profile/listings.html'%}
+    {% if is_super_user %}
+        {% include 'profile/superuser_listings.html' %}
+    {% else %}
+        {% include 'profile/listings.html' %}
+    {% endif %}
+
     
     {% include 'profile/orders.html'%}
-   
-  
+
     </section>
 {% endblock %}
