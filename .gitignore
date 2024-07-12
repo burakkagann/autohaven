@@ -166,3 +166,8 @@ cython_debug/
 
 .python-version
 autohaven/data/*
+# But do not ignore these specific directories
+!/data/uploaded_images/initial_images_tesla
+!/autohaven/data/uploaded_images/initial_images_tesla/**
+!/data/uploaded_images/initial_images_jeep
+!/autohaven/data/uploaded_images/initial_images_jeep/**

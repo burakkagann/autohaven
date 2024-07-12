@@ -121,7 +121,11 @@
                                 <l class="list_item_description_text">{{item.listing.model}}</l>
                                 <l class="list_item_description_text">{{item.listing.year}}</l>
                                 <l class="list_item_description_text">{{item.listing.price}} $</l>
-                                <button class="list_item_button">View Offer</button>  
+                                <form action="{% url 'listing_detail' item.listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="listing_id" value="{{ item.listing.id }}">
+                                    <button type="submit" class="btn btn-primary list_item_button">View Offer</button>
+                                </form>
                             </div>
 
                             
@@ -143,7 +147,12 @@
                                 <l class="list_item_description_text">{{item.listing.model}}</l>
                                 <l class="list_item_description_text">{{item.listing.year}}</l>
                                 <l class="list_item_description_text">{{item.listing.price}} $</l>
-                                <button class="list_item_button">View Offer</button>  
+                                
+                                <form action="{% url 'listing_detail' item.listing.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="listing_id" value="{{ item.listing.id }}">
+                                    <button type="submit" class="btn btn-primary list_item_button">View Offer</button>
+                                </form>
                             </div>
 
                             

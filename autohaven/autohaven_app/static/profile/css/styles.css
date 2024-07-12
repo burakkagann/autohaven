@@ -60,6 +60,11 @@ input {
     color: #fff;
 }
 
+.button-red {
+    background-color: #D74444;
+    color: #fff;
+}
+
 .button-blue {
     background-color: #34ADF1;
     color: #fff;

@@ -10,7 +10,7 @@
 {% endblock %}
 {% block content %}
     <section class="content">
-    <form id="new-listing-form" action="{% if listing %}{% url 'manage-listing' listing.id %}{% url 'new-listing' %}{% endif %}" method="post" enctype="multipart/form-data">
+    <form id="new-listing-form" action="{% if listing %}{% url 'manage-listing' listing.id %}{% else %}{% url 'new-listing' %}{% endif %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="column">
@@ -19,7 +19,7 @@
                 <div class="row">
                     <div class="column">
                         {{ form.title.errors }}
-                        {{ form.tile.label_tag }}
+                        {{ form.title.label_tag }}
                         {{ form.title }}
                     </div>
                 </div>
@@ -53,7 +53,8 @@
                         {{ form.engine_type.label_tag }}
                         {{ form.engine_type }}
                     </div>
-                    <div class="column">
+                    
+                    <div class="column" {% if form.type.value == Listing.NEW %} style="display: none " {% endif  %}>
                         {{ form.mileage.errors }}
                         {{ form.mileage.label_tag }}
                         {{ form.mileage }}
@@ -90,6 +91,13 @@
                         <button id="submit-form-btn" type="submit" class="button button-black">Save listing</button>
                     </div>
                 </div>
+                {% if listing %}
+                <div class="row">
+                    <div class="column">
+                        <button id="delete-btn" name="delete" type="submit" class="button button-red">Delete listing</button>
+                    </div>
+                </div>
+                {% endif %}
             </div>
             <div class="column" id="images-container">
                 <div class="row">
