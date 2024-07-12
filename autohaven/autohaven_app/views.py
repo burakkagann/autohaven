@@ -7,6 +7,7 @@ from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , Seller
 from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -283,3 +284,11 @@ def upload_new_seller(request):
     else:
         form = SellerForm()
     return render(request, 'profile/upload_new_seller.html', {'form': form})
+
+
+@csrf_protect
+@login_required
+def listing_detail(request,listing_id):
+    listing=get_object_or_404(Listing,pk=listing_id)
+    context = {'listing': listing }
+    return render(request, 'listing_detail.html', context)
