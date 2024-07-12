@@ -73,7 +73,7 @@ def create_initial_users(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('autohaven_app', 'create_init_groups'),
+        ('autohaven_app', '0006_create_init_groups'),
     ]
 
     operations = [migrations.RunPython(create_initial_users),
