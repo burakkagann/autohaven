@@ -91,13 +91,21 @@ def catalog_page(request):
 
 
 def register(request):
+    
+    showConf = False
+    confirmationTitle = ""
+    confirmationMessage = ""
+    confirmationButton = ""
+    
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('home')  # Replace 'home' with your actual redirect URL
-        # TODO uncomment when the modal popup is ready
-            # return render(request, 'signup.html', { 'modal_open': true}) 
+            
+            showConf = True
+            confirmationTitle = "Your account is complete"
+            confirmationMessage = "You successfully created an account"
+            confirmationButton = "Ok"
             
         else:
             print(form.errors)
@@ -110,7 +118,14 @@ def register(request):
         for error in errors:
             error_messages.append(f"{error}")
 
-    return render(request, 'signup.html', {'form': form, 'error_messages': error_messages})
+    return render(request, 'signup.html', {
+        'form': form,
+        'error_messages': error_messages,
+        'showConf': showConf,
+        'confirmationTitle': confirmationTitle,
+        'confirmationMessage': confirmationMessage,
+        'confirmationButton': confirmationButton
+    })
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
