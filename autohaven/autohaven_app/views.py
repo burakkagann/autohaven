@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required ,user_passes_test
 from django.shortcuts import render, redirect , get_object_or_404
 from . import models
-from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , Seller
 from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -194,7 +195,7 @@ def profile(request):
 
 #User Authentication Views 
 
-def login_view(request):
+def login_user(request):
     if request.method == 'POST':
         print('LOGIN VIEW POST')
         username = request.POST['username']
@@ -202,19 +203,22 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         print('user', user)
         if user is not None:
-            login(request)
+            auth_login(request,user)
             #superuser
-            if user.is_superuser:
-                
-                return redirect('/profile/')
-            #seller
-            elif user.groups.filter(name='Sellers').exists():
+            if request.user.groups.filter(name='RegularUsers').exists():
+                return redirect('home')
 
-                return redirect('/profile/')
-            #regular user
-            else:
+            elif user.is_superuser:
                 
-                return redirect('/')
+                return redirect('profile')
+            #seller
+            elif request.user.groups.filter(name='Sellers').exists():
+
+                return redirect('profile')
+            
+            else:
+                return redirect('home')
+            
         else:
             print('Error login')
             error_message = 'Invalid credentials. Please try again.'
@@ -223,42 +227,53 @@ def login_view(request):
         
     return render(request, 'login.html')
 
-
+@login_required()
 def logout_view(request):
         logout(request)
         return redirect('home')
 
-
+@login_required()
 def new_listing(request):
+    listingType = { "type": Listing.NEW if request.user.groups.filter(name='Sellers').exists() else Listing.USED }
     if request.method == 'POST':
-        form = NewListingForm(request.POST, request.FILES)
+        formData = request.POST.copy()
+        formData.update(listingType)
+        form = NewListingForm(formData, request.FILES)
         if(form.is_valid()):
             form.instance.user = request.user
             form.save()
         else:
             print('form errors', form.errors)
     else:
-        form = NewListingForm()
-    return render(request, 'profile/create_edit_listing.html', { 'form': form })
+        formData = listingType
+        form = NewListingForm(initial=listingType)
+    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'Listing': Listing })
 
+@login_required()
 def manage_listing(request, listingId):
     if request.method == 'POST':
         listing = Listing.objects.get(id=listingId)
         if(listing):
-            listingImages = listing.images.all()
-            form = ListingForm(request.POST, request.FILES, instance=listing)
-            if(form.is_valid()):
-                form.instance.user = request.user
-                form.save()
-                # print('listingImages', listingImages)
-                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)        
+            if('delete' in request.POST):
+                listing.delete()
+                return redirect('profile')
             else:
-                print('form errors', form.errors)
+                listingImages = listing.images.all()
+                formData = request.POST.copy()
+                formData.update({ "type": listing.type })
+                form = ListingForm(formData, request.FILES, instance=listing)
+                if(form.is_valid()):
+                    form.instance.user = request.user
+                    form.save()
+                    # print('listingImages', listingImages)
+                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)        
+                else:
+                    print('form errors', form.errors)
     else:
         listing = Listing.objects.get(id=listingId)
         listingImages = listing.images.all()
         form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
-    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'listing': listing })
+    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'listing': listing, 'Listing': Listing })
 
 
 def seller_list(request):
@@ -285,3 +300,10 @@ def upload_new_seller(request):
     else:
         form = SellerForm()
     return render(request, 'profile/upload_new_seller.html', {'form': form})
+
+
+@csrf_protect
+def listing_detail(request,listing_id):
+    listing=get_object_or_404(Listing,pk=listing_id)
+    context = {'listing': listing }
+    return render(request, 'listing_detail.html', context)
