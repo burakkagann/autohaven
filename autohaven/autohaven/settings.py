@@ -161,8 +161,10 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-LOGIN_REDIRECT_URL = '/profile/'
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 STATICFILES_DIRS = [
     '/Applications/Documents/SoftwareDevelopment /autohaven/autohaven/autohaven_app/static', ] 
+
+LOGIN_REDIRECT_URL = '/'

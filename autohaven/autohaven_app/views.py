@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required ,user_passes_test
 from django.shortcuts import render, redirect , get_object_or_404
 from . import models
-from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , Seller
 from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -193,7 +193,7 @@ def profile(request):
 
 #User Authentication Views 
 
-def login_view(request):
+def login_user(request):
     if request.method == 'POST':
         print('LOGIN VIEW POST')
         username = request.POST['username']
@@ -201,19 +201,22 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         print('user', user)
         if user is not None:
-            login(request)
+            auth_login(request,user)
             #superuser
-            if user.is_superuser:
-                
-                return redirect('/profile/')
-            #seller
-            elif user.groups.filter(name='Sellers').exists():
+            if request.user.groups.filter(name='RegularUsers').exists():
+                return redirect('home')
 
-                return redirect('/profile/')
-            #regular user
-            else:
+            elif user.is_superuser:
                 
-                return redirect('/')
+                return redirect('profile')
+            #seller
+            elif request.user.groups.filter(name='Sellers').exists():
+
+                return redirect('profile')
+            
+            else:
+                return redirect('home')
+            
         else:
             print('Error login')
             error_message = 'Invalid credentials. Please try again.'
@@ -298,7 +301,6 @@ def upload_new_seller(request):
 
 
 @csrf_protect
-@login_required
 def listing_detail(request,listing_id):
     listing=get_object_or_404(Listing,pk=listing_id)
     context = {'listing': listing }
