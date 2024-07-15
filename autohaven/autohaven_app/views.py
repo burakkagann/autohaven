@@ -206,7 +206,7 @@ def profile(request):
        
     if is_super_user:
         listings = Listing.objects.all()
-        sellers = Seller.objects.all()
+        sellers = SellerUser.objects.all()
     else:
         listings = Listing.objects.filter(user=user) 
         sellers = None
@@ -239,7 +239,8 @@ def profile(request):
         "showConf": showConf,
         "confirmationMessage": confirmationMessage,
         "confirmationTitle": confirmationTitle,
-        "confirmationButton": confirmationButton
+        "confirmationButton": confirmationButton,
+        "form_editable": form_editable
     }
 
     return render(request, 'profile/index.html', context)

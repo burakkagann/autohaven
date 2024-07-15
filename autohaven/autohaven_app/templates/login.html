@@ -108,8 +108,8 @@
     <div class="login-container">
         <h1>Log In</h1>
         <p>Enter your details to log into your account</p>
-        {% if form.errors %}
-            <div class="error-message">Invalid login credentials. Please try again.</div>
+        {% if error %}
+            <div class="error-message">{{error}}</div>
         {% endif %}
         <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
