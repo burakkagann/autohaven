@@ -50,6 +50,8 @@ class NewListingForm(forms.ModelForm):
             print('file', f)
             newListingImage = ListingImage(listing=newListing, imagepath=f)
             newListingImage.save()
+        newListing.refresh_from_db()
+        return newListing
 
 class ListingForm(forms.ModelForm):
     listingImages = MultipleFileField(required=False)
