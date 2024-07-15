@@ -32,19 +32,19 @@ class MultipleFileField(forms.FileField):
 
 
 class NewListingForm(forms.ModelForm):
-    newImages = MultipleFileField(required=False)
+    listingImages = MultipleFileField(required=False)
     class Meta:
         model = Listing
-        fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
+        fields = [ "title", "brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price", "type"]
     
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
+        # self.fields['mileage'].required = False
 
     def save(self):
         newListing = super(NewListingForm, self).save()
         print('newListing', newListing)
-        files = self.cleaned_data['newImages']
+        files = self.cleaned_data['listingImages']
         print('files', files)
         for f in files:
             print('file', f)
@@ -56,7 +56,7 @@ class ListingForm(forms.ModelForm):
     imagesToDelete = forms.ModelMultipleChoiceField(ListingImage.objects.all(), required=False)
     class Meta:
         model = Listing
-        fields = ["brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price"]
+        fields = [ "title", "brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price", "type"]
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

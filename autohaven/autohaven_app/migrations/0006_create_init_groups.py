@@ -15,7 +15,7 @@ def create_initial_groups(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('autohaven_app', '0001_initial'),  # Adjust the dependency if necessary
+        ('autohaven_app', '0005_alter_listingmodel_description'),  # Adjust the dependency if necessary
     ]
 
     operations = [
