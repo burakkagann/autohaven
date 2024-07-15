@@ -229,30 +229,63 @@ def logout_view(request):
 @login_required()
 def new_listing(request):
     listingType = { "type": Listing.NEW if request.user.groups.filter(name='Sellers').exists() else Listing.USED }
+    confirmationConfig = {
+        "showConf" : False,
+        "confirmationTitle" : '',
+        "confirmationMessage" : '',
+        "confirmationButton" : '',
+        "confirmationRedirectURL" : '',
+    }
     if request.method == 'POST':
         formData = request.POST.copy()
         formData.update(listingType)
         form = NewListingForm(formData, request.FILES)
         if(form.is_valid()):
             form.instance.user = request.user
-            form.save()
+            listing = form.save()
+            confirmationConfig['showConf'] = True
+            confirmationConfig['confirmationTitle'] = 'New listing uploaded'
+            confirmationConfig['confirmationMessage'] = 'Your listing has been successfully added to the catalog. You will receive a confirmation email shortly regarding your upload. You can view and edit this listing in the My Listings section'
+            confirmationConfig['confirmationButton'] = 'Back to My Profile'
+            confirmationConfig['confirmationRedirectURL'] = '/profile'
+            listingImages = listing.images.all()
+            form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
         else:
             print('form errors', form.errors)
     else:
         formData = listingType
         form = NewListingForm(initial=listingType)
-    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'Listing': Listing })
+    context = { 
+        'form': form,
+        'Listing': Listing,
+    } | confirmationConfig
+    return render(request, 'profile/create_edit_listing.html', context=context)
 
 @login_required()
 def manage_listing(request, listingId):
+    confirmationConfig = {
+        "showConf" : False,
+        "confirmationTitle" : '',
+        "confirmationMessage" : '',
+        "confirmationButton" : '',
+        "confirmationRedirectURL" : '',
+    }
     if request.method == 'POST':
         listing = Listing.objects.get(id=listingId)
+        listingImages = listing.images.all()
         if(listing):
             if('delete' in request.POST):
+                # Creates copy of pk in memory to show page with modal and deleted listing information
+                listingId = listing.pk
                 listing.delete()
-                return redirect('profile')
+                listing.pk = listingId
+                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                confirmationConfig['showConf'] = True
+                confirmationConfig['confirmationTitle'] = 'Listing removed'
+                confirmationConfig['confirmationMessage'] = 'The listing was successfully delete'
+                confirmationConfig['confirmationButton'] = 'Back to My Profile'
+                confirmationConfig['confirmationRedirectURL'] = '/profile'
             else:
-                listingImages = listing.images.all()
                 formData = request.POST.copy()
                 formData.update({ "type": listing.type })
                 form = ListingForm(formData, request.FILES, instance=listing)
@@ -260,14 +293,21 @@ def manage_listing(request, listingId):
                     form.instance.user = request.user
                     form.save()
                     # print('listingImages', listingImages)
-                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)        
+                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                    confirmationConfig['showConf'] = True
+                    confirmationConfig['confirmationTitle'] = 'Listing updated'
+                    confirmationConfig['confirmationMessage'] = 'The changes you made have been saved to your listing'
+                    confirmationConfig['confirmationButton'] = 'Back to My Profile'
+                    confirmationConfig['confirmationRedirectURL'] = '/profile'
                 else:
                     print('form errors', form.errors)
     else:
         listing = Listing.objects.get(id=listingId)
         listingImages = listing.images.all()
         form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
-    return render(request, 'profile/create_edit_listing.html', { 'form': form, 'listing': listing, 'Listing': Listing })
+
+    context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
+    return render(request, 'profile/create_edit_listing.html', context=context)
 
 
 def seller_list(request):
