@@ -33,7 +33,7 @@ def assign_initial_images(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("autohaven_app", "0007_initial_offer"),
+        ("autohaven_app", "0009_create_init_listings"),
     ]
 
     operations = [migrations.RunPython(assign_initial_images),]

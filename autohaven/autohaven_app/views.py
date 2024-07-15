@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required ,user_passes_test
 from django.shortcuts import render, redirect , get_object_or_404
 from . import models
-from django.contrib.auth import authenticate,login,logout
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
-from .models import Listing, Offer, SellerUser , Seller
-from .forms import SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
+from .models import Listing, Offer, SellerUser , Seller, User
+from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -23,6 +23,35 @@ def login(request):
 
 def landing_page(request):
     return render(request, 'landing_page.html')
+
+
+def password_reset_confirm(request,username):
+    if request.method == 'POST':
+        form = ResetPasswordForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(username=username)
+            user.set_password(form.cleaned_data['new_password'])
+            showConf = True
+            confirmationMessage = 'You successfully reset your password! You can now use this to log into your account.'
+            confirmationButton = 'Back to log in page'
+            confirmationTitle = 'Password changed.'
+            return render(request, 'password_reset_confirm.html', {'form':form, 'confirmationMessage':confirmationMessage,'confirmationButton':confirmationButton,'confirmationTitle':confirmationTitle,'showConf':showConf,'username':username})
+        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+    else:
+        form = ResetPasswordForm()
+        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+
+
+def password_reset(request):
+    if request.method == 'POST':
+        form = ForgotPasswordForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            return redirect(reverse('password-reset-confirm', args=[username]))
+    else:
+        form = ForgotPasswordForm()
+    
+    return render(request, 'password_reset.html', {'form': form})
 
 def catalog_page(request):
     # Pull Listing from models (databse)
@@ -144,10 +173,17 @@ def profile(request):
     is_seller = user.groups.filter(name='Sellers').exists()
     is_super_user = user.groups.filter(name='SuperUsers').exists()
 
-  
+    # Fetch or create the SellerUser instance if the user is a seller
     seller_user = SellerUser.objects.get_or_create(user=user)[0] if is_seller else None
 
-    if request.method == 'POST':
+    # Determine if form should be editable
+    form_editable = request.POST.get('form_editable', 'false') == 'true'
+
+    form = UserUpdateForm(instance=user)
+
+    if request.method == 'POST' and 'edit' in request.POST:
+        form_editable = True
+    elif request.method == 'POST':
         form = UserUpdateForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
@@ -163,6 +199,8 @@ def profile(request):
             
     else:
         form = UserUpdateForm(instance=user)
+               
+        
 
     # Listings
        
@@ -206,11 +244,12 @@ def profile(request):
 
     return render(request, 'profile/index.html', context)
 
+
         
 
 #User Authentication Views 
 
-def login_view(request):
+def login_user(request):
     if request.method == 'POST':
         print('LOGIN VIEW POST')
         username = request.POST['username']
@@ -218,19 +257,22 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         print('user', user)
         if user is not None:
-            login(request)
+            auth_login(request,user)
             #superuser
-            if user.is_superuser:
-                
-                return redirect('/profile/')
-            #seller
-            elif user.groups.filter(name='Sellers').exists():
+            if request.user.groups.filter(name='RegularUsers').exists():
+                return redirect('home')
 
-                return redirect('/profile/')
-            #regular user
-            else:
+            elif user.is_superuser:
                 
-                return redirect('/')
+                return redirect('profile')
+            #seller
+            elif request.user.groups.filter(name='Sellers').exists():
+
+                return redirect('profile')
+            
+            else:
+                return redirect('home')
+            
         else:
             print('Error login')
             error_message = 'Invalid credentials. Please try again.'
@@ -315,7 +357,6 @@ def upload_new_seller(request):
 
 
 @csrf_protect
-@login_required
 def listing_detail(request,listing_id):
     listing=get_object_or_404(Listing,pk=listing_id)
     context = {'listing': listing }

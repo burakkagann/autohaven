@@ -107,8 +107,8 @@ body {
 }
 
 .filter_button {
-    width: 100px;
-    height: 30px;
+    width: 70%;
+    height: 20%;
     background-color: white;
     font-weight:lighter;
     border: 1px solid black;

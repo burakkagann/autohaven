@@ -7,7 +7,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("autohaven_app", "create_init_listings"),
+        ("autohaven_app", "0002_add_listingmodel_body_type"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

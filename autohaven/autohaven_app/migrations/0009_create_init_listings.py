@@ -44,7 +44,7 @@ def create_initial_listings(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('autohaven_app', '0002_alter_listing_body_type'),
+        ('autohaven_app', '0008_create_more_users'),
     ]
 
     operations = [

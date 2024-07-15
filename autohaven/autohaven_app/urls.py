@@ -1,8 +1,10 @@
 from django.urls import path
 from . import views
+from .views import login_user
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path, include
 
 urlpatterns = [
     path('', views.root),
@@ -13,11 +15,13 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('new-listing/', views.new_listing, name='new-listing'),
     path('manage-listing/<int:listingId>', views.manage_listing, name='manage-listing'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
+    path('login/',login_user, name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='landing_page.html'), name='logout'),
     path('sellers/upload/', views.upload_new_seller, name='upload_new_seller'),
     path('sellers/manage/<int:id>/', views.manage_seller, name='manage_seller'),
-    path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail')
+    path('password-reset/', views.password_reset, name='password-reset'),
+    path('password-reset-confirm/<str:username>', views.password_reset_confirm, name='password-reset-confirm'),
+    path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail'),
 ]
 
 if settings.DEBUG:
