@@ -54,7 +54,7 @@
                 <tr>
                     <td>{{ seller.id }}</td>
                     <td>{{ seller.company_name }}</td>
-                    <td>{{ seller.date_added }}</td>
+                    <td>{{ seller.user.date_joined }}</td>
                     <td>
                         <button onclick="location.href='{% url 'manage_seller' seller.id %}'">Manage</button>
                     </td>
