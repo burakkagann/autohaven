@@ -227,7 +227,11 @@
 
     <script>
         function popupClose() {
+            let redirectUrl = '{{ confirmationRedirectURL|default:""|escapejs }}';
             document.getElementById('popup').style.display = 'none';
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
         }
     </script>
 </body>
