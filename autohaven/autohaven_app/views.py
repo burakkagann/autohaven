@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect , get_object_or_404
 from . import models
 from .dummy_data import dummy_offers
 from django.core.paginator import Paginator
-from .models import Listing, Offer, SellerUser , Seller, User
-from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm ,SellerForm, ListingForm
+from .models import Listing, Offer, SellerUser , User
+from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm , CreateSellerForm, UpdateSellerForm, ListingForm
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
@@ -331,8 +331,8 @@ def manage_listing(request, listingId):
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
+    listing = get_object_or_404(Listing, id=listingId)
     if request.method == 'POST':
-        listing = Listing.objects.get(id=listingId)
         listingImages = listing.images.all()
         if(listing):
             if('delete' in request.POST):
@@ -363,7 +363,6 @@ def manage_listing(request, listingId):
                 else:
                     print('form errors', form.errors)
     else:
-        listing = Listing.objects.get(id=listingId)
         listingImages = listing.images.all()
         form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
 
@@ -372,28 +371,28 @@ def manage_listing(request, listingId):
 
 
 def seller_list(request):
-    sellers = Seller.objects.all()
+    sellers = SellerUser.objects.all()
     return render(request, 'profile/sellers.html', {'sellers': sellers})
 
 def manage_seller(request, id):
-    seller = get_object_or_404(Seller, id=id)
+    seller = get_object_or_404(SellerUser, id=id)
     if request.method == 'POST':
-        form = SellerForm(request.POST, instance=seller)
+        form = UpdateSellerForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/profile/')
     else:
-        form = SellerForm(instance=seller)
-    return render(request, 'manage_seller.html', {'form': form, 'seller': seller})
+        form = UpdateSellerForm(initial = { 'username': seller.user.username, 'company_name': seller.company_name, 'email': seller.user.email})
+    return render(request, 'profile/manage_seller.html', {'form': form, 'seller': seller})
 
 def upload_new_seller(request):
     if request.method == 'POST':
-        form = SellerForm(request.POST)
+        form = CreateSellerForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/profile/')
     else:
-        form = SellerForm()
+        form = CreateSellerForm()
     return render(request, 'profile/upload_new_seller.html', {'form': form})
 
 

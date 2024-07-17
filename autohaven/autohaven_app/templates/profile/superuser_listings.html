@@ -18,8 +18,23 @@
             <td class="Listing"><span class="cell-content">Listing{{ forloop.counter }}</span></td>
             <td class="price"><span class="cell-content">${{ listing.price }}</span></td>
             <td>{{ listing.created_at|date:"M d" }}</td>
-            <td><button class="manage-button">Manage</button></td>
+            <td><button class="table-action-button">Manage</button></td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+<div class="pagination">
+    <span class="step-links">
+        {% if listings_page_obj.has_previous %}
+            <a href="?listings_page=1">&laquo; first</a>
+            <a href="?listings_page={{ listings_page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ listings_page_obj.number }} of {{ listings_page_obj.paginator.num_pages }}.
+        </span>
+        {% if listings_page_obj.has_next %}
+            <a href="?listings_page={{ listings_page_obj.next_page_number }}">next</a>
+            <a href="?listings_page={{ listings_page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>

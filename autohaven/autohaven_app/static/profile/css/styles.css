@@ -140,7 +140,7 @@ td.model {
     font-size: 1em;
 }
 
-.update-button {
+.table-action-button {
     display: inline-block;
     padding: 0.3em 1.5em;
     border: none;
