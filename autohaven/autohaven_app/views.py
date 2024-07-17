@@ -379,13 +379,27 @@ def seller_list(request):
 
 def manage_seller(request, id):
     seller = get_object_or_404(SellerUser, id=id)
+    
     if request.method == 'POST':
-        form = UpdateSellerForm(request.POST)
-        if form.is_valid():
-            form.save()
+        if 'delete' in request.POST:
+            seller.user.delete()
             return redirect('/profile/')
+        else:
+            form = UpdateSellerForm(request.POST)
+            if form.is_valid():
+                userToUpdate = User.objects.get(username=seller.user.username)
+                userToUpdate.email = form.cleaned_data['email']
+                seller.company_name = form.cleaned_data['company_name']
+                userToUpdate.save()
+                seller.save()
+                return redirect('/profile/')
     else:
-        form = UpdateSellerForm(initial = { 'username': seller.user.username, 'company_name': seller.company_name, 'email': seller.user.email})
+        form = UpdateSellerForm(initial={
+            'username': seller.user.username,
+            'email': seller.user.email,
+            'company_name': seller.company_name,
+        })
+
     return render(request, 'profile/manage_seller.html', {'form': form, 'seller': seller})
 
 def upload_new_seller(request):
