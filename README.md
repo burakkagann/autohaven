@@ -83,7 +83,7 @@ To achieve this, two files are required:
 
 ### Services
 
-There are 2 main services and a helper service included in the [compose.yaml](./autohaven/compose.yaml) file.
+There are 3 main services and a helper service included in the [compose.yaml](./autohaven/compose.yaml) file.
 
 #### DB
 
@@ -104,8 +104,14 @@ There are 2 main services and a helper service included in the [compose.yaml](./
 
 #### Web
 
-- This service uses the image described in the Docker file and starts the dev server using the `python manage.py runserver 0.0.0.0:8000` command to run the web server in the container. It exposes port 8080 to the host system to provide access and uses the `depends_on` to wait until the DB server is running to connect to the database.
+- This service uses the image described in the Docker file and starts the dev server using the `python manage.py runserver 0.0.0.0:8000` command to run the web server in the container. It uses the `depends_on` to wait until the DB server is running to connect to the database.
 - Docker volume system allows to mount the [/autohaven/](/autohaven/) folder to `/code` inside the container so it has access to the project Python code and also supports hot-reload as expected.
+- This service does not answer requests from the host system directly but rather through the [nginx server](#static) (static service) that is included also in the docker setup.
+
+#### Static
+
+- This service uses a [NGINX](https://nginx.org/) web server [docker image](https://hub.docker.com/_/nginx) to host the static and user uploaded files since the project now runs by default with the `DEBUG` setting flag set to `False`, which means Django no longer hosts the static files and media files for us. Therefore, nginx is serving these files. The [/autohaven/nginx.conf](/autohaven/nginx.conf) holds the used nginx configuration which is mounted into the container using the `volumes`configuration from the docker compose file ([/autohaven/compose.yaml](/autohaven/compose.yaml)) to mount the static files and uploaded files folder as well.
+- It also acts as a proxy web server to allow the host system to access the django web app. It does so by replicating all the requests as described in https://nginx.org/en/docs/beginners_guide.html#proxy.
 
 ### Resources
 
