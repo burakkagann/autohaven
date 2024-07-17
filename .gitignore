@@ -165,11 +165,7 @@ cython_debug/
 #.idea/
 
 .python-version
-autohaven/data/*
-**.DS_Store
-# But do not ignore these specific directories
-!autohaven/data/uploaded_images/
-!autohaven/data/uploaded_images/initial_images_tesla
-!autohaven/data/uploaded_images/initial_images_tesla/**
-!autohaven/data/uploaded_images/initial_images_jeep
-!autohaven/data/uploaded_images/initial_images_jeep/**
+autohaven/data/db
+autohaven/data/staticfiles
+autohaven/data/uploaded_images/listing_images/*
+.DS_Store
