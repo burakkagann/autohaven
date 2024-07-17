@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Seller - Auto Haven{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        width: 100%;
+        max-width: 600px;
+        padding: 20px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    h1 {
+        font-size: 2.5em;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    p {
+        font-size: 1.1em;
+        color: #666;
+        margin-bottom: 20px;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    label {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 10px 0 5px;
+        font-size: 0.9em;
+    }
+    input {
+        width: 100%;
+        max-width: 400px;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1em;
+    }
+    .button {
+        display: block;
+        width: 100%;
+        max-width: 300px;
+        padding: 10px 20px;
+        margin: 10px 0;
+        border: none;
+        border-radius: 0.8em;
+        font-size: 1em;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+    }
+    .button-black {
+        background-color: #000;
+        color: #fff;
+    }
+    .button-red {
+        background-color: #f44336;
+        color: #fff;
+    }
+</style>
+<div class="container">
+    <h1>{{ seller.user.username }}</h1>
+    <p>Fill in the seller’s information to create their account</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="button button-black">Update</button>
+    </form>
+    <form method="post" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" name="delete" class="button button-red">Delete</button>
+    </form>
+</div>
+{% endblock %}
+

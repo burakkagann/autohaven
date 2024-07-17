@@ -1,9 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth.models import User, Group
 from datetime import datetime
 from django.forms import inlineformset_factory
-from .models import Listing, ListingImage, Seller
+from django.core.exceptions import ValidationError
+from .models import Listing, ListingImage, SellerUser
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -90,21 +91,46 @@ class UserUpdateForm(forms.ModelForm):
         self.fields['username'].help_text = None  # Remove the default help text for username
 
 
-class SellerForm(forms.ModelForm):
-    class Meta:
-        model = Seller
-        fields = ['company_name', 'email_address', 'username']
-        labels = {
-            'company_name': 'Company name',
-            'email_address': 'Email address',
-            'username': 'Username',
-        }
-        widgets = {
-            'company_name': forms.TextInput(attrs={'placeholder': 'Company name'}),
-            'email_address': forms.EmailInput(attrs={'placeholder': 'Email address'}),
-            'username': forms.TextInput(attrs={'placeholder': 'Username'}),
-        }        
-        
+
+class CreateSellerForm(forms.Form):
+    username = UsernameField(label='Username')
+    email = forms.EmailField(label='Email')
+    company_name = forms.CharField(label='Company Name', max_length=100)
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if (User.objects.filter(username__iexact=username).exists()):
+            raise ValidationError("User with this username already exists.")
+        return username
+
+    def save(self):
+        newUser = User(username = self.cleaned_data['username'], email = self.cleaned_data['email'])
+        newUser.save()
+        newUser.groups.add(Group.objects.get(name='Sellers'))
+        newSellerUser = SellerUser(user = newUser,company_name = self.cleaned_data['company_name'])
+        newSellerUser.save()
+        return newUser
+
+class UpdateSellerForm(forms.Form):
+    username = forms.CharField(label='Username')
+    email = forms.EmailField(label='Email')
+    company_name = forms.CharField(label='Company Name', max_length=100)
+
+    def clean_username(self):
+        username = self.cleaned_data.get("username")
+        if not User.objects.filter(username__iexact=username).exists():
+            raise ValidationError("User with this username doesn't exist")
+        return username
+
+    def save(self, commit=True):
+        userToUpdate = User.objects.get(username=self.cleaned_data['username'])
+        userToUpdate.email = self.cleaned_data['email']
+        userToUpdate.selleruser.company_name = self.cleaned_data['company_name']
+        if commit:
+            userToUpdate.save()
+            userToUpdate.selleruser.save()
+        return userToUpdate
+    
         
 class ForgotPasswordForm(forms.Form):
     username = forms.CharField(max_length=150, required=True)
