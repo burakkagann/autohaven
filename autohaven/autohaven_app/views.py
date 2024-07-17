@@ -8,6 +8,8 @@ from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListing
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.views.decorators.cache import cache_control
+
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -283,6 +285,7 @@ def login_user(request):
     return render(request, 'login.html')
 
 @login_required()
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
 def logout_view(request):
         logout(request)
         return redirect('home')
