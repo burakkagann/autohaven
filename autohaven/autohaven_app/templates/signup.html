@@ -1,234 +1,211 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sign Up</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends "base.html" %}
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #fff;
-        }
+{% block title %}Sign Up{% endblock %}
 
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
+{% block pageStyles %}
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        .container h2 {
-            margin-bottom: 20px;
-            font-size: 42px;
-        }
+    body {
+        font-family: Arial, sans-serif;
+        min-height: 100vh;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+    }
 
-        .container p {
-            margin-bottom: 20px;
-            font-size: 16px;
-            color: #666;
-        }
+    header, footer {
+        flex-shrink: 0;
+    }
 
-        /* Form styling */
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-        }
+    main {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        flex-direction: column;
+    }
 
-        form label {
-            margin-bottom: 5px;
-            font-weight: bold;
-            text-align: left;
-        }
+    .container {
+        width: 100%;
+        max-width: 500px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        margin-bottom: 20px; /* Ensure there's space between the form and footer */
+    }
 
-        form input[type="text"],
-        form input[type="email"],
-        form input[type="password"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 16px;
-            width: 100%;
-            font-weight: normal; 
-            font-stretch: condensed; /* Condensed font stretch */
-            transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
-        }
+    .container h2 {
+        margin-bottom: 20px;
+        font-size: 42px;
+    }
 
-        form button {
-            padding: 10px;
-            background-color: #000;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold; /* Bold font weight */
-            font-stretch: condensed; /* Condensed font stretch */
-        }
+    .container p {
+        margin-bottom: 20px;
+        font-size: 16px;
+        color: #666;
+    }
 
-        form button:hover {
-            background-color: #333;
-        }
+    /* Form styling */
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-        .error-message {
-            position: relative;
-            background-color: #ffe6e6;
-            color: #cc0000;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px; /* Adjusted margin for spacing */
-            text-align: left; /* Align error text to the left */
-            font-size: 14px; /* Smaller font size for error messages */
-        }
+    form label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        text-align: left;
+    }
 
-        .error-message p {
-            margin: 0;
-            line-height: 1.5; /* Increased line height for readability */
-        }
-        .close-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            cursor: pointer;
-            font-size: 12px;
-            color: #999;
-            border: none;
-            background: none;
-        }
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="password"] {
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 16px;
+        width: 100%;
+        font-weight: normal; 
+        font-stretch: condensed; /* Condensed font stretch */
+        transition: border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
 
-        .popup-background {
-            display: {% if showConf %}block{% else %}none{% endif %};
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(2px);
-        }
+    form button {
+        padding: 10px;
+        background-color: #000;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold; /* Bold font weight */
+        font-stretch: condensed; /* Condensed font stretch */
+    }
 
-        .popup-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
+    form button:hover {
+        background-color: #333;
+    }
 
-        .popup-body {
-            display: flex;
-            flex-direction: column;
-            background-color: #fefefe;
-            margin: 15px;
-            padding: 30px;
-            width: 80%;
-            height: 30%;
-            max-width: 600px;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 20px;
-            box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.5);
-            text-align: center;
-        }
+    .error-message {
+        position: relative;
+        background-color: #ffe6e6;
+        color: #cc0000;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px; /* Adjusted margin for spacing */
+        text-align: left; /* Align error text to the left */
+        font-size: 14px; /* Smaller font size for error messages */
+    }
 
-        .popup-title {
-            font-size: 3rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: black;
-            align-items: center;
-        }
+    .error-message p {
+        margin: 0;
+        line-height: 1.5; /* Increased line height for readability */
+    }
+    .close-btn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #999;
+        border: none;
+        background: none;
+    }
 
-        .popup-message {
-            font-size: 1rem;
-            margin-bottom: 20px;
-            color: gray;
-        }
-
-        .popup-button {
-            padding: 10px 20px;
-            background-color: black;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 90%;
-        }
-
-        .popup-button:hover {
-            background-color: rgb(70, 70, 70);
-        }
-
-        .popup-button:hover {
-            background-color: #000000;
-        }
-    </style>
+    .footer {
+        background-color: #fff;
+        padding: 20px 40px;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: auto;
+        width: 100%;
+        border-top: 1px solid gray;
+    }
+    .footer div {
+        margin-right: 40px;
+    }
+    .footer p {
+        margin: 0 0 10px;
+        color: #333;
+    }
+    .footer a {
+        text-decoration: none;
+        color: #333;
+        display: block;
+        margin-bottom: 5px;
+    }
+    .footer .bold {
+        font-weight: bold;
+    }
     
-</head>
-<body>
-    <div class="container">
-        <h2>Your details</h2>
-        <p>Fill in your information to create an account</p>
-        {% if error_messages %}
-            {% for error in error_messages %}
-                <div class="error-message">
-                    <button class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
-                    <p>{{ error }}</p>
-                </div>
-            {% endfor %}
-        {% endif %}
+</style>
+{% endblock %}
 
-        <form method="post">
-            {% csrf_token %}
-            <label for="id_first_name">First name</label>
-            <input type="text" name="first_name" id="id_first_name" required>
-
-            <label for="id_last_name">Last name</label>
-            <input type="text" name="last_name" id="id_last_name" required>
-
-            <label for="id_username">Username</label>
-            <input type="text" name="username" id="id_username" required>
-
-            <label for="id_email">Email address</label>
-            <input type="email" name="email" id="id_email" required>
-
-            <label for="id_password1">Password</label>
-            <input type="password" name="password1" id="id_password1" required>
-
-            <label for="id_password2">Confirm Password</label>
-            <input type="password" name="password2" id="id_password2" required>
-
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-
-    <div id="popup" class="popup-background">
-        <div class="popup-wrapper">
-            <div class="popup-body">
-                    <l class="popup-title">{{confirmationTitle}}</l>
-                    <l class="popup-message">{{confirmationMessage}}</l>
-                <button class="popup-button" onClick="popupClose()">{{ confirmationButton }}</button>
+{% block content %}
+<div class="container">
+    <h2>Your details</h2>
+    <p>Fill in your information to create an account</p>
+    {% if error_messages %}
+        {% for error in error_messages %}
+            <div class="error-message">
+                <button class="close-btn" onclick="this.parentElement.style.display='none'">&times;</button>
+                <p>{{ error }}</p>
             </div>
-        </div>
-    </div>
+        {% endfor %}
+    {% endif %}
 
-    <script>
-        function popupClose() {
-            document.getElementById('popup').style.display = 'none';
-        }
-    </script>
-</body>
-</html>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_first_name">First name</label>
+        <input type="text" name="first_name" id="id_first_name" required>
+
+        <label for="id_last_name">Last name</label>
+        <input type="text" name="last_name" id="id_last_name" required>
+
+        <label for="id_username">Username</label>
+        <input type="text" name="username" id="id_username" required>
+
+        <label for="id_email">Email address</label>
+        <input type="email" name="email" id="id_email" required>
+
+        <label for="id_password1">Password</label>
+        <input type="password" name="password1" id="id_password1" required>
+
+        <label for="id_password2">Confirm Password</label>
+        <input type="password" name="password2" id="id_password2" required>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<footer class="footer">
+    <div>
+        <p>AutoHaven</p>
+        <p>Ernst-Reuter-Platz 10</p>
+        <p>Berlin - 10587</p>
+    </div>
+    <div>
+        <a href="#" class="bold">About us</a>
+        <a href="#">Careers</a>
+        <a href="#">Compliance</a>
+        <a href="#">Page</a>
+    </div>
+    <div>
+        <a href="#" class="bold">All Cars</a>
+        <a href="#">New Cars</a>
+        <a href="#">Used Cars</a>
+    </div>
+</footer>
+{% endblock %}

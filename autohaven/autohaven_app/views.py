@@ -8,8 +8,8 @@ from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListing
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth.models import Group
 from django.views.decorators.cache import cache_control
-
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -127,16 +127,21 @@ def register(request):
     confirmationTitle = ""
     confirmationMessage = ""
     confirmationButton = ""
+    confirmationRedirectURL = ""
     
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save()
+            
+            regularuser_group = Group.objects.get(name='RegularUsers')
+            user.groups.add(regularuser_group)
             
             showConf = True
             confirmationTitle = "Your account is complete"
             confirmationMessage = "You successfully created an account"
-            confirmationButton = "Ok"
+            confirmationButton = "Go to Login"
+            confirmationRedirectURL = reverse('login')
             
         else:
             print(form.errors)
@@ -155,7 +160,8 @@ def register(request):
         'showConf': showConf,
         'confirmationTitle': confirmationTitle,
         'confirmationMessage': confirmationMessage,
-        'confirmationButton': confirmationButton
+        'confirmationButton': confirmationButton,
+        'confirmationRedirectURL': confirmationRedirectURL,
     })
 
 def custom_404(request, exception):
