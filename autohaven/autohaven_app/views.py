@@ -8,6 +8,8 @@ from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListing
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
+from django.contrib.auth.models import Group
+from django.views.decorators.cache import cache_control
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 
@@ -136,16 +138,21 @@ def register(request):
     confirmationTitle = ""
     confirmationMessage = ""
     confirmationButton = ""
+    confirmationRedirectURL = ""
     
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
+            user=form.save()
+            
+            regularuser_group = Group.objects.get(name='RegularUsers')
+            user.groups.add(regularuser_group)
             
             showConf = True
             confirmationTitle = "Your account is complete"
             confirmationMessage = "You successfully created an account"
-            confirmationButton = "Ok"
+            confirmationButton = "Go to Login"
+            confirmationRedirectURL = reverse('login')
             
         else:
             print(form.errors)
@@ -164,7 +171,8 @@ def register(request):
         'showConf': showConf,
         'confirmationTitle': confirmationTitle,
         'confirmationMessage': confirmationMessage,
-        'confirmationButton': confirmationButton
+        'confirmationButton': confirmationButton,
+        'confirmationRedirectURL': confirmationRedirectURL,
     })
 
 def custom_404(request, exception):
@@ -294,6 +302,7 @@ def login_user(request):
     return render(request, 'login.html')
 
 @login_required()
+@cache_control(no_cache=True, no_store=True, must_revalidate=True)
 def logout_view(request):
         logout(request)
         return redirect('home')
@@ -387,13 +396,27 @@ def seller_list(request):
 
 def manage_seller(request, id):
     seller = get_object_or_404(SellerUser, id=id)
+    
     if request.method == 'POST':
-        form = UpdateSellerForm(request.POST)
-        if form.is_valid():
-            form.save()
+        if 'delete' in request.POST:
+            seller.user.delete()
             return redirect('/profile/')
+        else:
+            form = UpdateSellerForm(request.POST)
+            if form.is_valid():
+                userToUpdate = User.objects.get(username=seller.user.username)
+                userToUpdate.email = form.cleaned_data['email']
+                seller.company_name = form.cleaned_data['company_name']
+                userToUpdate.save()
+                seller.save()
+                return redirect('/profile/')
     else:
-        form = UpdateSellerForm(initial = { 'username': seller.user.username, 'company_name': seller.company_name, 'email': seller.user.email})
+        form = UpdateSellerForm(initial={
+            'username': seller.user.username,
+            'email': seller.user.email,
+            'company_name': seller.company_name,
+        })
+
     return render(request, 'profile/manage_seller.html', {'form': form, 'seller': seller})
 
 def upload_new_seller(request):

@@ -112,23 +112,24 @@ class CreateSellerForm(forms.Form):
         return newUser
 
 class UpdateSellerForm(forms.Form):
-    username = UsernameField(label='Username')
+    username = forms.CharField(label='Username')
     email = forms.EmailField(label='Email')
     company_name = forms.CharField(label='Company Name', max_length=100)
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
-        if (not User.objects.filter(username__iexact=username).exists()):
-            raise ValidationError("User with this username doesn't exists")
+        if not User.objects.filter(username__iexact=username).exists():
+            raise ValidationError("User with this username doesn't exist")
         return username
 
-    def save(self):
+    def save(self, commit=True):
         userToUpdate = User.objects.get(username=self.cleaned_data['username'])
         userToUpdate.email = self.cleaned_data['email']
         userToUpdate.selleruser.company_name = self.cleaned_data['company_name']
-        userToUpdate.save()
+        if commit:
+            userToUpdate.save()
+            userToUpdate.selleruser.save()
         return userToUpdate
-        
     
         
 class ForgotPasswordForm(forms.Form):
