@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="{% static 'navbar/styles.css' %}">
     {% block pageStyles %}{% endblock %}
     <title>{% block title %}Auto Haven{% endblock %}</title>
+    <script type="text/javascript">
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+        window.onunload = function() { null };
+    </script>
 </head>
 <body>
     <header>
@@ -88,7 +94,9 @@
         .popup-message {
             font-size: 1rem;
             margin-bottom: 20px;
+            text-align: center;
             color: gray;
+            padding: 10px 20px;
         }
 
         .popup-button {
@@ -131,3 +139,4 @@
 
 </body>
 </html>
+

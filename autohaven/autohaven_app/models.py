@@ -39,8 +39,19 @@ class ListingImage(models.Model):
     imagepath = models.ImageField(upload_to='listing_images/')
 
 class Offer(models.Model):
+    PENDING = 'pending'
+    ACCEPTED = 'accepted'
+    DECLINED = 'declined'
+
+    OFFER_STATUS = [
+        (PENDING, 'Pending'),
+        (ACCEPTED, 'Accepted'),
+        (DECLINED, 'Declined'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='offers')
     listing= models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='offers')
     offeredPrice= models.DecimalField(max_digits=10, decimal_places=2)
     offeredDate= models.DateTimeField(auto_now=True)
-    status=models.CharField(max_length=100)
+    status = models.CharField(max_length=10, choices=OFFER_STATUS, default=PENDING)
+    

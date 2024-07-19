@@ -64,30 +64,32 @@
                     <div class="payment-section">
                         <h2>Payment</h2>
                         <p>Enter your account balance below to purchase the vehicle:</p>
-                        <label for="account-balance">Account Balance:</label>
-                        <input type="number" id="account-balance" name="account_balance" required>
-                        <button type="submit">Pay Now</button>
+                        <form method="post" action="{% url 'listing_detail' listing.id %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}<button type="submit" name="payment_submit">Pay Now</button>
+                        </form>
                     </div>
                 {% else%} 
                     <div class="offer-section">
                         <h2>Submit Your Offer</h2>
                         <p>Make an offer for the listing and stand a chance to purchase the car:</p>
-                        <label for="offer-amount">Offer Amount:</label>
-                        <input type="number" id="offer-amount" name="offer_amount" required>
-                        <button type="submit">Submit Offer</button>
+                        <form method="post" action="{% url 'listing_detail' listing.id %}">
+                            {% csrf_token %}
+                            {{ offer_form.as_p }}<button type="submit" name="offer_submit">Submit Offer</button>
+                        </form>
                     </div>
                 {% endif %}
             {% endif %}
         {% endif %}
     </div>
+
     <script>
         function changeImage(url) {
             document.getElementById('main-image').src = url;
         }
     </script>
 
-        <!-- Payment Section for New Listings -->
-
+    
 
 <div class="catalog_footer">
 
