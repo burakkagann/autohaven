@@ -35,11 +35,20 @@ def password_reset_confirm(request,username):
         if form.is_valid():
             user = User.objects.get(username=username)
             user.set_password(form.cleaned_data['new_password'])
+            user.save()
             showConf = True
             confirmationMessage = 'You successfully reset your password! You can now use this to log into your account.'
             confirmationButton = 'Back to log in page'
             confirmationTitle = 'Password changed.'
-            return render(request, 'password_reset_confirm.html', {'form':form, 'confirmationMessage':confirmationMessage,'confirmationButton':confirmationButton,'confirmationTitle':confirmationTitle,'showConf':showConf,'username':username})
+            confirmationRedirectURL = reverse('login')
+            return render(request, 'password_reset_confirm.html',
+                           {'form':form,
+                            'confirmationMessage': confirmationMessage,
+                            'confirmationButton': confirmationButton,
+                            'confirmationTitle': confirmationTitle,
+                            'confirmationRedirectURL': confirmationRedirectURL,
+                            'showConf': showConf,
+                            'username': username})
         return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
     else:
         form = ResetPasswordForm()
