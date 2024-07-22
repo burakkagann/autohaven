@@ -401,7 +401,13 @@ def seller_list(request):
 
 def manage_seller(request, id):
     seller = get_object_or_404(SellerUser, id=id)
-    
+    confirmationConfig = {
+        "showConf" : False,
+        "confirmationTitle" : '',
+        "confirmationMessage" : '',
+        "confirmationButton" : '',
+        "confirmationRedirectURL" : '',
+    }
     if request.method == 'POST':
         if 'delete' in request.POST:
             seller.user.delete()
@@ -414,31 +420,48 @@ def manage_seller(request, id):
                 seller.company_name = form.cleaned_data['company_name']
                 userToUpdate.save()
                 seller.save()
-                return redirect('/profile/')
+                confirmationConfig["showConf"] = True
+                confirmationConfig["confirmationTitle"] = 'Changes saved.'
+                confirmationConfig["confirmationMessage"] = 'The changes you made have been saved to the seller profile!'
+                confirmationConfig["confirmationButton"] =  'Back to My Profile'
+                confirmationConfig["confirmationRedirectURL"] = reverse('profile')
     else:
         form = UpdateSellerForm(initial={
             'username': seller.user.username,
             'email': seller.user.email,
             'company_name': seller.company_name,
         })
-
-    return render(request, 'profile/manage_seller.html', {'form': form, 'seller': seller})
+    context = {'form': form, 'seller': seller } | confirmationConfig
+    return render(request, 'profile/manage_seller.html', context)
 
 def upload_new_seller(request):
+    confirmationConfig = {
+        "showConf" : False,
+        "confirmationTitle" : '',
+        "confirmationMessage" : '',
+        "confirmationButton" : '',
+        "confirmationRedirectURL" : '',
+    }
     if request.method == 'POST':
         form = CreateSellerForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/profile/')
+            confirmationConfig["showConf"] = True
+            confirmationConfig["confirmationTitle"] = 'New seller created'
+            confirmationConfig["confirmationMessage"] = 'The seller will receive an email with their login details and further information on how to get started and create their own password. You will receive a confirmation message shortly about your upload.'
+            confirmationConfig["confirmationButton"] =  'Back to My Profile'
+            confirmationConfig["confirmationRedirectURL"] = reverse('profile')
+            
     else:
         form = CreateSellerForm()
-    return render(request, 'profile/upload_new_seller.html', {'form': form})
+    context = { 'form': form } | confirmationConfig
+    return render(request, 'profile/upload_new_seller.html', context)
 
 
 @csrf_protect
 def listing_detail(request,listing_id):
-    listing=get_object_or_404(Listing,pk=listing_id)
-    user=request.user
+    listing = get_object_or_404(Listing,pk=listing_id)
+    user = request.user
     confirmationConfig = {
             "showConf": False,
             "confirmationTitle": '',
