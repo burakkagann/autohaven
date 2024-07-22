@@ -3,7 +3,7 @@
     <table>
         <thead>
             <tr>
-                <th>Listing ID</th>
+                <th>Title</th>
                 <th>Model</th>
                 <th>Price</th>
                 <th>Date</th>
@@ -15,7 +15,7 @@
             <!-- Django Template Loop for Listings -->
             {% for listing in listings_page_obj %}
             <tr>
-                <td class="id"><span class="button-style">{{ listing.id }}</span></td>
+                <td class="title">{{ listing.title }}</td>
                 <td class="model">{{ listing.model }}</td>
                 <td class="price"><span class="button-style">${{ listing.price }}</span></td>
                 <td class="date"><span class="button-style">{{ listing.created_at|date:"M d Y" }}</span></td>

@@ -201,9 +201,9 @@ def profile(request):
 
             # Set Popup Params     
             showConf = True
-            confirmationTitle = "Success"
-            confirmationMessage = "settings updated successfully"
-            confirmationButton = "Ok"
+            confirmationTitle = "Profile Updated"
+            confirmationMessage = "Your profile is updated succesfully"
+            confirmationButton = "Close"
             
     else:
         form = UserUpdateForm(instance=user)
