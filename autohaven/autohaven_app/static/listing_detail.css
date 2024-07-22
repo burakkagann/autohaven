@@ -97,6 +97,22 @@
     margin-top: 10px;
 }
 
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 .payment-section, .offer-section {
     gap: 5px;
     font-family: 'Inter', sans-serif;
@@ -224,3 +240,5 @@
 .light_text {
     font-weight: lighter;
 }
+
+

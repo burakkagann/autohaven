@@ -4,12 +4,14 @@ from . import models
 from django.contrib.auth import authenticate,login,logout
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , User
-from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm , CreateSellerForm, UpdateSellerForm, ListingForm
+from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm , CreateSellerForm, UpdateSellerForm, ListingForm, PaymentForm,OfferForm
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import Group
 from django.views.decorators.cache import cache_control
+from django.http import HttpResponseRedirect
+from django.contrib import messages
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -57,7 +59,9 @@ def password_reset(request):
 
 def catalog_page(request):
     # Pull Listing from models (databse)
-    listing = models.Listing.objects.all()
+    
+    #only show available cars in the catalog
+    listing = models.Listing.objects.filter(sold=False)
 
     # Filter Listings
     brand_filter = request.GET.get('brand')
@@ -111,6 +115,12 @@ def catalog_page(request):
     body_type = models.Listing.objects.values('body_type').distinct()
     engine_type = models.Listing.objects.values('engine_type').distinct()
 
+    # Display message if no listings match filters
+    if not listing_with_images:
+        no_results_message = "No cars available that match your filter queries."
+    else:
+        no_results_message = None
+
 
     return render(request, 'catalog.html', {
         'listing': listing_with_images,
@@ -118,7 +128,8 @@ def catalog_page(request):
         'model': model,
         'year': year,
         'body_type': body_type,
-        'engine_type': engine_type})
+        'engine_type': engine_type,
+        'no_results_message': no_results_message})
 
 
 def register(request):
@@ -427,5 +438,70 @@ def upload_new_seller(request):
 @csrf_protect
 def listing_detail(request,listing_id):
     listing=get_object_or_404(Listing,pk=listing_id)
-    context = {'listing': listing }
-    return render(request, 'listing_detail.html', context)
+    user=request.user
+    confirmationConfig = {
+            "showConf": False,
+            "confirmationTitle": '',
+            "confirmationMessage": '',
+            "confirmationButton": '',
+            "confirmationRedirectURL": '',
+        }
+    form = PaymentForm()
+    offer_form = OfferForm()
+    
+    if request.user == listing.user:
+        messages.error(request, "You cannot make an offer on your own listing.")
+
+    if request.method == 'POST':
+        if 'payment_submit' in request.POST:  
+            form = PaymentForm(request.POST)
+            if form.is_valid():
+                account_balance = form.cleaned_data['account_balance']
+                if account_balance >= listing.price:
+                    listing.sold = True
+                    listing.save()
+                    Offer.objects.create(user=user, listing=listing, offeredPrice=listing.price, status='accepted')
+
+                    confirmationConfig.update({
+                        'showConf': True,
+                        'confirmationTitle': 'Payment Successful',
+                        'confirmationMessage': 'You successfully purchased this listing. The payment will be reflected under the Order History section in your profile.',
+                        'confirmationButton': 'Back to My Profile',
+                        'confirmationRedirectURL': '/profile'
+                    })
+
+                else:
+                    confirmationConfig.update({
+                        'showConf': True,
+                        'confirmationTitle': 'Insufficient Funds',
+                        'confirmationMessage': 'You do not have enough credits in your account balance to purchase this vehicle.',
+                        'confirmationButton': 'Back to Catalog',
+                        'confirmationRedirectURL': '/catalog'
+                    })
+                    
+        elif 'offer_submit' in request.POST: # Handle offer form
+            offer_form = OfferForm(request.POST)
+            if offer_form.is_valid():
+                offered_price = offer_form.cleaned_data['offeredPrice']
+
+                Offer.objects.create(user=user, listing=listing, offeredPrice=offered_price, status='pending')
+
+                confirmationConfig.update({
+                    'showConf': True,
+                    'confirmationTitle': 'Offer Sent',
+                    'confirmationMessage': 'Your offer has been submitted. You can view your pending offers in your profile.',
+                    'confirmationButton': 'Back to My Profile',
+                    'confirmationRedirectURL': '/profile'
+                })
+
+        else:
+                messages.error(request, 'Invalid form submission. Please use the payment or offer form.')
+
+    context = {
+        'listing': listing,
+        'form': form,
+        'offer_form': offer_form,
+    } | confirmationConfig
+
+    return render(request, 'listing_detail.html', context=context)
+

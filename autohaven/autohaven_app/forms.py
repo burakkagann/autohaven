@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 from datetime import datetime
 from django.forms import inlineformset_factory
 from django.core.exceptions import ValidationError
-from .models import Listing, ListingImage, SellerUser
+from .models import Listing, ListingImage, SellerUser,Offer
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -148,3 +148,23 @@ class ResetPasswordForm(forms.Form):
             if new_password != confirm_password:
                 raise forms.ValidationError("Passwords do not match.")
         return cleaned_data
+    
+class PaymentForm(forms.Form):
+    account_balance = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        label='',
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+class OfferForm(forms.ModelForm):
+    class Meta:
+        model = Offer
+        fields = ['offeredPrice']
+        labels = {
+            'offeredPrice': '',
+        }
+        widgets = {
+            'offeredPrice': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    
