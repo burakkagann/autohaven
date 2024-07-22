@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required ,user_passes_test
 from django.shortcuts import render, redirect , get_object_or_404
 from . import models
-from .dummy_data import dummy_offers
+from django.contrib.auth import authenticate,login,logout
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , User
 from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm , CreateSellerForm, UpdateSellerForm, ListingForm
@@ -226,11 +226,16 @@ def profile(request):
     listings_page_number = request.GET.get("listings_page")
     listings_page_obj = listingsPaginator.get_page(listings_page_number)
 
-    # Offers made by user
-    offers = Offer.objects.all()
-    offersPaginator = Paginator(offers, 10)  # Show 10 offers per page.
+    #Orders
+    orders = Offer.objects.filter(user=user)
+    ordersPaginator = Paginator(orders, 5)
+    orders_page_number = request.GET.get("orders_page")
+    orders_page_obj = ordersPaginator.get_page(orders_page_number)
 
-    offers_page_number = request.GET.get("orders_page")
+    # Offers received
+    offers = Offer.objects.filter(user=user)
+    offersPaginator = Paginator(offers, 5)
+    offers_page_number = request.GET.get("offers_page")
     offers_page_obj = offersPaginator.get_page(offers_page_number)
 
     context = {
@@ -242,7 +247,7 @@ def profile(request):
         'is_super_user': is_super_user,
         'listings_page_obj': listings_page_obj,
         'offers_page_obj': offers_page_obj,
-        'offers': dummy_offers,
+        'orders_page_obj': orders_page_obj,
         'sellers': sellers,
         "showConf": showConf,
         "confirmationMessage": confirmationMessage,

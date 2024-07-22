@@ -1,0 +1,46 @@
+<h2>Offers Received on Listings</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Listing ID</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for offer in offers_page_obj %}
+        <tr>
+            <td class="title">{{ offer.listing.title }}</td>
+            <td class="id">{{ offer.listing.id }}</td>
+            <td class="price"><span class="button-style"></span>${{ offer.offeredPrice }}</span></td>
+            <td class="date"><span class="button-style">{{ offer.offeredDate|date:"M d" }}</span></td>
+            <td><span class="button-style">{{ offer.status }}</span></td>
+            <td>
+                <div>
+                    <button class="button accept-button">Accept</button>
+                    <button class="button decline-button">Decline</button>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if offers_page_obj.has_previous %}
+            <a href="?offers_page=1">&laquo; first</a>
+            <a href="?offers_page={{ offers_page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ offers_page_obj.number }} of {{ offers_page_obj.paginator.num_pages }}.
+        </span>
+        {% if offers_page_obj.has_next %}
+            <a href="?offers_page={{ offers_page_obj.next_page_number }}">next</a>
+            <a href="?offers_page={{ offers_page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>

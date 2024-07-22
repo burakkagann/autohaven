@@ -18,8 +18,10 @@
         {% include 'profile/listings.html' %}
     {% endif %}
 
-    
-    {% include 'profile/orders.html'%}
+    {% if is_regular_user %}
+    {% include 'profile/order_history.html'%}
+    {% include 'profile/offers_received.html'%}
+    {% endif %}
 
     </section>
 {% endblock %}

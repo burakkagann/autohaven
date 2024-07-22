@@ -1,0 +1,39 @@
+<h2>Order History</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Listing ID</th>
+            <th>Price</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders_page_obj %}
+        <tr  class="{% if offer.listing.type == 'new' %}new-listing{% else %}used-listing{% endif %}">
+            <td class="title">{{ order.listing.title }}</td>
+            <td class="id">{{ order.listing.id }}</td>
+            <td class="price"><span class="button-style">${{ order.offeredPrice }}</span></td>
+            <td class="date"><span class="button-style">{{ order.offeredDate|date:"M d" }}</span></td>
+            <td class="status"><span class="button-style">{{ order.status }}</span></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="pagination">
+    <span class="step-links">
+        {% if orders_page_obj.has_previous %}
+            <a href="?orders_page=1">&laquo; first</a>
+            <a href="?orders_page={{ orders_page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+            Page {{ orders_page_obj.number }} of {{ orders_page_obj.paginator.num_pages }}.
+        </span>
+        {% if orders_page_obj.has_next %}
+            <a href="?orders_page={{ orders_page_obj.next_page_number }}">next</a>
+            <a href="?orders_page={{ orders_page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+</div>
