@@ -125,10 +125,10 @@ def catalog_page(request):
     engine_type = models.Listing.objects.values('engine_type').distinct()
 
     # Display message if no listings match filters
-    if not listing_with_images:
-        no_results_message = "No cars available that match your filter queries."
+    if len(listing_with_images) == 0:
+        no_results_message = True
     else:
-        no_results_message = None
+        no_results_message = False
 
 
     return render(request, 'catalog.html', {
