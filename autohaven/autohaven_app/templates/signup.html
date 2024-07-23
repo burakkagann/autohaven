@@ -96,6 +96,18 @@
         background-color: #333;
     }
 
+    .password-requirements {
+        font-size: 14px;
+        color: #666;
+        text-align: left;
+        margin-top: -15px;
+        margin-bottom: 20px;
+    }
+
+    .password-requirements ul {
+        padding-left: 20px;
+    }
+
     .error-message {
         position: relative;
         background-color: #ffe6e6;
@@ -182,6 +194,13 @@
 
         <label for="id_password1">Password</label>
         <input type="password" name="password1" id="id_password1" required>
+        <div class="password-requirements">
+            <ul>
+                <li>Must be at least 8 characters long</li>
+                <li>Cannot be entirely numeric</li>
+                <li>Should not be a common password</li>
+            </ul>
+        </div>
 
         <label for="id_password2">Confirm Password</label>
         <input type="password" name="password2" id="id_password2" required>
