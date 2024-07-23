@@ -20,7 +20,7 @@ def root(request):
     return redirect('home/')
 
 def about(request):
-    return render(request, 'base.html')
+    return render(request, 'about.html')
 
 def login(request):
     return render(request, 'login.html')
