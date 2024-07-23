@@ -437,6 +437,8 @@ def manage_seller(request, id):
     else:
         form = UpdateSellerForm(initial={
             'username': seller.user.username,
+            'first_name': seller.user.first_name,
+            'last_name': seller.user.last_name ,
             'email': seller.user.email,
             'company_name': seller.company_name,
         })
