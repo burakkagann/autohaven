@@ -236,14 +236,16 @@ def custom_505(request, exception):
 @login_required()
 def profile(request):
     user = request.user
-
-    # Popup Params
-    showConf = False
-    isError = False
-    confirmationTitle = ""
-    confirmationMessage = ""
-    confirmationButton = ""
-    
+    confirmationConfig = {
+        "showConf": False,
+        "isError": False,
+        "confirmationTitle": '',
+        "confirmationMessage": '',
+        "confirmationButton": '',
+        "confirmationRedirectURL": '',
+    }
+    # Initialize form
+    form = UserUpdateForm(instance=user)
     is_regular_user = user.groups.filter(name='RegularUsers').exists()
     is_seller = user.groups.filter(name='Sellers').exists()
     is_super_user = user.groups.filter(name='SuperUsers').exists()
@@ -254,70 +256,136 @@ def profile(request):
     # Determine if form should be editable
     form_editable = request.POST.get('form_editable', 'false') == 'true'
 
-    form = UserUpdateForm(instance=user)
-
-    # Try / Except block to handle form submission Errors
-    try:
-
-        # Debug Exception
-        # raise Exception('This is a testing testing error')
-
-        if request.method == 'POST' and 'edit' in request.POST:
+    if request.method == 'POST':
+        if 'edit' in request.POST:
             form_editable = True
-        elif request.method == 'POST':
+        elif 'accept_offer' in request.POST or 'decline_offer' in request.POST:
+            offer_id = request.POST.get('offer_id')
+            offer = get_object_or_404(Offer, id=offer_id)
+
+            if offer.listing.user == user:
+                if 'accept_offer' in request.POST:
+                    try:
+                        # Update offer status to ACCEPTED
+                        offer.status = Offer.ACCEPTED
+                        offer.save()
+
+                        # Update listing status to SOLD = TRUE
+                        offer.listing.sold = True
+                        # change Listing Price to the Accepted offer price 
+                        offer.listing.price = offer.offeredPrice
+                        offer.listing.save()
+
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'isError': False,
+                            'confirmationTitle': 'Offer Accepted.',
+                            'confirmationMessage': 'You have successfully accepted the offer. The payment will be processed.',
+                            'confirmationButton': 'Back to My Profile',
+                            'confirmationRedirectURL': '/profile'
+                        })
+                    except Exception as e:
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'isError': True,
+                            'confirmationTitle': 'An Error has occurred.',
+                            'confirmationMessage': 'Your offer decision has not been processed.',
+                            'confirmationButton': 'Back to My Profile',
+                            'confirmationRedirectURL': '/profile'
+                        })
+                elif 'decline_offer' in request.POST:
+                    try:
+                        # Update offer status to DECLINED
+                        offer.status = Offer.DECLINED
+                        offer.save()
+
+                        # Update listing status to SOLD = FALSE
+                        offer.listing.sold = False
+                        offer.listing.save()
+
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'isError': False,
+                            'confirmationTitle': 'Offer Declined.',
+                            'confirmationMessage': 'You have successfully declined the offer.',
+                            'confirmationButton': 'Back to My Profile',
+                            'confirmationRedirectURL': '/profile'
+                        })
+                    except Exception as e:
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'isError': True,
+                            'confirmationTitle': 'An Error has occurred.',
+                            'confirmationMessage': 'Your offer decision has not been processed.',
+                            'confirmationButton': 'Back to My Profile',
+                            'confirmationRedirectURL': '/profile'
+                        })
+        else:
             form = UserUpdateForm(request.POST, instance=user)
             if form.is_valid():
-                form.save()
-                if is_seller and seller_user:
-                    seller_user.company_name = request.POST.get('company_name', '')
-                    seller_user.save()
+                try:
+                    form.save()
+                    if is_seller and seller_user:
+                        seller_user.company_name = request.POST.get('company_name', '')
+                        seller_user.save()
 
-                # Set Popup Params     
-                showConf = True
-                confirmationTitle = "Profile Updated"
-                confirmationMessage = "Your profile is updated succesfully"
-                confirmationButton = "Close"
-                
-        else:
-            form = UserUpdateForm(instance=user)
+                    confirmationConfig.update({
+                        'showConf': True,
+                        'isError': False,
+                        'confirmationTitle': 'Profile Updated',
+                        'confirmationMessage': 'Your profile has been updated successfully.',
+                        'confirmationButton': 'Close',
+                        'confirmationRedirectURL': ''
+                    })
+                except Exception as e:
+                    confirmationConfig.update({
+                        'showConf': True,
+                        'isError': True,
+                        'confirmationTitle': 'An Error has occurred.',
+                        'confirmationMessage': 'Your profile changes have not been saved.',
+                        'confirmationButton': 'Close',
+                        'confirmationRedirectURL': ''
+                    })
+    else:
+        form = UserUpdateForm(instance=user)
 
-    except Exception as e:
-        showConf = True
-        isError = True
-        confirmationTitle = "An Error has occured!"
-        confirmationMessage = "Changes have not been saved. \n Error: " + e.__str__()
-        confirmationButton = "Close"
-
-               
-        
-
-    # Listings
-       
+    # Fetch listings, orders, and offers
     if is_super_user:
         listings = Listing.objects.all()
         sellers = SellerUser.objects.all()
     else:
-        listings = Listing.objects.filter(user=user) 
-        sellers = None
+        listings = Listing.objects.filter(user=user)
+        for listing in listings:
+            if (listing.sold== True) and (listing.type == 'used'):
+            # Fetch the accepted offer for the listing
+                accepted_offer = Offer.objects.filter(listing=listing, status=Offer.ACCEPTED).first()
+
+                if accepted_offer:
+                    listing.price = accepted_offer.offeredPrice
+                    listing.save()
     
-    #listings = Listing.objects.all() #this can be used to test listing table instead of above if statement
+        sellers = None
 
-    listingsPaginator = Paginator(listings, 5)  # Show 10 listings per page.
-
+    listingsPaginator = Paginator(listings, 5)
     listings_page_number = request.GET.get("listings_page")
     listings_page_obj = listingsPaginator.get_page(listings_page_number)
 
-    #Orders
+    #Order History
+
     orders = Offer.objects.filter(user=user)
     ordersPaginator = Paginator(orders, 5)
     orders_page_number = request.GET.get("orders_page")
     orders_page_obj = ordersPaginator.get_page(orders_page_number)
 
-    # Offers received
-    offers = Offer.objects.filter(user=user)
+    #Offers Received
+
+    # Only show pending offers in the offers_received table
+
+    offers = Offer.objects.filter(listing__user=user, status=Offer.PENDING)
     offersPaginator = Paginator(offers, 5)
     offers_page_number = request.GET.get("offers_page")
     offers_page_obj = offersPaginator.get_page(offers_page_number)
+
 
     context = {
         'form': form,
@@ -330,15 +398,17 @@ def profile(request):
         'offers_page_obj': offers_page_obj,
         'orders_page_obj': orders_page_obj,
         'sellers': sellers,
-        "showConf": showConf,
-        "isError": isError,
-        "confirmationMessage": confirmationMessage,
-        "confirmationTitle": confirmationTitle,
-        "confirmationButton": confirmationButton,
+        "showConf": confirmationConfig['showConf'],
+        "isError": confirmationConfig['isError'],
+        "confirmationMessage": confirmationConfig['confirmationMessage'],
+        "confirmationTitle": confirmationConfig['confirmationTitle'],
+        "confirmationButton": confirmationConfig['confirmationButton'],
+        "confirmationRedirectURL": confirmationConfig['confirmationRedirectURL'],
         "form_editable": form_editable
     }
 
     return render(request, 'profile/index.html', context)
+
 
 
         
@@ -594,67 +664,105 @@ def upload_new_seller(request):
         confirmationConfig["confirmationButton"] = "Close"
         return render(request, 'profile/upload_new_seller.html', {'form': form} | confirmationConfig)
 
+from django.shortcuts import get_object_or_404, render
+from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from .models import Listing, Offer
+from .forms import PaymentForm, OfferForm
+
+
 @csrf_protect
-def listing_detail(request,listing_id):
-    listing = get_object_or_404(Listing,pk=listing_id)
+def listing_detail(request, listing_id):
+    listing = get_object_or_404(Listing, pk=listing_id)
     user = request.user
     confirmationConfig = {
-            "showConf": False,
-            "confirmationTitle": '',
-            "confirmationMessage": '',
-            "confirmationButton": '',
-            "confirmationRedirectURL": '',
-        }
+        "showConf": False,
+        "confirmationTitle": '',
+        "confirmationMessage": '',
+        "confirmationButton": '',
+        "confirmationRedirectURL": '',
+        "isError": False
+    }
     form = PaymentForm()
     offer_form = OfferForm()
-    
+
     if request.user == listing.user:
         messages.error(request, "You cannot make an offer on your own listing.")
+        return render(request, 'listing_detail.html', context={
+            'listing': listing,
+            'form': form,
+            'offer_form': offer_form
+        } | confirmationConfig)
 
     if request.method == 'POST':
-        if 'payment_submit' in request.POST:  
-            form = PaymentForm(request.POST)
-            if form.is_valid():
-                account_balance = form.cleaned_data['account_balance']
-                if account_balance >= listing.price:
-                    listing.sold = True
-                    listing.save()
-                    Offer.objects.create(user=user, listing=listing, offeredPrice=listing.price, status='accepted')
+        if 'payment_submit' in request.POST:
+            try:
+                form = PaymentForm(request.POST)
+                if form.is_valid():
+                    account_balance = form.cleaned_data['account_balance']
+                    if account_balance >= listing.price:
+                        listing.sold = True
+                        listing.save()
+                        Offer.objects.create(user=user, listing=listing, offeredPrice=listing.price, status='accepted')
 
-                    confirmationConfig.update({
-                        'showConf': True,
-                        'confirmationTitle': 'Payment Successful',
-                        'confirmationMessage': 'You successfully purchased this listing. The payment will be reflected under the Order History section in your profile.',
-                        'confirmationButton': 'Back to My Profile',
-                        'confirmationRedirectURL': '/profile'
-                    })
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'confirmationTitle': 'Payment Successful',
+                            'confirmationMessage': 'You successfully purchased this listing. The payment will be reflected under the Order History section in your profile.',
+                            'confirmationButton': 'Back to My Profile',
+                            'confirmationRedirectURL': '/profile',
+                            'isError': False
+                        })
 
-                else:
-                    confirmationConfig.update({
-                        'showConf': True,
-                        'confirmationTitle': 'Insufficient Funds',
-                        'confirmationMessage': 'You do not have enough credits in your account balance to purchase this vehicle.',
-                        'confirmationButton': 'Back to Catalog',
-                        'confirmationRedirectURL': '/catalog'
-                    })
-                    
-        elif 'offer_submit' in request.POST: # Handle offer form
-            offer_form = OfferForm(request.POST)
-            if offer_form.is_valid():
-                offered_price = offer_form.cleaned_data['offeredPrice']
+                    else:
+                        confirmationConfig.update({
+                            'showConf': True,
+                            'confirmationTitle': 'Insufficient Funds',
+                            'confirmationMessage': 'You do not have enough credits in your account balance to purchase this vehicle.',
+                            'confirmationButton': 'Back to Catalog',
+                            'confirmationRedirectURL': '/catalog',
+                            'isError': False
+                        })
 
-                Offer.objects.create(user=user, listing=listing, offeredPrice=offered_price, status='pending')
-
+            except Exception as e:
+                # Log the exception if needed
                 confirmationConfig.update({
                     'showConf': True,
-                    'confirmationTitle': 'Offer Sent',
-                    'confirmationMessage': 'Your offer has been submitted. You can view your pending offers in your profile.',
-                    'confirmationButton': 'Back to My Profile',
-                    'confirmationRedirectURL': '/profile'
+                    'confirmationTitle': 'An Error Occurred',
+                    'confirmationMessage': f'An unexpected error occurred during payment: {str(e)}',
+                    'confirmationButton': 'Back to Listing',
+                    'confirmationRedirectURL': f'/catalog/listing/{listing_id}/',
+                    'isError': True
                 })
 
-        else:
-                messages.error(request, 'Invalid form submission. Please use the payment or offer form.')
+        elif 'offer_submit' in request.POST:
+            try:
+                offer_form = OfferForm(request.POST)
+                if offer_form.is_valid():
+                    offered_price = offer_form.cleaned_data['offeredPrice']
+
+                    Offer.objects.create(user=user, listing=listing, offeredPrice=offered_price, status='pending')
+
+                    confirmationConfig.update({
+                        'showConf': True,
+                        'confirmationTitle': 'Offer Sent',
+                        'confirmationMessage': 'Your offer has been submitted. You can view your pending offers in your Order History.',
+                        'confirmationButton': 'Back to My Profile',
+                        'confirmationRedirectURL': '/profile',
+                        'isError': False
+                    })
+
+
+            except Exception as e:
+                # Log the exception if needed
+                confirmationConfig.update({
+                    'showConf': True,
+                    'confirmationTitle': 'An Error Occurred',
+                    'confirmationMessage': f'An unexpected error occurred during offer submission: {str(e)}',
+                    'confirmationButton': 'Back to Listing',
+                    'confirmationRedirectURL': f'/catalog/listing/{listing_id}/',
+                    'isError': True
+                })
 
     context = {
         'listing': listing,
@@ -663,4 +771,3 @@ def listing_detail(request,listing_id):
     } | confirmationConfig
 
     return render(request, 'listing_detail.html', context=context)
-

@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <th>Title</th>
-            <th>Listing ID</th>
+            <th>Owner</th>
             <th>Price</th>
             <th>Date</th>
             <th>Status</th>
@@ -11,12 +11,20 @@
     </thead>
     <tbody>
         {% for order in orders_page_obj %}
-        <tr  class="{% if offer.listing.type == 'new' %}new-listing{% else %}used-listing{% endif %}">
+        <tr class="{% if order.listing.type == 'new' %}new-listing{% else %}used-listing{% endif %}">
             <td class="title">{{ order.listing.title }}</td>
-            <td class="id">{{ order.listing.id }}</td>
-            <td class="price"><span class="button-style">${{ order.offeredPrice }}</span></td>
-            <td class="date"><span class="button-style">{{ order.offeredDate|date:"M d" }}</span></td>
-            <td class="status"><span class="button-style">{{ order.status }}</span></td>
+            <td class="username">{{ order.listing.user.username }}</td>
+            <td class="price">${{ order.offeredPrice }}</td>
+            <td class="date">{{ order.offeredDate|date:"M d, Y" }}</td>
+            <td class="status">
+                <span class="status-button {% if order.status == 'accepted' %}status-accepted{% elif order.status == 'declined' %}status-declined{% else %}status-pending{% endif %}">
+                    {{ order.status|capfirst }}
+                </span>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No orders found.</td>
         </tr>
         {% endfor %}
     </tbody>
@@ -35,5 +43,4 @@
             <a href="?orders_page={{ orders_page_obj.paginator.num_pages }}">last &raquo;</a>
         {% endif %}
     </span>
-</div>
 </div>

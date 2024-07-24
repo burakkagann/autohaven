@@ -22,5 +22,10 @@ urlpatterns = [
     path('password-change-done/', views.password_changed_view.as_view(), name='password_change_done' ),
     path('password-reset/', views.password_reset, name='password-reset'),
     path('password-reset-confirm/<str:username>', views.password_reset_confirm, name='password-reset-confirm'),
-    path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail'),
+    path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail'), 
+    
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

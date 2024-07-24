@@ -17,10 +17,20 @@
             <tr>
                 <td class="title">{{ listing.title }}</td>
                 <td class="model">{{ listing.model }}</td>
+
                 <td class="price"><span class="button-style">${{ listing.price }}</span></td>
+                
                 <td class="date"><span class="button-style">{{ listing.created_at|date:"M d Y" }}</span></td>
                 <td class="status"><span class="button-style">{{ listing.sold|yesno:"Sold,Available,Missing Information" }}</span></td>
-                <td class="action-cell"><a href="{% url 'manage-listing' listing.id %}" class="table-action-button">Update</a></td>
+                {% if not listing.sold %}
+                <td class="action-cell">
+                    <a href="{% url 'manage-listing' listing.id %}" class="table-action-button">Update</a>
+                </td>
+                {% else %}
+                <td class="action-cell">
+                    <!-- No action or message displayed for sold listings -->
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
