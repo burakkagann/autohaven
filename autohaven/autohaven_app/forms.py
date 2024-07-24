@@ -82,9 +82,6 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email']
-        widgets = {
-            'email': forms.EmailInput(attrs={'readonly': 'readonly', 'style': 'color: gray;'}),
-        }
 
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
@@ -112,7 +109,10 @@ class CreateSellerForm(forms.Form):
         return newUser
 
 class UpdateSellerForm(forms.Form):
-    username = forms.CharField(label='Username')
+    username = forms.CharField(
+        label='Username',
+        widget=forms.TextInput(attrs={'readonly': 'readonly', 'style': 'color: gray;'})
+    )
     email = forms.EmailField(label='Email')
     company_name = forms.CharField(label='Company Name', max_length=100)
 
