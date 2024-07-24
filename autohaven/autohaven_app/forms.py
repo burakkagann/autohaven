@@ -62,7 +62,14 @@ class ListingForm(forms.ModelForm):
         fields = [ "title", "brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price", "type"]
     
     def __init__(self, *args, **kwargs):
+        disabled = False
+        if('disabled' in kwargs):
+            disabled = kwargs['disabled']
+            del kwargs['disabled']
         super().__init__(*args, **kwargs)
+        if(disabled):
+            for field in self.fields.values():
+                field.disabled = True
         if kwargs['instance'] is not None:
             querySetImagesToDelete = ListingImage.objects.filter(listing=kwargs['instance'])
             self.fields['imagesToDelete'].queryset = querySetImagesToDelete
