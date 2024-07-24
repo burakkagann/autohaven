@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 /* General Styles */
+=======
+
+>>>>>>> main
 main {
     font-family: "Inter", sans-serif;
     display: flex;
@@ -9,6 +13,7 @@ main {
 
 .content {
     flex-basis: 50%;
+    --danger-color: #D74444;
 }
 
 .content > * {
@@ -62,7 +67,7 @@ input {
 }
 
 .button-red {
-    background-color: #D74444;
+    background-color: var(--danger-color);
     color: #fff;
 }
 

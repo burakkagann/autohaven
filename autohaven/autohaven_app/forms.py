@@ -62,7 +62,14 @@ class ListingForm(forms.ModelForm):
         fields = [ "title", "brand", "model", "description", "year", "body_type", "engine_type", "mileage", "price", "type"]
     
     def __init__(self, *args, **kwargs):
+        disabled = False
+        if('disabled' in kwargs):
+            disabled = kwargs['disabled']
+            del kwargs['disabled']
         super().__init__(*args, **kwargs)
+        if(disabled):
+            for field in self.fields.values():
+                field.disabled = True
         if kwargs['instance'] is not None:
             querySetImagesToDelete = ListingImage.objects.filter(listing=kwargs['instance'])
             self.fields['imagesToDelete'].queryset = querySetImagesToDelete
@@ -82,9 +89,6 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'email']
-        widgets = {
-            'email': forms.EmailInput(attrs={'readonly': 'readonly', 'style': 'color: gray;'}),
-        }
 
     def __init__(self, *args, **kwargs):
         super(UserUpdateForm, self).__init__(*args, **kwargs)
@@ -118,7 +122,10 @@ class CreateSellerForm(forms.Form):
         return newUser
 
 class UpdateSellerForm(forms.Form):
-    username = forms.CharField(label='Username')
+    username = forms.CharField(
+        label='Username',
+        widget=forms.TextInput(attrs={'readonly': 'readonly', 'style': 'color: gray;'})
+    )
     first_name = forms.CharField(label='First Name', max_length=30)
     last_name = forms.CharField(label='Last Name', max_length=30)
     email = forms.EmailField(label='Email')

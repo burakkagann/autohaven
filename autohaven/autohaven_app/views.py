@@ -31,41 +31,73 @@ def landing_page(request):
 
 
 def password_reset_confirm(request,username):
-    if request.method == 'POST':
-        form = ResetPasswordForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(username=username)
-            user.set_password(form.cleaned_data['new_password'])
-            user.save()
-            showConf = True
-            confirmationMessage = 'You successfully reset your password! You can now use this to log into your account.'
-            confirmationButton = 'Back to log in page'
-            confirmationTitle = 'Password changed.'
-            confirmationRedirectURL = reverse('login')
-            return render(request, 'password_reset_confirm.html',
-                           {'form':form,
-                            'confirmationMessage': confirmationMessage,
-                            'confirmationButton': confirmationButton,
-                            'confirmationTitle': confirmationTitle,
-                            'confirmationRedirectURL': confirmationRedirectURL,
-                            'showConf': showConf,
-                            'username': username})
-        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
-    else:
-        form = ResetPasswordForm()
-        return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+    form = ResetPasswordForm()
+    try:
+        if request.method == 'POST':
+            form = ResetPasswordForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(username=username)
+                user.set_password(form.cleaned_data['new_password'])
+                user.save()
+                showConf = True
+                confirmationMessage = 'You successfully reset your password! You can now use this to log into your account.'
+                confirmationButton = 'Back to log in page'
+                confirmationTitle = 'Password changed.'
+                confirmationRedirectURL = reverse('login')
+                return render(request, 'password_reset_confirm.html',
+                            {'form':form,
+                                'confirmationMessage': confirmationMessage,
+                                'confirmationButton': confirmationButton,
+                                'confirmationTitle': confirmationTitle,
+                                'confirmationRedirectURL': confirmationRedirectURL,
+                                'showConf': showConf,
+                                'username': username})
+            return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+        else:
+            return render(request, 'password_reset_confirm.html', {'form':form, 'username':username})
+    except Exception as error:
+        showConf = True
+        confirmationMessage = f'There has been an error processing your password request. {error if settings.DEBUG else ''}'
+        confirmationButton = 'Back to log in page'
+        confirmationTitle = 'Error occurred.'
+        confirmationRedirectURL = reverse('login')
+        return render(request, 'password_reset_confirm.html', {
+                    'form':form,
+                    'confirmationMessage': confirmationMessage,
+                    'confirmationButton': confirmationButton,
+                    'confirmationTitle': confirmationTitle,
+                    'confirmationRedirectURL': confirmationRedirectURL,
+                    'isError': True,
+                    'showConf': showConf,
+                    'username': username,
+                })
 
 
 def password_reset(request):
-    if request.method == 'POST':
-        form = ForgotPasswordForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data['username']
-            return redirect(reverse('password-reset-confirm', args=[username]))
-    else:
+    try:
         form = ForgotPasswordForm()
-    
-    return render(request, 'password_reset.html', {'form': form})
+        if request.method == 'POST':
+            form = ForgotPasswordForm(request.POST)
+            if form.is_valid():
+                username = form.cleaned_data['username']
+                return redirect(reverse('password-reset-confirm', args=[username]))
+        
+        return render(request, 'password_reset.html', {'form': form})
+    except Exception as error:
+        showConf = True
+        confirmationMessage = 'There has been an error processing your password request.'
+        confirmationButton = 'Back to log in page'
+        confirmationTitle = f'Error occurred. {error if settings.DEBUG else ''}'
+        confirmationRedirectURL = reverse('login')
+        return render(request, 'password_reset.html', {
+                    'form':form,
+                    'confirmationMessage': confirmationMessage,
+                    'confirmationButton': confirmationButton,
+                    'confirmationTitle': confirmationTitle,
+                    'confirmationRedirectURL': confirmationRedirectURL,
+                    'isError': True,
+                    'showConf': showConf,
+                })
 
 def catalog_page(request):
     # Pull Listing from models (databse)
@@ -188,7 +220,10 @@ def register(request):
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
-@login_required
+def custom_505(request, exception):
+    return render(request, '505.html', status=500)
+
+@login_required()
 def profile(request):
     user = request.user
     confirmationConfig = {
@@ -460,21 +495,22 @@ def new_listing(request):
 def manage_listing(request, listingId):
     confirmationConfig = {
         "showConf" : False,
+        "isError": False,
         "confirmationTitle" : '',
         "confirmationMessage" : '',
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
     listing = get_object_or_404(Listing, id=listingId)
-    if request.method == 'POST':
-        listingImages = listing.images.all()
-        if(listing):
+    listingImages = listing.images.all()
+    try:
+        if request.method == 'POST':
             if('delete' in request.POST):
                 # Creates copy of pk in memory to show page with modal and deleted listing information
                 listingId = listing.pk
                 listing.delete()
                 listing.pk = listingId
-                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
                 confirmationConfig['showConf'] = True
                 confirmationConfig['confirmationTitle'] = 'Listing removed'
                 confirmationConfig['confirmationMessage'] = 'The listing was successfully delete'
@@ -483,12 +519,12 @@ def manage_listing(request, listingId):
             else:
                 formData = request.POST.copy()
                 formData.update({ "type": listing.type })
-                form = ListingForm(formData, request.FILES, instance=listing)
+                form = ListingForm(formData, request.FILES, instance=listing, disabled=request.user.is_superuser)
                 if(form.is_valid()):
                     form.instance.user = request.user
                     form.save()
                     # print('listingImages', listingImages)
-                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
                     confirmationConfig['showConf'] = True
                     confirmationConfig['confirmationTitle'] = 'Listing updated'
                     confirmationConfig['confirmationMessage'] = 'The changes you made have been saved to your listing'
@@ -496,12 +532,22 @@ def manage_listing(request, listingId):
                     confirmationConfig['confirmationRedirectURL'] = '/profile'
                 else:
                     print('form errors', form.errors)
-    else:
-        listingImages = listing.images.all()
-        form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+        else:
+            form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
 
-    context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
-    return render(request, 'profile/create_edit_listing.html', context=context)
+        context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
+        return render(request, 'profile/create_edit_listing.html', context=context)
+
+    except Exception as error:
+        confirmationConfig['showConf'] = True
+        confirmationConfig['isError'] = True
+        confirmationConfig['confirmationTitle'] = 'Error occurred'
+        confirmationConfig['confirmationMessage'] = f"An error occured while {'deleting' if 'delete' in request.POST else 'updating'} your listing. Please try again later {error if settings.DEBUG else ''}"
+        confirmationConfig['confirmationButton'] = 'Back to My Profile'
+        confirmationConfig['confirmationRedirectURL'] = '/profile'
+        form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
+        context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
+        return render(request, 'profile/create_edit_listing.html', context=context)
 
 
 def seller_list(request):
@@ -529,6 +575,8 @@ def manage_seller(request, id):
                 if form.is_valid():
                     userToUpdate = User.objects.get(username=seller.user.username)
                     userToUpdate.email = form.cleaned_data['email']
+                    userToUpdate.first_name = form.cleaned_data['first_name']
+                    userToUpdate.last_name = form.cleaned_data['last_name']
                     seller.company_name = form.cleaned_data['company_name']
                     userToUpdate.save()
                     seller.save()
@@ -541,6 +589,8 @@ def manage_seller(request, id):
             form = UpdateSellerForm(initial={
                 'username': seller.user.username,
                 'email': seller.user.email,
+                'first_name': seller.user.first_name,
+                'last_name': seller.user.last_name ,
                 'company_name': seller.company_name,
             })
             

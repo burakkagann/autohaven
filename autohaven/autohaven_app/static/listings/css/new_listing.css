@@ -41,6 +41,16 @@
     }
   }
 
+  #images-container #text-images-container {
+    flex: 1;
+    padding-top: 1em;
+    color: var(--danger-color);
+
+    span {
+      text-align: center;
+    }
+  }
+
 
   #images-container {
     justify-content: center;
