@@ -459,6 +459,8 @@ def manage_seller(request, id):
                 if form.is_valid():
                     userToUpdate = User.objects.get(username=seller.user.username)
                     userToUpdate.email = form.cleaned_data['email']
+                    userToUpdate.first_name = form.cleaned_data['first_name']
+                    userToUpdate.last_name = form.cleaned_data['last_name']
                     seller.company_name = form.cleaned_data['company_name']
                     userToUpdate.save()
                     seller.save()
@@ -471,6 +473,8 @@ def manage_seller(request, id):
             form = UpdateSellerForm(initial={
                 'username': seller.user.username,
                 'email': seller.user.email,
+                'first_name': seller.user.first_name,
+                'last_name': seller.user.last_name ,
                 'company_name': seller.company_name,
             })
             
