@@ -1,0 +1,155 @@
+/* About Page Styles */
+
+
+.section {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-left, .text-right {
+    width: 45%;
+    padding-left: 20px;
+}
+
+.image-right, .image-left {
+    width: 45%;
+    padding-top: 100px; 
+}
+
+.image-right img {
+    width: 80%; /* Make images larger */
+    height: auto;
+    border-radius: 10px;
+    max-width: 800px; /* Increase max-width to control size */
+    margin-top: 100px; /* Add margin above the image */
+}
+
+.image-left img {
+    width: 80%; /* Make images larger */
+    height: auto;
+    border-radius: 10px;
+    max-width: 800px; /* Increase max-width to control size */
+    margin-top: 30px; /* Add margin above the image */
+}
+
+
+h1 {
+    font-size: 64px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    font-weight: 300;
+    color: gray;
+}
+
+h3 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 28px;
+    margin-bottom: 70px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 20px;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 50px;
+}
+
+.catalog_footer {
+
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    padding: 20px;
+
+    height: 200px; 
+    margin-top: 10px;
+
+    border-top: 1px solid gray;
+}
+
+.footer_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.footer_right {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: 1;
+    margin-top: 10px;
+
+}
+
+.footer_links_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer_links_right {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+/* Specific Footer Text Styling */
+.catalog_h3 {
+    font-size: 24px;
+    font-weight: 200; /* Regular weight */
+    font-family: 'Inter', sans-serif; /* Ensure Inter font is used */
+}
+.footer_link_image {
+    width: 150px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.address_div {
+    gap: 15px;
+}
+
+.bolder_text {
+    font-weight: 500;
+}
+
+.light_text {
+    font-weight: lighter;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .section, .reverse {
+        flex-direction: column;
+    }
+    .text-left, .text-right, .image-right, .image-left {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .catalog_footer {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(2, auto);
+    }
+}

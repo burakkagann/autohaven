@@ -34,7 +34,7 @@ POSTGRES_PASSWORD=changeme
 2. Open a terminal and navigate to the `./autohaven` directory.
    - You can use `cd autohaven` from a VS code terminal to do this.
 3. Run `docker compose up db` to start the DB server. Wait until the message "database is ready to accept connections". Then, press CTRL-C to stop the container
-4. On a new terminal, run the migrations by running `docker exec -it autohaven-web-1 "python manage.py migrate"`
+4. On a new terminal, run the migrations by running `docker exec -it autohaven-web-1 python manage.py migrate`
 5. Run `docker compose up` to start all the containers (DB, Web and Adminer)
 6. You should see the logs from all servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
 7. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
@@ -47,7 +47,7 @@ POSTGRES_PASSWORD=changeme
    - You can use `cd autohaven` from a VS code terminal to do this if using powershell.
 3. Run `docker compose up db` to start the DB server. Wait until the message "database is ready to accept connections". Then, press CTRL-C to stop the container
 4. Run `docker compose up` to start all the containers (DB, Web and Adminer)
-5. On a new terminal, run the migrations by running `docker exec -it autohaven-web-1 "python manage.py migrate"`
+5. On a new terminal, run the migrations by running `docker exec -it autohaven-web-1 python manage.py migrate`
 6. You should see the logs from all servers in your terminal. This will configure a PostgreSQL database with the credentials defined previously. See [](#credentials) for more details.
 7. Once ready, you should see a message similar to `Starting development server at http://0.0.0.0:8000/`. Do not use this URL to access the local web server but http://localhost:8000/ to avoid hosts restrictions
 8. If everything is correct, you should see Django welcome screen or the project index once it's implemented. Happy coding!
@@ -133,10 +133,10 @@ To learn more about the migrations workflow, go to https://docs.djangoproject.co
 
 _Note:_ Before running any of the following commands, make sure the web container is running. You can start it using `docker compose up`
 
-- To check the current pending migrations, run `docker exec -it autohaven-web-1 "python manage.py showmigrations"`
-- To apply the pending migrations, run `docker exec -it autohaven-web-1 "python manage.py migrate"`
-- To automatically create new migrations to sync the current database tables with the model specification, run `docker exec -it autohaven-web-1 "python manage.py makemigrations`
-- To display the SQL statements that would run as a result of applying the migrations, use `docker exec -it autohaven-web-1 "python manage.py slqmigrate`
+- To check the current pending migrations, run `docker exec -it autohaven-web-1 python manage.py showmigrations`
+- To apply the pending migrations, run `docker exec -it autohaven-web-1 python manage.py migrate`
+- To automatically create new migrations to sync the current database tables with the model specification, run `docker exec -it autohaven-web-1 python manage.py makemigrations`
+- To display the SQL statements that would run as a result of applying the migrations, use `docker exec -it autohaven-web-1 python manage.py slqmigrate`
 
 ## Database Models
 

@@ -9,8 +9,6 @@
 <div class="page_body">
     <div class="catalog_body">
 
-        <input type="text" class="catalog_search_input" placeholder="Search for cars..">
-
         <div class="catalog_title_text">New and used vehicles for sale</div>
         
 
@@ -104,6 +102,14 @@
             <div class="right_column">
                 <div class="catalog_results">
 
+                    {% if no_results_message %}
+
+                   
+                    <l class="no_results_message">No matching results found... </l>
+                 
+
+                    {% else %}
+
                     <ul class="catalog_list">
                         {% for item in listing %}
 
@@ -164,6 +170,8 @@
                         {% endfor %}
                         
                     </ul>
+
+                    {% endif%}
 
                 </div>
 
