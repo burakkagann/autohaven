@@ -436,12 +436,11 @@ def manage_listing(request, listingId):
     try:
         if request.method == 'POST':
             if('delete' in request.POST):
-                raise Exception('SOMETHING BAD HAPPENED')
                 # Creates copy of pk in memory to show page with modal and deleted listing information
                 listingId = listing.pk
                 listing.delete()
                 listing.pk = listingId
-                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
                 confirmationConfig['showConf'] = True
                 confirmationConfig['confirmationTitle'] = 'Listing removed'
                 confirmationConfig['confirmationMessage'] = 'The listing was successfully delete'
@@ -450,12 +449,12 @@ def manage_listing(request, listingId):
             else:
                 formData = request.POST.copy()
                 formData.update({ "type": listing.type })
-                form = ListingForm(formData, request.FILES, instance=listing)
+                form = ListingForm(formData, request.FILES, instance=listing, disabled=request.user.is_superuser)
                 if(form.is_valid()):
                     form.instance.user = request.user
                     form.save()
                     # print('listingImages', listingImages)
-                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+                    form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
                     confirmationConfig['showConf'] = True
                     confirmationConfig['confirmationTitle'] = 'Listing updated'
                     confirmationConfig['confirmationMessage'] = 'The changes you made have been saved to your listing'
@@ -464,20 +463,19 @@ def manage_listing(request, listingId):
                 else:
                     print('form errors', form.errors)
         else:
-            form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+            form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
 
         context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
         return render(request, 'profile/create_edit_listing.html', context=context)
 
     except Exception as error:
-        print('HANDLING EXCEPTION')
         confirmationConfig['showConf'] = True
         confirmationConfig['isError'] = True
         confirmationConfig['confirmationTitle'] = 'Error occurred'
         confirmationConfig['confirmationMessage'] = f"An error occured while {'deleting' if 'delete' in request.POST else 'updating'} your listing. Please try again later {error if settings.DEBUG else ''}"
         confirmationConfig['confirmationButton'] = 'Back to My Profile'
         confirmationConfig['confirmationRedirectURL'] = '/profile'
-        form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+        form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing, disabled=request.user.is_superuser)
         context = { 'form': form, 'listing': listing, 'Listing': Listing } | confirmationConfig
         return render(request, 'profile/create_edit_listing.html', context=context)
 

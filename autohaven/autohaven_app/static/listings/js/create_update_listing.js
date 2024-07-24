@@ -24,9 +24,9 @@ function onDelete(event) {
 
 let imageElementsList = [];
 let imagesToDelete = [];
+let isSuperUser = false;
 
 function drawImages(imagesToDraw) {
-  console.log({ imagesToDraw });
   const mainImageContainer = document.getElementById("main-image-container");
   const otherImagesContainer = document.getElementById(
     "other-images-container"
@@ -43,8 +43,12 @@ function drawImages(imagesToDraw) {
       otherImagesContainer.append(imgContainer);
     }
     const closeSpan = document.createElement("span");
-    closeSpan.innerHTML = "X";
-    closeSpan.addEventListener("click", onDelete);
+    if (!isSuperUser) {
+      closeSpan.innerHTML = "X";
+      closeSpan.addEventListener("click", onDelete);
+    } else {
+      closeSpan.innerHTML = "	&nbsp;";
+    }
     imgContainer.innerHTML = "";
     imgContainer.append(closeSpan);
     imgContainer.append(newImageElement);
@@ -116,12 +120,15 @@ function formSetup() {
   const mediaPrefix = JSON.parse(
     document.getElementById("media-prefix").textContent
   );
+  isSuperUser = JSON.parse(document.getElementById("is-superuser").textContent);
   loadListingImages(previousImages, mediaPrefix);
 
-  addImagesBtn.addEventListener("click", (event) =>
-    selectImages(event, filesInput)
-  );
-  filesInput.addEventListener("change", (_) => onImagesChange(filesInput));
-  submitBtn.addEventListener("click", (event) => onSubmit(event, filesInput));
+  if (!isSuperUser) {
+    addImagesBtn.addEventListener("click", (event) =>
+      selectImages(event, filesInput)
+    );
+    filesInput.addEventListener("change", (_) => onImagesChange(filesInput));
+    submitBtn.addEventListener("click", (event) => onSubmit(event, filesInput));
+  }
 }
 window.addEventListener("load", formSetup);
