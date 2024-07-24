@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
-from .views import login_user
-from django.contrib.auth import views as auth_views
+# from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
@@ -15,10 +14,12 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('new-listing/', views.new_listing, name='new-listing'),
     path('manage-listing/<int:listingId>', views.manage_listing, name='manage-listing'),
-    path('login/',login_user, name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='landing_page.html'), name='logout'),
+    path('login/',views.login_user, name='login'),
+    path('logout/', views.auth_views.LogoutView.as_view(template_name='landing_page.html'), name='logout'),
     path('sellers/upload/', views.upload_new_seller, name='upload_new_seller'),
     path('sellers/manage/<int:id>/', views.manage_seller, name='manage_seller'),
+    path('change-password/', views.auth_views.PasswordChangeView.as_view(template_name='change_password.html'), name='change-password' ),
+    path('password-change-done/', views.password_changed_view.as_view(), name='password_change_done' ),
     path('password-reset/', views.password_reset, name='password-reset'),
     path('password-reset-confirm/<str:username>', views.password_reset_confirm, name='password-reset-confirm'),
     path('catalog/listing/<int:listing_id>/', views.listing_detail, name='listing_detail'),

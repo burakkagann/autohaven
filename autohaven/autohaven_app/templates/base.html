@@ -144,7 +144,7 @@
             <div class="popup-body error_border">
                     <l class="popup-title error_color">{{confirmationTitle}}</l>
                     <l class="popup-message">{{confirmationMessage}}</l>
-                <button class="popup-button" onClick="popupClose()">{{ confirmationButton }}</button>
+                <button class="popup-button" onClick="(event) => event.preventDefault(); popupClose()">{{ confirmationButton }}</button>
             </div>
         </div>
         {% endif %}

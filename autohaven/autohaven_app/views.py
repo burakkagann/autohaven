@@ -5,12 +5,13 @@ from django.contrib.auth import authenticate,login,logout
 from django.core.paginator import Paginator
 from .models import Listing, Offer, SellerUser , User
 from .forms import ForgotPasswordForm, ResetPasswordForm, SignUpForm, NewListingForm, UserUpdateForm , CreateSellerForm, UpdateSellerForm, ListingForm, PaymentForm,OfferForm
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.models import Group
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponseRedirect
+from django.contrib.auth import views as auth_views
 from django.contrib import messages
 from django.conf import settings
 
@@ -29,6 +30,15 @@ def login(request):
 def landing_page(request):
     return render(request, 'landing_page.html')
 
+class password_changed_view(auth_views.PasswordChangeDoneView):
+    template_name='change_password.html'
+    extra_context = {
+        'showConf' : True,
+        'confirmationMessage' : 'Password changed successfully',
+        'confirmationButton' : 'Back to My Profile',
+        'confirmationTitle' : 'Change Password',
+        'confirmationRedirectURL' : reverse_lazy('profile'),
+    }
 
 def password_reset_confirm(request,username):
     form = ResetPasswordForm()
