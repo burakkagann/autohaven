@@ -49,6 +49,18 @@ function drawImages(imagesToDraw) {
     imgContainer.append(closeSpan);
     imgContainer.append(newImageElement);
   });
+  updateImagesText();
+}
+
+function updateImagesText() {
+  // Update images feedback text
+  const number = imageElementsList.filter(
+    (imgElement) => imgElement.file
+  ).length;
+  const text = document
+    .getElementById("text-images-container")
+    .children.item(0);
+  text.innerHTML = number ? `${number} Photos added successfully` : "";
 }
 
 function onImagesChange(filesInput) {
