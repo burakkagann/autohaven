@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Listing Information Page - Auto Haven{% endblock %}
+
+{% block pageStyles %}
+    <link rel="stylesheet" href="{% static 'about.css' %}">
+    <!-- Include the Inter font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- First Paragraph with Image on the Right -->
+    <div class="section">
+        <div class="text-left">
+            <h1>About</h1>
+            <h2>Welcome to AutoHaven, the best car dealership on the planet!</h2>
+            <p>
+                At AutoHaven, we don't just sell cars; we deliver dreams on 
+                wheels! From the moment you step onto our lot, you're not 
+                just a customer – you're family. Our friendly, expert team is 
+                here to make sure you drive away in the car of your dreams 
+                with a smile that stretches from ear to ear.
+            </p>
+            <h3>Why are we the best?</h3>
+            <p>
+                Selection Like No Other: Whether you’re looking for a sleek 
+                sports car to turn heads, a reliable family SUV to make 
+                memories, or an eco-friendly hybrid to save the planet, 
+                we’ve got it all. Our inventory is packed with the latest 
+                models and the best pre-owned vehicles that are practically new! 
+            </p>
+            <p>
+            Customer Service Royalty: At AutoHaven, you're treated like royalty!
+            Our staff is dedicated to providing you with an experience that's as
+            smooth as our car engines. We go above and beyond to ensure your car
+            buying journey is as enjoyable as a Sunday drive.
+            </p>
+        </div>
+        <div class="image-right">
+            <img src="{% static 'images/about1.png' %}" alt="image1">
+        </div>
+    </div>
+
+    <!-- Second Paragraph with Image on the Left -->
+    <div class="section reverse">
+        <div class="image-left">
+            <img src="{% static 'images/about2.png' %}" alt="image2">
+        </div>
+        <div class="text-right">
+            <h4>More benefits from AutoHaven</h4>
+            <p>
+                Financing Made Easy: Worried about financing? Fret not! Our 
+                finance gurus work their magic to get you the best deals and
+                terms that fit your budget. Bad credit, no credit, no problem!
+                We’re here to help you hit the road in no time. 
+            </p>
+            <p>
+                Service You Can Trust: Our relationship doesn’t end when you 
+                drive off the lot. With our state-of-the-art service center,
+                we’re here to keep your vehicle in pristine condition. Our 
+                certified technicians treat your car like their own, ensuring
+                it runs like a dream for years to come.
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="catalog_footer">
+
+    <div class="footer_left">
+
+        <div class="catalog_h3">AutoHaven</div>
+        <div class="catalog_h3">Ernst-Reuter Platz 10</div>
+        <div class="catalog_h3">Berlin - 10587</div>
+
+        <img src="{% static 'images/link_image.png' %}" class="footer_link_image">
+
+
+    </div>
+
+    <div class="footer_right">
+
+        <div class="footer_links_left">
+            <div class="bolder_text">About Us</div>
+            <div class="light_text">Careers</div>
+            <div class="light_text">Compliance</div>
+            <div class="light_text">Page</div>
+        </div>
+
+        <div class="footer_links_right">
+            <div class="bolder_text">All Cars</div>
+            <div class="light_text">New Cars</div>
+            <div class="light_text">Second Hand Cars</div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

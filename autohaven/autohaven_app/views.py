@@ -21,7 +21,7 @@ def root(request):
     return redirect('home/')
 
 def about(request):
-    return render(request, 'base.html')
+    return render(request, 'about.html')
 
 def login(request):
     return render(request, 'login.html')
@@ -126,10 +126,10 @@ def catalog_page(request):
     engine_type = models.Listing.objects.values('engine_type').distinct()
 
     # Display message if no listings match filters
-    if not listing_with_images:
-        no_results_message = "No cars available that match your filter queries."
+    if len(listing_with_images) == 0:
+        no_results_message = True
     else:
-        no_results_message = None
+        no_results_message = False
 
 
     return render(request, 'catalog.html', {
@@ -484,6 +484,8 @@ def manage_seller(request, id):
         confirmationConfig['confirmationButton'] = "Close"
         form = UpdateSellerForm(initial={
             'username': seller.user.username,
+            'first_name': seller.user.first_name,
+            'last_name': seller.user.last_name ,
             'email': seller.user.email,
             'company_name': seller.company_name,
         })   

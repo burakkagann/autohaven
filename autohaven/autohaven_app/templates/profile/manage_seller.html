@@ -66,10 +66,30 @@
 </style>
 <div class="container">
     <h1>{{ seller.user.username }}</h1>
-    <p>Fill in the seller’s information to create their account</p>
+    <p>Update the seller’s information</p>
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form.non_field_errors }}
+        <div>
+            {{ form.first_name.label_tag }}
+            {{ form.first_name }}
+        </div>
+        <div>
+            {{ form.last_name.label_tag }}
+            {{ form.last_name }}
+        </div>
+        <div>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+        </div>
+        <div>
+            {{ form.username.label_tag }}
+            {{ form.username }}
+        </div>
+        <div>
+            {{ form.company_name.label_tag }}
+            {{ form.company_name }}
+        </div>
         <button type="submit" class="button button-black">Update</button>
     </form>
     <form method="post" style="margin-top: 10px;">
@@ -78,4 +98,3 @@
     </form>
 </div>
 {% endblock %}
-

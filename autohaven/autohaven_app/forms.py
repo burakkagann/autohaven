@@ -94,8 +94,11 @@ class UserUpdateForm(forms.ModelForm):
 
 class CreateSellerForm(forms.Form):
     username = UsernameField(label='Username')
+    first_name = forms.CharField(label='First Name', max_length=30)
+    last_name = forms.CharField(label='Last Name', max_length=30)
     email = forms.EmailField(label='Email')
     company_name = forms.CharField(label='Company Name', max_length=100)
+    
 
     def clean_username(self):
         username = self.cleaned_data.get("username")
@@ -104,7 +107,10 @@ class CreateSellerForm(forms.Form):
         return username
 
     def save(self):
-        newUser = User(username = self.cleaned_data['username'], email = self.cleaned_data['email'])
+        newUser = User(username = self.cleaned_data['username'],
+                        email = self.cleaned_data['email'], 
+                        first_name=self.cleaned_data['first_name'],
+                        last_name=self.cleaned_data['last_name'])
         newUser.save()
         newUser.groups.add(Group.objects.get(name='Sellers'))
         newSellerUser = SellerUser(user = newUser,company_name = self.cleaned_data['company_name'])
@@ -113,6 +119,8 @@ class CreateSellerForm(forms.Form):
 
 class UpdateSellerForm(forms.Form):
     username = forms.CharField(label='Username')
+    first_name = forms.CharField(label='First Name', max_length=30)
+    last_name = forms.CharField(label='Last Name', max_length=30)
     email = forms.EmailField(label='Email')
     company_name = forms.CharField(label='Company Name', max_length=100)
 
@@ -124,6 +132,8 @@ class UpdateSellerForm(forms.Form):
 
     def save(self, commit=True):
         userToUpdate = User.objects.get(username=self.cleaned_data['username'])
+        userToUpdate.first_name = self.cleaned_data['first_name']
+        userToUpdate.last_name = self.cleaned_data['last_name']
         userToUpdate.email = self.cleaned_data['email']
         userToUpdate.selleruser.company_name = self.cleaned_data['company_name']
         if commit:
