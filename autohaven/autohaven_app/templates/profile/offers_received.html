@@ -3,7 +3,7 @@
     <thead>
         <tr>
             <th>Title</th>
-            <th>Listing ID</th>
+            <th>Username</th>
             <th>Price</th>
             <th>Date</th>
             <th>Status</th>
@@ -14,15 +14,17 @@
         {% for offer in offers_page_obj %}
         <tr>
             <td class="title">{{ offer.listing.title }}</td>
-            <td class="id">{{ offer.listing.id }}</td>
-            <td class="price"><span class="button-style"></span>${{ offer.offeredPrice }}</span></td>
-            <td class="date"><span class="button-style">{{ offer.offeredDate|date:"M d" }}</span></td>
-            <td><span class="button-style">{{ offer.status }}</span></td>
+            <td class="username">{{ offer.user }}</td>
+            <td class="price">${{ offer.offeredPrice }}</td>
+            <td class="date">{{ offer.offeredDate|date:"M d" }}</td>
+            <td>{{ offer.status }}</td>
             <td>
-                <div>
-                    <button class="button accept-button">Accept</button>
-                    <button class="button decline-button">Decline</button>
-                </div>
+                <form method="post" action="{% url 'profile' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="offer_id" value="{{ offer.id }}">
+                    <button type="submit" name="accept_offer" class="button button-accept">Accept</button>
+                    <button type="submit" name="decline_offer" class="button button-decline">Decline</button>
+                </form>
             </td>
         </tr>
         {% endfor %}
@@ -43,4 +45,5 @@
         {% endif %}
     </span>
 </div>
-</div>
+
+

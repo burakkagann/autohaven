@@ -59,6 +59,7 @@
             <p>{{ listing.description }}</p>
         </div>
         {% if request.user.is_authenticated %}
+        {% if request.user != listing.user %} <!-- Check if the user is not the owner of the listing -->
             {% if request.user|is_in_group:"RegularUsers" %}
                 {% if listing.type == 'new' %}
                     <div class="payment-section">
@@ -69,7 +70,7 @@
                             {{ form.as_p }}<button type="submit" name="payment_submit">Pay Now</button>
                         </form>
                     </div>
-                {% else%} 
+                {% else %}
                     <div class="offer-section">
                         <h2>Submit Your Offer</h2>
                         <p>Make an offer for the listing and stand a chance to purchase the car:</p>
@@ -81,8 +82,8 @@
                 {% endif %}
             {% endif %}
         {% endif %}
-    </div>
-
+    {% endif %}
+</div>
     <script>
         function changeImage(url) {
             document.getElementById('main-image').src = url;

@@ -1,3 +1,4 @@
+/* General Styles */
 main {
     font-family: "Inter", sans-serif;
     display: flex;
@@ -75,6 +76,7 @@ input {
     padding: 1em 1.2em;
 }
 
+/* Listings Section */
 .listings, .order-history, .offers-received {
     text-align: left;
     margin-top: 40px;
@@ -84,19 +86,11 @@ input {
     margin-bottom: 20px;
 }
 
+/* Tables */
 table {
     width: 100%;
     border-collapse: collapse;
 }
-
-.pagination {
-    text-align: end;
-    padding-top: 0.5em;
-}
-
-.step-links {
-    margin-right: 2.8em;
-} 
 
 th, td {
     border-bottom: 1px solid #ccc;
@@ -115,23 +109,6 @@ td.id, td.date {
     color: gray;
 }
 
-.status-button {
-    display: inline-block;
-    padding: 2px 8px;
-    margin: 0;
-    border-radius: 4px;
-    font-size: 0.8em;
-    color: #fff;
-}
-
-.status-accepted {
-    background-color: green;
-}
-
-.status-declined {
-    background-color: red;
-}
-
 td.model {
     white-space: nowrap;
     overflow: hidden;
@@ -140,6 +117,47 @@ td.model {
     font-size: 1em;
 }
 
+.listings-table th, .listings-table td {
+    padding: 10px;
+    border: 1px solid white;
+}
+
+.listings-table th {
+    background-color: white;
+}
+
+/* Common styles for status buttons */
+.status-button {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 6px; /* Rounded corners */
+    font-size: 0.7em;
+    text-align: center;
+    color: #fff; /* White text */
+    font-weight: 400;
+}
+
+/* Specific styles for accepted status */
+.status-accepted {
+    background-color: #28a745; /* Green background for accepted */
+}
+
+/* Specific styles for declined status */
+.status-declined {
+    background-color: #dc3545; /* Red background for declined */
+}
+
+/* Specific styles for pending status */
+.status-pending {
+    background-color: #6c757d; /* Grey background for pending */
+}
+
+
+/* Ensure other table cell content styling remains consistent */
+td.price, td.date {
+    padding: 8px;
+}
+/* Action Buttons */
 .table-action-button {
     display: inline-block;
     padding: 0.3em 1.5em;
@@ -182,20 +200,19 @@ td.model {
     color: white;
 }
 
-.listings-table {
-    width: 100%;
-    border-collapse: collapse;
+/* Pagination */
+.pagination {
+    text-align: end;
+    padding-top: 0.5em;
 }
 
-.listings-table th, .listings-table td {
-    padding: 10px;
-    border: 1px solid white;
-}
-.listings-table th {
-
-    background-color: white;
+.step-links {
+    margin-right: 2.8em;
+    display: flex;
+    justify-content: space-between;
 }
 
+/* Additional Styles */
 .new-listing {
     background-color: #87D986; /* Green background for new listings */
 }
@@ -214,17 +231,70 @@ td.model {
     display: inline-block;
 }
 
-.pagination {
-    margin: 10px 0;
-}
-
-.step-links {
-    display: flex;
-    justify-content: space-between;
-}
 .cell-content {
     background-color: white;
     border-radius: 8px;
     padding: 2px 8px;
     display: inline-block; 
+}
+
+.footer {
+
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(5, auto);
+    gap: 10px;
+    padding: 20px;
+    height: 200px; 
+    margin-top: 10px;
+    border-top: 1px solid gray;
+}
+
+.footer_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.footer_right {
+    grid-column: 2;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: 1;
+    margin-top: 10px;
+
+}
+
+.footer_links_left {
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer_links_right {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer_link_image {
+    width: 150px;
+    height: 30px;
+    margin-top: 10px;
+}
+
+.address_div {
+    gap: 15px;
+}
+
+.bolder_text {
+    font-weight: 500;
+}
+
+.light_text {
+    font-weight: lighter;
 }
