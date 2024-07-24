@@ -180,7 +180,7 @@
 .payment-section button:hover, .offer-section button:hover {
     background-color: black; 
 }
-.catalog_footer {
+.footer {
 
     display: grid;
     grid-template-columns: repeat(2, auto);

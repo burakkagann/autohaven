@@ -217,6 +217,15 @@ body {
     margin-top: 10px;
 }
 
+.no_results_message {
+    display: flex;
+    justify-content: center;
+    font-size: 15px;
+    font-weight:lighter;
+    color: gray;
+    margin-bottom: -15px;
+}
+
 .list_item_button:hover {
     background-color: #333;
 }
