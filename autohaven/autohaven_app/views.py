@@ -495,26 +495,44 @@ def manage_seller(request, id):
 def upload_new_seller(request):
     confirmationConfig = {
         "showConf" : False,
+        "isError"  : False,
         "confirmationTitle" : '',
         "confirmationMessage" : '',
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
-    if request.method == 'POST':
-        form = CreateSellerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            confirmationConfig["showConf"] = True
-            confirmationConfig["confirmationTitle"] = 'New seller created'
-            confirmationConfig["confirmationMessage"] = 'The seller will receive an email with their login details and further information on how to get started and create their own password. You will receive a confirmation message shortly about your upload.'
-            confirmationConfig["confirmationButton"] =  'Back to My Profile'
-            confirmationConfig["confirmationRedirectURL"] = reverse('profile')
-            
-    else:
-        form = CreateSellerForm()
-    context = { 'form': form } | confirmationConfig
-    return render(request, 'profile/upload_new_seller.html', context)
-
+    try :
+        
+        if request.method == 'POST':
+            form = CreateSellerForm(request.POST)
+            if form.is_valid():
+                form.save()
+                confirmationConfig["showConf"] = True
+                confirmationConfig["confirmationTitle"] = 'New seller created'
+                confirmationConfig["confirmationMessage"] = 'The seller will receive an email with their login details and further information on how to get started and create their own password. You will receive a confirmation message shortly about your upload.'
+                confirmationConfig["confirmationButton"] =  'Back to My Profile'
+                confirmationConfig["confirmationRedirectURL"] = reverse('profile')
+            else:
+                # Collect form errors into a single message , this for django filed error 
+                error_messages = " ".join([f"{field}: {error}" for field, errors in form.errors.items() for error in errors])
+                confirmationConfig["showConf"] = True
+                confirmationConfig["isError"] = True
+                confirmationConfig["confirmationTitle"] = "Error"
+                confirmationConfig["confirmationMessage"] = f"There were errors in the form submission: {error_messages} \n Changes have not been saved."
+                confirmationConfig["confirmationButton"] = "Close"    
+        else:
+            form = CreateSellerForm()
+        context = { 'form': form } | confirmationConfig
+        return render(request, 'profile/upload_new_seller.html', context)
+    
+    except Exception as e:
+        #this for ganaral errors 
+        confirmationConfig["showConf"] = True
+        confirmationConfig["isError"]  = True
+        confirmationConfig["confirmationTitle"] = "An Error has occured!"
+        confirmationConfig["confirmationMessage"] = "Changes have not been saved. \n Error: " + e.__str__()
+        confirmationConfig["confirmationButton"] = "Close"
+        return render(request, 'profile/upload_new_seller.html', {'form': form} | confirmationConfig)
 
 @csrf_protect
 def listing_detail(request,listing_id):

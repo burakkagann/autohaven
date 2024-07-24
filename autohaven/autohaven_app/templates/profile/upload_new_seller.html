@@ -13,31 +13,25 @@
     <p>Fill in the seller's information to create their account</p>
     <form method="post">
         {% csrf_token %}
-        {{ form.non_field_errors }}
         
         <div>
             {{ form.first_name.label_tag }}
-            {{ form.first_name.errors }}
             {{ form.first_name }}
         </div>
         <div>
             {{ form.last_name.label_tag }}
-            {{ form.last_name.errors }}
             {{ form.last_name }}
         </div>
         <div>
             {{ form.company_name.label_tag }}
-            {{ form.company_name.errors }}
             {{ form.company_name }}
         </div>
         <div>
             {{ form.email.label_tag }}
-            {{ form.email.errors }}
             {{ form.email }}
         </div>
         <div>
             {{ form.username.label_tag }}
-            {{ form.username.errors }}
             {{ form.username }}
         </div>
         <button class="button button-black" type="submit">Upload seller</button>
