@@ -354,7 +354,7 @@ def new_listing(request):
             formData = request.POST.copy()
             formData.update(listingType)
             form = NewListingForm(formData, request.FILES)
-        
+
             if form.is_valid():
                 form.instance.user = request.user
                 listing = form.save()
