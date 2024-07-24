@@ -12,6 +12,7 @@ from django.contrib.auth.models import Group
 from django.views.decorators.cache import cache_control
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.conf import settings
 
 # import logging
 # logger = logging.getLogger(__name__)  # Create a logger instance
@@ -342,30 +343,43 @@ def new_listing(request):
     listingType = { "type": Listing.NEW if request.user.groups.filter(name='Sellers').exists() else Listing.USED }
     confirmationConfig = {
         "showConf" : False,
+        "isError"  : False,
         "confirmationTitle" : '',
         "confirmationMessage" : '',
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
-    if request.method == 'POST':
-        formData = request.POST.copy()
-        formData.update(listingType)
-        form = NewListingForm(formData, request.FILES)
-        if(form.is_valid()):
-            form.instance.user = request.user
-            listing = form.save()
-            confirmationConfig['showConf'] = True
-            confirmationConfig['confirmationTitle'] = 'New listing uploaded'
-            confirmationConfig['confirmationMessage'] = 'Your listing has been successfully added to the catalog. You will receive a confirmation email shortly regarding your upload. You can view and edit this listing in the My Listings section'
-            confirmationConfig['confirmationButton'] = 'Back to My Profile'
-            confirmationConfig['confirmationRedirectURL'] = '/profile'
-            listingImages = listing.images.all()
-            form = ListingForm(initial={'listingImages': list(listingImages.values()) }, instance=listing)
+    try:
+        if request.method == 'POST':
+            formData = request.POST.copy()
+            formData.update(listingType)
+            form = NewListingForm(formData, request.FILES)
+
+            if form.is_valid():
+                form.instance.user = request.user
+                listing = form.save()
+                confirmationConfig['showConf'] = True
+                confirmationConfig['confirmationTitle'] = 'New listing uploaded'
+                confirmationConfig['confirmationMessage'] = 'Your listing has been successfully added to the catalog. You will receive a confirmation email shortly regarding your upload. You can view and edit this listing in the My Listings section'
+                confirmationConfig['confirmationButton'] = 'Back to My Profile'
+                confirmationConfig['confirmationRedirectURL'] = '/profile'
+                listingImages = listing.images.all()
+                form = ListingForm(initial={'listingImages': list(listingImages.values())}, instance=listing)
+            else:
+                print('form errors', form.errors)
         else:
-            print('form errors', form.errors)
-    else:
-        formData = listingType
+            formData = listingType
+            form = NewListingForm(initial=listingType)
+    except Exception as e:
+        confirmationConfig['showConf'] = True
+        confirmationConfig['isError'] = True
+        confirmationConfig['confirmationTitle'] = "An Error has occurred!"
+        confirmationConfig['confirmationMessage'] = "Your listing could not be created."
+        if settings.DEBUG:
+            confirmationConfig['confirmationMessage'] += "\n Error: " + str(e)
+        confirmationConfig['confirmationButton'] = "Close"
         form = NewListingForm(initial=listingType)
+        
     context = { 
         'form': form,
         'Listing': Listing,
@@ -428,36 +442,53 @@ def manage_seller(request, id):
     seller = get_object_or_404(SellerUser, id=id)
     confirmationConfig = {
         "showConf" : False,
+        "isError"  : False,
         "confirmationTitle" : '',
         "confirmationMessage" : '',
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
-    if request.method == 'POST':
-        if 'delete' in request.POST:
-            seller.user.delete()
-            return redirect('/profile/')
+    
+    try:
+        if request.method == 'POST':
+            if 'delete' in request.POST:
+                seller.user.delete()
+                return redirect('/profile/')
+            else:
+                form = UpdateSellerForm(request.POST)
+                if form.is_valid():
+                    userToUpdate = User.objects.get(username=seller.user.username)
+                    userToUpdate.email = form.cleaned_data['email']
+                    seller.company_name = form.cleaned_data['company_name']
+                    userToUpdate.save()
+                    seller.save()
+                    confirmationConfig["showConf"] = True
+                    confirmationConfig["confirmationTitle"] = 'Changes saved.'
+                    confirmationConfig["confirmationMessage"] = 'The changes you made have been saved to the seller profile!'
+                    confirmationConfig["confirmationButton"] =  'Back to My Profile'
+                    confirmationConfig["confirmationRedirectURL"] = reverse('profile')
         else:
-            form = UpdateSellerForm(request.POST)
-            if form.is_valid():
-                userToUpdate = User.objects.get(username=seller.user.username)
-                userToUpdate.email = form.cleaned_data['email']
-                seller.company_name = form.cleaned_data['company_name']
-                userToUpdate.save()
-                seller.save()
-                confirmationConfig["showConf"] = True
-                confirmationConfig["confirmationTitle"] = 'Changes saved.'
-                confirmationConfig["confirmationMessage"] = 'The changes you made have been saved to the seller profile!'
-                confirmationConfig["confirmationButton"] =  'Back to My Profile'
-                confirmationConfig["confirmationRedirectURL"] = reverse('profile')
-    else:
+            form = UpdateSellerForm(initial={
+                'username': seller.user.username,
+                'email': seller.user.email,
+                'company_name': seller.company_name,
+            })
+            
+    except Exception as e:
+        confirmationConfig['showConf'] = True
+        confirmationConfig['isError'] = True
+        confirmationConfig['confirmationTitle'] = "An Error has occurred!"
+        confirmationConfig['confirmationMessage'] = "There was an error updating the seller information."
+        if settings.DEBUG:
+            confirmationConfig['confirmationMessage'] += "\n Error: " + str(e)
+        confirmationConfig['confirmationButton'] = "Close"
         form = UpdateSellerForm(initial={
             'username': seller.user.username,
             'first_name': seller.user.first_name,
             'last_name': seller.user.last_name ,
             'email': seller.user.email,
             'company_name': seller.company_name,
-        })
+        })   
     context = {'form': form, 'seller': seller } | confirmationConfig
     return render(request, 'profile/manage_seller.html', context)
 
