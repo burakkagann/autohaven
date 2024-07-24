@@ -81,14 +81,24 @@
             align-items: center;
             border-radius: 20px;
             box-shadow: 0 8px 8px 0 rgba(0, 0, 0, 0.5);
-
         }
 
         .popup-title {
             font-size: 3rem;
             font-weight: 600;
             margin-bottom: 10px;
+        }
+
+        .conf_color {
             color: black;
+        }
+
+        .error_color {
+            color: red;
+        }
+
+        .error_border {
+            border: 1px solid red;
         }
 
         .popup-message {
@@ -120,13 +130,25 @@
     </style>
 
     <div id="popup" class="popup-background">
+        {% if not isError %}
         <div class="popup-wrapper">
             <div class="popup-body">
-                    <l class="popup-title">{{confirmationTitle}}</l>
+                    <l class="popup-title conf_color">{{confirmationTitle}}</l>
                     <l class="popup-message">{{confirmationMessage}}</l>
                 <button class="popup-button" onClick="popupClose()">{{ confirmationButton }}</button>
             </div>
         </div>
+
+        {% else %}
+        <div class="popup-wrapper">
+            <div class="popup-body error_border">
+                    <l class="popup-title error_color">{{confirmationTitle}}</l>
+                    <l class="popup-message">{{confirmationMessage}}</l>
+                <button class="popup-button" onClick="popupClose()">{{ confirmationButton }}</button>
+            </div>
+        </div>
+        {% endif %}
+
     </div>
 
     <script>

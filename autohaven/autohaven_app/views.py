@@ -193,6 +193,7 @@ def profile(request):
 
     # Popup Params
     showConf = False
+    isError = False
     confirmationTitle = ""
     confirmationMessage = ""
     confirmationButton = ""
@@ -209,24 +210,38 @@ def profile(request):
 
     form = UserUpdateForm(instance=user)
 
-    if request.method == 'POST' and 'edit' in request.POST:
-        form_editable = True
-    elif request.method == 'POST':
-        form = UserUpdateForm(request.POST, instance=user)
-        if form.is_valid():
-            form.save()
-            if is_seller and seller_user:
-                 seller_user.company_name = request.POST.get('company_name', '')
-                 seller_user.save()
+    # Try / Except block to handle form submission Errors
+    try:
 
-            # Set Popup Params     
-            showConf = True
-            confirmationTitle = "Profile Updated"
-            confirmationMessage = "Your profile is updated succesfully"
-            confirmationButton = "Close"
-            
-    else:
-        form = UserUpdateForm(instance=user)
+        # Debug Exception
+        # raise Exception('This is a testing testing error')
+
+        if request.method == 'POST' and 'edit' in request.POST:
+            form_editable = True
+        elif request.method == 'POST':
+            form = UserUpdateForm(request.POST, instance=user)
+            if form.is_valid():
+                form.save()
+                if is_seller and seller_user:
+                    seller_user.company_name = request.POST.get('company_name', '')
+                    seller_user.save()
+
+                # Set Popup Params     
+                showConf = True
+                confirmationTitle = "Profile Updated"
+                confirmationMessage = "Your profile is updated succesfully"
+                confirmationButton = "Close"
+                
+        else:
+            form = UserUpdateForm(instance=user)
+
+    except Exception as e:
+        showConf = True
+        isError = True
+        confirmationTitle = "An Error has occured!"
+        confirmationMessage = "Changes have not been saved. \n Error: " + e.__str__()
+        confirmationButton = "Close"
+
                
         
 
@@ -270,6 +285,7 @@ def profile(request):
         'orders_page_obj': orders_page_obj,
         'sellers': sellers,
         "showConf": showConf,
+        "isError": isError,
         "confirmationMessage": confirmationMessage,
         "confirmationTitle": confirmationTitle,
         "confirmationButton": confirmationButton,
