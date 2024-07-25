@@ -19,7 +19,9 @@
             <div class="landing_page_h2">New Cars</div>
             <div class="landing_page_subtitle_text">View the selection of brand new cars,</div>
             <div class="landing_page_subtitle_text">available only on AutoHaven!</div>
-            <button class="landing_page_button">Go to New Cars</button>
+            <a href="{% url 'catalog' %}?offering_type=new">
+                <button class="landing_page_button">Go to New Cars</button>
+            </a>
         </div>
 
         <div class="landing_page_image_div">
@@ -37,7 +39,9 @@
             <div class="landing_page_h2">Second Hand Cars</div>
             <div class="landing_page_subtitle_text">View the best deals on second hand cars,</div>
             <div class="landing_page_subtitle_text">and give them a new spark, only on AutoHaven!</div>
-            <button class="landing_page_button">Go to Second Hand Cars</button>
+            <a href="{% url 'catalog' %}?offering_type=used">
+                <button class="landing_page_button">Go to Second Hand Cars</button>
+            </a>
         </div>
 
     </div>
