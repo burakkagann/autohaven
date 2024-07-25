@@ -64,7 +64,7 @@ function updateImagesText() {
   const text = document
     .getElementById("text-images-container")
     .children.item(0);
-  text.innerHTML = number ? `${number} Photos added successfully` : "";
+  text.innerHTML = number ? `${number} Images added successfully` : "";
 }
 
 function onImagesChange(filesInput) {
