@@ -1,9 +1,12 @@
-body {
+html, body {
     font-family: "Inter", sans-serif;
+    height: 100vh;
+    margin: 0;
 }
 main {
     background-color: #fff;
     color: #333;
+    min-height: 65%
 
 }
 header {
