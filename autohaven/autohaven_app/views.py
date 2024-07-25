@@ -574,12 +574,35 @@ def manage_seller(request, id):
         "confirmationButton" : '',
         "confirmationRedirectURL" : '',
     }
-    
+    #initiliaze form
+    form = UpdateSellerForm(initial={
+                'username': seller.user.username,
+                'email': seller.user.email,
+                'first_name': seller.user.first_name,
+                'last_name': seller.user.last_name ,
+                'company_name': seller.company_name,
+            })
     try:
         if request.method == 'POST':
             if 'delete' in request.POST:
-                seller.user.delete()
-                return redirect('/profile/')
+                try:
+                    seller.user.delete()
+                    confirmationConfig["showConf"] = True
+                    confirmationConfig["confirmationTitle"] = 'Seller Deleted.'
+                    confirmationConfig["confirmationMessage"] = 'The seller account has been successfully deleted.'
+                    confirmationConfig["confirmationButton"] = 'Back to My Profile'
+                    confirmationConfig["confirmationRedirectURL"] = '/profile'
+                    confirmationConfig['isError'] = False
+
+                except Exception as e:
+                    confirmationConfig['showConf'] = True
+                    confirmationConfig['confirmationTitle'] = "An Error has occurred!"
+                    confirmationConfig['confirmationMessage'] = "There was an error deleting the seller account."
+                    confirmationConfig['confirmationButton'] = "Back to My Profile"
+                    confirmationConfig["confirmationRedirectURL"] = '/profile'
+                    confirmationConfig['isError'] = True
+
+                    
             else:
                 form = UpdateSellerForm(request.POST)
                 if form.is_valid():
@@ -609,9 +632,9 @@ def manage_seller(request, id):
         confirmationConfig['isError'] = True
         confirmationConfig['confirmationTitle'] = "An Error has occurred!"
         confirmationConfig['confirmationMessage'] = "There was an error updating the seller information."
-        if settings.DEBUG:
-            confirmationConfig['confirmationMessage'] += "\n Error: " + str(e)
-        confirmationConfig['confirmationButton'] = "Close"
+        confirmationConfig['confirmationButton'] = "Back to My Profile."
+        confirmationConfig["confirmationRedirectURL"] = '/profile'
+
         form = UpdateSellerForm(initial={
             'username': seller.user.username,
             'first_name': seller.user.first_name,
