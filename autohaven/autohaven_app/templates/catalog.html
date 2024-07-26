@@ -33,7 +33,6 @@
                         </script>
                     
                         <div class="catalog_filter_header">
-                            <l class="catalog_h3">Search</l>
                             
                             <div>
                                 <button type="reset" class="filter_button" onclick="reset_form()">Reset</button>
@@ -44,7 +43,7 @@
             
                         <div class="catalog_filter_controls">
     
-                            <l class="catalog_h4">Offering Type</l>
+                            <l class="catalog_h4">Listing Type</l>
                             <select name="offering_type" class="catalog_filter_select">
                                 <option value="">All</option>
                                 <option value="new" {% if request.GET.offering_type == "new" %}selected{% endif %}>New</option>
