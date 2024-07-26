@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('autohaven_app', '0010_create_initial_images'),
+        ('autohaven_app', "0004_alter_listingmodel_body_type"),
     ]
 
     operations = [
