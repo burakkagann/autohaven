@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         new_seller_user.save()
 
     dependencies = [
-        ('autohaven_app', '0012_alter_listing_mileage_alter_offer_status'),
+        ('autohaven_app', '0011_alter_listing_mileage_alter_offer_status'),
     ]
 
     operations = [migrations.RunPython(create_initial_users),

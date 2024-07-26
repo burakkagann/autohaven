@@ -6,11 +6,13 @@ from django.contrib.auth import get_user_model
 
 def create_initial_listings(apps, schema_editor):
 
-    User = get_user_model()
+    User = apps.get_model('auth', 'User')
 
     seller_user = User.objects.get(username='seller')
+    regular_user = User.objects.get(username='regularuser')
 
     Listing.objects.create(
+        title = 'Tesla On the Market',
         type='new',
         model='Model Y',
         year=2023,
@@ -20,6 +22,7 @@ def create_initial_listings(apps, schema_editor):
         body_type='Hatchback',
         price=80000,
         sold=False,
+        description = 'The Tesla Model Y is an all-electric compact crossover SUV that combines the performance and innovation Tesla is known for with the versatility of an SUV. Launched in 2020, it is designed to offer a spacious and high-tech driving experience while maintaining the impressive acceleration and efficiency that Tesla vehicles are celebrated for.',
         user_id= seller_user.id
     )
 
@@ -27,6 +30,7 @@ def create_initial_listings(apps, schema_editor):
     regular_user = User.objects.get(username='regularuser')
 
     Listing.objects.create(
+        title='Wrangler In Great Condition',
         type='used',
         model='Wrangler',
         year=2020,
@@ -36,6 +40,7 @@ def create_initial_listings(apps, schema_editor):
         body_type='SUV',
         price=80000,
         sold=False,
+        description='Get ready to conquer the open road or rugged terrain with this 2017 Jeep Wrangler Unlimited Sahara. This versatile SUV combines classic Jeep ruggedness with modern comforts, making it an ideal choice for adventure seekers and urban drivers alike. With its iconic design and off-road capabilities, this used Wrangler is ready for your next journey.',
         user_id= regular_user.id
     )
  

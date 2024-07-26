@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('autohaven_app', '0011_create_initial_offer'),
+        ('autohaven_app', '0010_create_initial_images'),
     ]
 
     operations = [
