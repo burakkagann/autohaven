@@ -78,12 +78,12 @@ body {
 
 .landing_page_button {
     color: white;
-    height: 35px;
-    width: 150px;
+    height: 45px;
+    width: 200px;
     background-color: black;
     border: none;
     border-radius: 5px;
-    font-size: 10px;
+    font-size: 15px;
     font-weight: lighter;
     margin-top: 10px;
 }
