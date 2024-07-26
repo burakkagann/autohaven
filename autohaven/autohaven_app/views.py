@@ -687,11 +687,6 @@ def upload_new_seller(request):
         confirmationConfig["confirmationButton"] = "Close"
         return render(request, 'profile/upload_new_seller.html', {'form': form} | confirmationConfig)
 
-from django.shortcuts import get_object_or_404, render
-from django.contrib import messages
-from django.views.decorators.csrf import csrf_protect
-from .models import Listing, Offer
-from .forms import PaymentForm, OfferForm
 
 
 @csrf_protect

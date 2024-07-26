@@ -39,9 +39,8 @@ def create_initial_users(apps, schema_editor):
         super_user.save()
         super_user.groups.add(superuser_group.id)
 
-    # SELLERS
 
-    #Seller 1
+    #Seller 
 
     seller_user1, created = User.objects.get_or_create(
         username='seller',
@@ -58,9 +57,6 @@ def create_initial_users(apps, schema_editor):
         seller_user1.save()
         seller_user1.groups.add(selleruser_group.id)
 
-        # Add company name 
-
-        SellerUser.objects.create(user=seller_user1, company_name='Berlin Motors')
 
     # Create a regular user
     regular_user, created = User.objects.get_or_create(
