@@ -2,9 +2,12 @@
 
 from django.db import migrations
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 
 def create_initial_users(apps, schema_editor):
     User = get_user_model()
+    SellerUser = apps.get_model('autohaven_app', 'SellerUser')
+
     Group = apps.get_model('auth', 'Group')
 
     # Retrieve the group object by name
@@ -20,7 +23,7 @@ def create_initial_users(apps, schema_editor):
     regularuser_group = Group.objects.get(name=group_name3)
 
 
-    # Create a superuser
+    # SUPER USER
     super_user, created = User.objects.get_or_create(
         username='superuser',
         defaults={
@@ -36,8 +39,11 @@ def create_initial_users(apps, schema_editor):
         super_user.save()
         super_user.groups.add(superuser_group.id)
 
-    # Create a seller user
-    seller_user, created = User.objects.get_or_create(
+    # SELLERS
+
+    #Seller 1
+
+    seller_user1, created = User.objects.get_or_create(
         username='seller',
         defaults={
             'first_name': 'Seller',
@@ -48,9 +54,13 @@ def create_initial_users(apps, schema_editor):
         }
     )
     if created:
-        seller_user.set_password('sellerpassword')
-        seller_user.save()
-        seller_user.groups.add(selleruser_group.id)
+        seller_user1.set_password('sellerpassword')
+        seller_user1.save()
+        seller_user1.groups.add(selleruser_group.id)
+
+        # Add company name 
+
+        SellerUser.objects.create(user=seller_user1, company_name='Berlin Motors')
 
     # Create a regular user
     regular_user, created = User.objects.get_or_create(
