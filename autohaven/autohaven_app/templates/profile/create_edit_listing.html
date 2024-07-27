@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
-    {% if listing is None %}New Listing{% else %}Listing ID: {{ listing.id }}{% endif %}
+    {% if listing is None %}New Listing{% else %}{{ listing.title }}{% endif %}
 {% endblock %}
 {% block pageStyles %}
     {% load static %}
@@ -18,7 +18,7 @@
         {% csrf_token %}
         <div class="row">
             <div class="column">
-                <h1>{% if listing %}Listing ID: {{ listing.id }}{% else %}New Listing{% endif %}</h1>
+                <h1>{% if listing %}{{ listing.title }}{% else %}New Listing{% endif %}</h1>
                 <span>Fill in your listing information to {% if listing is None %}create a new listing{% else %}edit the current listing{% endif %}</span>
                 <div class="row">
                     <div class="column">
